@@ -5,6 +5,23 @@ public class Restaurant {
     private String name;
     private String review;
     private int image;
+    private int start;
+
+    public Restaurant(int start, int image, String review, String name, int id) {
+        this.start = start;
+        this.image = image;
+        this.review = review;
+        this.name = name;
+        this.id = id;
+    }
+
+    public Restaurant(String name, String review, int image, int start) {
+        this.name = name;
+        this.review = review;
+        this.image = image;
+        this.start = start;
+    }
+
 
     // Constructor đầy đủ (có id)
     public Restaurant(int id, String name, String review, int imageResId) {
@@ -20,6 +37,23 @@ public class Restaurant {
         this.review = review;
         this.image = imageResId;
     }
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+
 
     // Getters và Setters
     public int getId() {

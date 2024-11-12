@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
-    android:layout_marginBottom="20dp">
+    android:layout_marginBottom="20dp"
+    tools:ignore="ExtraText">
 
     <!-- Tên nhà hàng -->
     <TextView
@@ -26,7 +28,15 @@
         android:textColor="@color/lavender_dark"
         android:textSize="14sp"
         android:layout_marginBottom="8dp" /> <!-- Khoảng cách dưới bài đánh giá -->
-
+    <RatingBar
+        android:id="@+id/reviewRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:rating="3.5"
+        android:stepSize="0.5" />
     <!-- Hình ảnh của nhà hàng -->
     <ImageView
         android:id="@+id/reviewImage"

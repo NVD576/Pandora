@@ -3,6 +3,7 @@ package com.example.pandora;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,18 +68,11 @@ public class Home extends Fragment {
 
         }
 
-        // Kiểm tra danh sách nhà hàng sau khi thêm Quán Ăn D
-//        Log.d("RestaurantList", "Size after adding Quán Ăn D: " + restaurantList.size());
-//        for (Restaurant restaurant : restaurantList) {
-//            Log.d("RestaurantList", "Restaurant: " + restaurant.getName());
-//        }
 
-// Lấy lại danh sách nhà hàng sau khi thêm
+        // Lấy lại danh sách nhà hàng sau khi thêm
         restaurantList = restaurantDatabase.getAllRestaurants();
 
 
-//        // Lấy danh sách quán ăn từ cơ sở dữ liệu
-//        restaurantList = restaurantDatabase.getAllRestaurants();
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -97,6 +91,15 @@ public class Home extends Fragment {
         LinearLayout dotsLayout = view.findViewById(R.id.dotsLayout);
         setupDots(images.size(), dotsLayout);
 
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                currentPage = position;
+                handler.removeCallbacks(runnable);
+                handler.postDelayed(runnable, 3000);
+            }
+        });
+
         return view;
     }
 
@@ -104,10 +107,12 @@ public class Home extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        restaurantDatabase.close();
         handler.removeCallbacks(runnable); // Ngừng lướt khi view của fragment bị hủy
     }
 
     // Khởi tạo các chấm chỉ báo
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void setupDots(int count, LinearLayout dotsLayout) {
         dotsLayout.removeAllViews(); // Xóa tất cả các chấm cũ (nếu có)
         ImageView[] dots = new ImageView[count];
@@ -124,7 +129,7 @@ public class Home extends Fragment {
             dotsLayout.addView(dots[i], params);
         }
 
-        dots[0].setImageDrawable(getResources().getDrawable(R.drawable.dot_active)); // Chấm đầu tiên sáng
+        dots[0].setImageDrawable(ContextCompat.getDrawable( getContext(), R.drawable.dot_active)); // Chấm đầu tiên sáng
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
