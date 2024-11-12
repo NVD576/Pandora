@@ -1,0 +1,19 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Trạng thái khi CheckBox được chọn -->
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#00000000" /> <!-- nền trong suốt -->
+            <corners android:radius="8dp" /> <!-- bo tròn góc -->
+            <stroke android:width="2dp" android:color="#39FF14" /> <!-- viền khi được chọn -->
+        </shape>
+    </item>
+
+    <!-- Trạng thái khi CheckBox không được chọn -->
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <solid android:color="#00000000" /> <!-- nền trong suốt -->
+            <corners android:radius="8dp" /> <!-- bo tròn góc -->
+            <stroke android:width="2dp" android:color="#CCCCCC" /> <!-- viền khi không chọn -->
+        </shape>
+    </item>
+</selector>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorControlActivated">@color/lavender_dark</item>
+        <item name="android:textColorHint">@color/lavender_medium</item>
+        <item name="android:textColor">@color/lavender_dark</item>
+    </style>
+</resources>

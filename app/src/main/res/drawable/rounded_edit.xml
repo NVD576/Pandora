@@ -1,0 +1,8 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient android:startColor="#FBD288"
+    android:angle="360"
+    android:endColor="#FBD288"/> <!-- Màu nền -->
+    <corners android:radius="16dp" /> <!-- Bo tròn góc -->
+    <stroke android:width="2dp" android:color="#393A3A" /> <!-- Viền ngoài -->
+    <padding android:left="8dp" android:right="8dp" android:top="4dp" android:bottom="4dp" />
+</shape>

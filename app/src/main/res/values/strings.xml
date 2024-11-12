@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Pandora</string>
+    <string name="username">Tên tài khoản</string>
+    <string name="password">Mật khẩu</string>
+    <string name="forget">Quên mật khẩu</string>
+    <string name="show_password">Hiện mật khẩu</string>
+    <string name="numberphone">Nhập số điện thoại</string>
+    <string name="joinPandora">Tham gia Pandora</string>
+    <string name="description">Hãy tạo tài khoản để biết thêm những địa điểm ăn uống và ẩm thực đa dạng</string>
+    <string name="acp">Nhập mã xác thực chúng tôi vừa gửi đến bạn</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_setting">Setting</string>
+    <string name="Open">ahihi\n</string>
+    <string name="Close">ahuhu\n</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="searchHint">Bạn muốn tìm gì?</string>
+    <string name="bookmark_icon">Bookmark icon</string>
+
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_marginBottom="20dp">
+
+    <!-- Tên nhà hàng -->
+    <TextView
+        android:id="@+id/reviewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tên nhà hàng"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/lavender_dark"
+        android:layout_marginBottom="2dp" /> <!-- Khoảng cách dưới tên -->
+
+    <!-- Bài đánh giá -->
+    <TextView
+        android:id="@+id/reviewText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bài đánh giá"
+        android:textColor="@color/lavender_dark"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp" /> <!-- Khoảng cách dưới bài đánh giá -->
+
+    <!-- Hình ảnh của nhà hàng -->
+    <ImageView
+        android:id="@+id/reviewImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/background"
+        android:layout_marginBottom="8dp" /> <!-- Khoảng cách dưới hình ảnh -->
+</LinearLayout>

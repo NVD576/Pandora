@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pandora_background"
+
+    tools:context=".RegisterInfomation">
+
+    <View
+        android:layout_width="475dp"
+        android:layout_height="475dp"
+        android:alpha="0.5"
+        android:background="@drawable/border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <LinearLayout
+        android:layout_width="375dp"
+        android:layout_height="375dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/titleRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Đăng Ký"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="35dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/addUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edit"
+            android:hint="Nhập tên đăng nhập"
+            android:layout_marginBottom="10dp"
+            android:minHeight="48dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/material_dynamic_neutral40" />
+
+        <EditText
+            android:id="@+id/addPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập mật khẩu"
+            android:layout_marginBottom="10dp"
+            android:textColorHint="@color/material_dynamic_neutral40"
+            android:minHeight="48dp"
+            android:background="@drawable/rounded_edit"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/reAddPassword"
+            android:layout_width="match_parent"
+            android:background="@drawable/rounded_edit"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Nhập lại mật khẩu"
+            android:minHeight="48dp"
+            android:textColorHint="@color/material_dynamic_neutral40"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/addNumberPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Nhập số điện thoại"
+            android:background="@drawable/rounded_edit"
+            android:textColorHint="@color/material_dynamic_neutral40"
+            android:minHeight="48dp"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btnAcp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:text="Xác nhận"
+            android:textColor="@color/black" />
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
