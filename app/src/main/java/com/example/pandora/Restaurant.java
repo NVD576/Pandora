@@ -1,19 +1,21 @@
 package com.example.pandora;
 
 public class Restaurant {
+
+
     private int id;
     private String name;
     private String review;
     private int image;
     private int start;
 
-    public Restaurant(int start, int image, String review, String name, int id) {
-        this.start = start;
-        this.image = image;
-        this.review = review;
-        this.name = name;
-        this.id = id;
-    }
+//    public Restaurant(int start, int image, String review, String name, int id) {
+//        this.start = start;
+//        this.image = image;
+//        this.review = review;
+//        this.name = name;
+//        this.id = id;
+//    }
 
     public Restaurant(String name, String review, int image, int start) {
         this.name = name;

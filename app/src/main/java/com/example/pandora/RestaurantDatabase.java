@@ -29,15 +29,15 @@ public class RestaurantDatabase {
 
     // Thêm một quán ăn vào cơ sở dữ liệu
     public void addRestaurant(Restaurant restaurant) {
-        // Logic to add the restaurant to the database
         ContentValues values = new ContentValues();
         values.put("name", restaurant.getName());
         values.put("review", restaurant.getReview());
         values.put("image", restaurant.getImageResId());
+        values.put("start", restaurant.getStart()); // Thêm thuộc tính start
 
-        // Inserting the restaurant into the database
-        long id = database.insert("restaurants", null, values); // Automatically generates id
-        restaurant.setId((int) id);  // Set the ID from the inserted record
+        // Thêm quán ăn vào cơ sở dữ liệu và gán ID từ bản ghi đã chèn
+        long id = database.insert("restaurants", null, values);
+        restaurant.setId((int) id);
     }
 
     // Lấy danh sách các quán ăn từ cơ sở dữ liệu
@@ -46,25 +46,27 @@ public class RestaurantDatabase {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] columns = {
-                DatabaseHelper.COLUMN_ID,  // Get the ID column
+                DatabaseHelper.COLUMN_ID,
                 DatabaseHelper.COLUMN_NAME,
                 DatabaseHelper.COLUMN_REVIEW,
-                DatabaseHelper.COLUMN_IMAGE
+                DatabaseHelper.COLUMN_IMAGE,
+                DatabaseHelper.COLUMN_START // Thêm cột start
         };
 
-        // Query the restaurants table
+        // Truy vấn bảng restaurants
         Cursor cursor = db.query(DatabaseHelper.TABLE_RESTAURANTS, columns, null, null, null, null, null);
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                // Retrieve the columns
-                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));  // Get the ID
+                // Lấy dữ liệu từ các cột
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME));
                 @SuppressLint("Range") String review = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_REVIEW));
                 @SuppressLint("Range") int imageResId = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_IMAGE));
+                @SuppressLint("Range") int start = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_START));
 
-                // Add the restaurant to the list with the ID
-                restaurantList.add(new Restaurant(id, name, review, imageResId));  // Use the constructor with id
+                // Thêm quán ăn vào danh sách với thuộc tính start
+                restaurantList.add(new Restaurant(name, review, imageResId, start));
             }
             cursor.close();
         }

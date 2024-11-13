@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,8 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         holder.nameTextView.setText(restaurant.getName());
         holder.reviewTextView.setText(restaurant.getReview());
         holder.imageView.setImageResource(restaurant.getImageResId());
+        holder.ratingBar.setRating(restaurant.getStart());
+
     }
 
     @Override
@@ -42,12 +45,14 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         TextView nameTextView;
         TextView reviewTextView;
         ImageView imageView;
+        RatingBar ratingBar;
 
         public ReviewViewHolder(View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.reviewName);
             reviewTextView = itemView.findViewById(R.id.reviewText);
             imageView = itemView.findViewById(R.id.reviewImage);
+            ratingBar = itemView.findViewById(R.id.reviewRating);
         }
     }
 }
