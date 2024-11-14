@@ -9,13 +9,13 @@ public class Restaurant {
     private int image;
     private int start;
 
-//    public Restaurant(int start, int image, String review, String name, int id) {
-//        this.start = start;
-//        this.image = image;
-//        this.review = review;
-//        this.name = name;
-//        this.id = id;
-//    }
+    public Restaurant(int id, String name, String review, int image, int start) {
+        this.id = id;
+        this.name = name;
+        this.review = review;
+        this.image = image;
+        this.start = start;
+    }
 
     public Restaurant(String name, String review, int image, int start) {
         this.name = name;

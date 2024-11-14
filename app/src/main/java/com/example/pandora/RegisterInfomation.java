@@ -1,5 +1,7 @@
 package com.example.pandora;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class RegisterInfomation extends AppCompatActivity {
-
+    UserDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +57,22 @@ public class RegisterInfomation extends AppCompatActivity {
                    Toast.makeText(getApplicationContext(),"Mật khẩu phải từ 6 kí tự trở lên",Toast.LENGTH_SHORT).show();
                    return;
                }
-               Intent myIntent = new Intent(RegisterInfomation.this, Login.class);
-               startActivity(myIntent);
+               User newUser = new User(userName, password, numberPhone);
+
+               // Mở kết nối với cơ sở dữ liệu
+               db = new UserDatabase( RegisterInfomation.this);
+               db.open();
+
+               // Thêm người dùng vào cơ sở dữ liệu
+               if(db.addUser(newUser, RegisterInfomation.this)){
+                   Intent myIntent = new Intent(RegisterInfomation.this, Login.class);
+                   startActivity(myIntent);
+               }
+
+               // Đóng kết nối
+               db.close();
+
+
            }
        });
     }

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Login extends AppCompatActivity {
+
+    EditText edUserName ;
+    EditText password;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -61,7 +66,8 @@ public class Login extends AppCompatActivity {
         animationLinerLayout.setDuration(500);
         animationLinerLayout.start();
         CheckBox checkBox = findViewById(R.id.password_show);
-        EditText password = findViewById(R.id.password_text);
+        edUserName = findViewById(R.id.edTK);
+        password = findViewById(R.id.edPW);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -96,8 +102,31 @@ public class Login extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(Login.this,Lobby.class);
-                startActivity(myIntent);
+                String userName = edUserName.getText().toString();
+                String pw = password.getText().toString();
+                if (userName.isEmpty() || pw.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Kiểm tra đăng nhập
+                UserDatabase db = new UserDatabase(Login.this); // Khởi tạo UserDatabase
+                db.open(); // Mở kết nối cơ sở dữ liệu
+
+                // Tìm người dùng theo tài khoản và mật khẩu
+                User user = db.getUserByUsernameAndPassword(userName, pw);
+
+                db.close(); // Đóng kết nối cơ sở dữ liệu
+
+                if (user != null) {
+                    // Đăng nhập thành công, chuyển sang màn hình tiếp theo
+                    Intent myIntent = new Intent(Login.this, Lobby.class);
+                    startActivity(myIntent);
+                    finish(); // Đảm bảo không quay lại màn hình đăng nhập
+                } else {
+                    // Đăng nhập thất bại
+                    Toast.makeText(getApplicationContext(), "Tên đăng nhập hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

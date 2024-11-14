@@ -1,6 +1,7 @@
 package com.example.pandora;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -55,6 +56,8 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+//        Context context = null;
+//        context.deleteDatabase("restaurant_db"); // Xóa cơ sở dữ liệu cũ
 
         restaurantDatabase = new RestaurantDatabase(getContext());
         restaurantDatabase.open();
