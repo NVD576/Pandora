@@ -1,28 +1,24 @@
-package com.example.pandora;
+package com.example.pandora.ForgetPassword;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.telephony.SmsManager;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import android.Manifest;
-import android.telephony.SmsManager;
+
 import android.widget.Toast;
 
 
-import org.jetbrains.annotations.NonNls;
+import com.example.pandora.R;
 
 import java.util.Random;
 

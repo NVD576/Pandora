@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/pandora_background"
 
-    tools:context=".RegisterInfomation">
+    tools:context=".Register.RegisterInfomation">
 
     <View
         android:layout_width="475dp"
@@ -47,6 +47,7 @@
             android:id="@+id/addUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="text"
             android:background="@drawable/rounded_edit"
             android:hint="Nhập tên đăng nhập"
             android:layout_marginBottom="10dp"
@@ -59,6 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nhập mật khẩu"
+            android:inputType="textPassword"
             android:layout_marginBottom="10dp"
             android:textColorHint="@color/material_dynamic_neutral40"
             android:minHeight="48dp"
@@ -70,6 +72,7 @@
             android:layout_width="match_parent"
             android:background="@drawable/rounded_edit"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:layout_marginBottom="10dp"
             android:hint="Nhập lại mật khẩu"
             android:minHeight="48dp"
@@ -79,6 +82,7 @@
         <EditText
             android:id="@+id/addNumberPhone"
             android:layout_width="match_parent"
+            android:inputType="number"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="Nhập số điện thoại"

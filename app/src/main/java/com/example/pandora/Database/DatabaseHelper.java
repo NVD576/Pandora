@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.ForgetPassword;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.pandora.Login.Login;
+import com.example.pandora.R;
 
 public class ChangePassword extends AppCompatActivity {
     Button btnXacNhan;
@@ -39,7 +42,7 @@ public class ChangePassword extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(edMK.getText().toString().equals(edMK2.getText().toString())){
-                    Intent intent= new Intent(ChangePassword.this,Login.class);
+                    Intent intent= new Intent(ChangePassword.this, Login.class);
                     startActivity(intent);
                 }
                 else {

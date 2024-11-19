@@ -1,12 +1,13 @@
-package com.example.pandora;
+package com.example.pandora.Database;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.view.View;
 import android.widget.Toast;
+
+import com.example.pandora.Class.User;
 
 import java.util.ArrayList;
 import java.util.List;

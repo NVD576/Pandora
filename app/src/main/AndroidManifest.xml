@@ -19,30 +19,30 @@
         android:theme="@style/Theme.Pandora"
         tools:targetApi="31">
         <activity
-            android:name=".RegisterInfomation"
+            android:name=".Register.RegisterInfomation"
             android:exported="false" />
         <activity
-            android:name=".Lobby"
+            android:name=".Main.Lobby"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Trash.MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.Pandora.NoActionBar" />
         <activity
-            android:name=".ChangePassword"
+            android:name=".ForgetPassword.ChangePassword"
             android:exported="false" />
         <activity
-            android:name=".ForgetPassword"
+            android:name=".ForgetPassword.ForgetPassword"
             android:exported="false" />
         <activity
-            android:name=".AuthenticationCode"
+            android:name=".ForgetPassword.AuthenticationCode"
             android:exported="false" />
         <activity
-            android:name=".Register"
+            android:name=".Register.Register"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".Login.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

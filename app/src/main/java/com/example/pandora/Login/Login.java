@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.Login;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -21,6 +21,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.pandora.ForgetPassword.ForgetPassword;
+import com.example.pandora.Main.Lobby;
+import com.example.pandora.R;
+import com.example.pandora.Register.Register;
+import com.example.pandora.Class.User;
+import com.example.pandora.Database.UserDatabase;
 
 public class Login extends AppCompatActivity {
 
@@ -86,7 +93,7 @@ public class Login extends AppCompatActivity {
         forgetText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(Login.this,ForgetPassword.class);
+                Intent myIntent = new Intent(Login.this, ForgetPassword.class);
                 startActivity(myIntent);
             }
         });
@@ -94,7 +101,7 @@ public class Login extends AppCompatActivity {
         txtRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(Login.this,Register.class);
+                Intent myIntent = new Intent(Login.this, Register.class);
                 startActivity(myIntent);
             }
         });

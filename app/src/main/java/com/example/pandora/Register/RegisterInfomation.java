@@ -1,6 +1,4 @@
-package com.example.pandora;
-
-import static java.security.AccessController.getContext;
+package com.example.pandora.Register;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.pandora.Login.Login;
+import com.example.pandora.R;
+import com.example.pandora.Class.User;
+import com.example.pandora.Database.UserDatabase;
 
 public class RegisterInfomation extends AppCompatActivity {
     UserDatabase db;

@@ -1,7 +1,6 @@
 package com.example.pandora;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -12,12 +11,14 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.example.pandora.Class.Restaurant;
+import com.example.pandora.Database.RestaurantDatabase;
 
 import java.util.Arrays;
 import java.util.List;

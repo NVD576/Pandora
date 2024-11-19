@@ -1,12 +1,8 @@
-package com.example.pandora;
+package com.example.pandora.Main;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -15,16 +11,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.pandora.Home;
+import com.example.pandora.Profile;
+import com.example.pandora.R;
+import com.example.pandora.Setting;
 import com.example.pandora.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class Lobby extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 

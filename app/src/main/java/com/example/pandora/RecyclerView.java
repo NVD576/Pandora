@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pandora.Class.Restaurant;
+
 import java.util.List;
 
 class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {

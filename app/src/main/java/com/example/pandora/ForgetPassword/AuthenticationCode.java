@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.ForgetPassword;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -6,17 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.pandora.R;
 
 public class AuthenticationCode extends AppCompatActivity {
     String codeAcp = "";
@@ -63,7 +60,7 @@ public class AuthenticationCode extends AppCompatActivity {
             public void onClick(View view) {
                 if (codeAcp.equals( acpCode.getText().toString()))
                 {
-                    Intent myIntent = new Intent(AuthenticationCode.this,ChangePassword.class);
+                    Intent myIntent = new Intent(AuthenticationCode.this, ChangePassword.class);
 
 
                     startActivity(myIntent);

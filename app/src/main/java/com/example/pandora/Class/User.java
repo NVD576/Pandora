@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.Class;
 
 public class User {
     private int id;
