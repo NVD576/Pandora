@@ -3,12 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/chuong"
     tools:context=".Setting">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Second LinearLayout with TextView, can be styled similarly or differently -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"> <!-- Optional margin to separate the items -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Chính sách quy định"
+            android:drawablePadding="10dp"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:background="@color/darkPurple"
+            android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+            android:drawableStart="@drawable/baseline_person_24"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ngôn ngữ"
+            android:drawablePadding="10dp"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:background="@color/darkPurple"
+            android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+            android:drawableStart="@drawable/baseline_person_24"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Xóa tài khoản"
+            android:drawablePadding="10dp"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:background="@color/darkPurple"
+            android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+            android:drawableStart="@drawable/baseline_person_24"/>
+
+
+    </LinearLayout>
 
 </FrameLayout>

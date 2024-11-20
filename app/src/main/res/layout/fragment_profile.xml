@@ -3,14 +3,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/chuong"
     tools:context=".Profile">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:gravity="center"
-        android:textSize="30sp"
+    <!-- First LinearLayout with TextView -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/loginProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Đăng nhập"
+                android:drawablePadding="10dp"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:background="@color/lavender_dark"
+                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+                android:drawableStart="@drawable/baseline_person_24"/>
+        </LinearLayout>
+
+        <!-- Second LinearLayout with TextView, can be styled similarly or differently -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"> <!-- Optional margin to separate the items -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Thay ảnh đại diện"
+                android:drawablePadding="10dp"
+                android:textSize="30sp"
+                android:textColor="@color/white"
+                android:background="@color/darkPurple"
+                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+                android:drawableStart="@drawable/baseline_person_24"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Thay đổi thông tin"
+                android:drawablePadding="10dp"
+                android:textSize="30sp"
+                android:textColor="@color/white"
+                android:background="@color/darkPurple"
+                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+                android:drawableStart="@drawable/baseline_person_24"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Thanh toán"
+                android:drawablePadding="10dp"
+                android:textSize="30sp"
+                android:textColor="@color/white"
+                android:background="@color/darkPurple"
+                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+                android:drawableStart="@drawable/baseline_person_24"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </FrameLayout>
