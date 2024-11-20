@@ -1,79 +1,72 @@
 package com.example.pandora.Main;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
-
-import androidx.appcompat.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.pandora.Home;
 import com.example.pandora.Profile;
 import com.example.pandora.R;
 import com.example.pandora.Setting;
-import com.example.pandora.databinding.ActivityMainBinding;
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
-public class Lobby extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Lobby extends AppCompatActivity {
 
-
-    ActivityMainBinding binding;
-    DrawerLayout drawerLayout;
-
-    NavigationView navigationView;
-
-    Toolbar toolbar;
-    @SuppressLint("MissingInflatedId")
+    BottomNavigationView bottomNavigationView;
+    @SuppressLint({"MissingInflatedId", "NonConstantResourceId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
-        
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ImageView btnSave = findViewById(R.id.save);
+        btnSave.setOnClickListener(view -> showLoginAlertDialog());
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
+        loadFragment(new Home());
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout, toolbar, R.string.Open, R.string.Close);
-        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.lavender_dark));
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        if(savedInstanceState == null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.FrameLayout, new Home()).commit();
-            navigationView.setCheckedItem(R.id.Home);
-        }
-
-
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                if (item.getItemId() == R.id.home) {
+                    loadFragment(new Home());
+                    return true;
+                }
+                if (item.getItemId() == R.id.profile) {
+                    loadFragment(new Profile());
+                    return true;
+                }
+                if (item.getItemId() == R.id.setting) {
+                    loadFragment(new Setting());
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
-//    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId()==R.id.Home){
-            getSupportFragmentManager().beginTransaction().replace(R.id.FrameLayout, new Home()).commit();
-        } else  if (item.getItemId()==R.id.Profile){
-            getSupportFragmentManager().beginTransaction().replace(R.id.FrameLayout, new Profile()).commit();
-        } else  if (item.getItemId()==R.id.Setting){
-            getSupportFragmentManager().beginTransaction().replace(R.id.FrameLayout, new Setting()).commit();
-        }
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
+    private void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+        fragmentTransaction.commit();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+    private void showLoginAlertDialog() {
+        new AlertDialog.Builder(Lobby.this)
+                .setTitle("Thông báo")
+                .setMessage("Bạn cần đăng nhập để sử dụng tính năng này")
+                .setPositiveButton("Ok", (dialogInterface, i) -> dialogInterface.dismiss())
+                .show();
     }
 }

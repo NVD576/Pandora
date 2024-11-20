@@ -19,11 +19,20 @@
         android:theme="@style/Theme.Pandora"
         tools:targetApi="31">
         <activity
+            android:name=".Welcome.Welcome"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Register.RegisterInfomation"
             android:exported="false" />
         <activity
             android:name=".Main.Lobby"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".Trash.MainActivity"
             android:exported="false"
@@ -43,13 +52,7 @@
             android:exported="false" />
         <activity
             android:name=".Login.Login"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
     </application>
 
 </manifest>
