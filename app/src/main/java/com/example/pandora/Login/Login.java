@@ -128,6 +128,8 @@ public class Login extends AppCompatActivity {
                 if (user != null) {
                     // Đăng nhập thành công, chuyển sang màn hình tiếp theo
                     Intent myIntent = new Intent(Login.this, Lobby.class);
+                    myIntent.putExtra("isLogin", true);
+                    myIntent.putExtra("userName", userName);
                     startActivity(myIntent);
                     finish(); // Đảm bảo không quay lại màn hình đăng nhập
                 } else {
