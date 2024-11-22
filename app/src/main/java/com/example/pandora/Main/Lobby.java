@@ -14,17 +14,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pandora.Home;
 import com.example.pandora.Profile;
 import com.example.pandora.R;
 import com.example.pandora.SaveLocationReview;
 import com.example.pandora.Setting;
+import com.example.pandora.Slider.SliderPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class Lobby extends AppCompatActivity {
 
+    ViewPager2 viewPager2;
     String userName;
     Boolean isLogin = false;
     BottomNavigationView bottomNavigationView;
@@ -42,25 +45,46 @@ public class Lobby extends AppCompatActivity {
         ImageView btnSave = findViewById(R.id.save);
         btnSave.setOnClickListener(view -> showLoginAlertDialog());
 
-        loadFragment(new Home(), isLogin, userName);
+//        loadFragment(new Home(), isLogin, userName);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        viewPager2 = findViewById(R.id.viewPager2);
+        SliderPagerAdapter adapter = new SliderPagerAdapter(this, isLogin, userName);
+        viewPager2.setAdapter(adapter);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.home) {
-                    loadFragment(new Home(),isLogin, userName);
+                    viewPager2.setCurrentItem(0);
                     return true;
                 }
                 if (item.getItemId() == R.id.profile) {
-                    loadFragment(new Profile(),isLogin, userName);
+                    viewPager2.setCurrentItem(1);
                     return true;
                 }
                 if (item.getItemId() == R.id.setting) {
-                    loadFragment(new Setting(),isLogin, userName);
+                    viewPager2.setCurrentItem(2);
                     return true;
                 }
                 return false;
+            }
+        });
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                switch (position) {
+                    case 0:
+                        bottomNavigationView.setSelectedItemId(R.id.home);
+                        break;
+                    case 1:
+                        bottomNavigationView.setSelectedItemId(R.id.profile);
+                        break;
+                    case 2:
+                        bottomNavigationView.setSelectedItemId(R.id.setting);
+                        break;
+                }
             }
         });
 
@@ -78,17 +102,17 @@ public class Lobby extends AppCompatActivity {
         }
     }
 
-    private void loadFragment(Fragment fragment, Boolean isLogin, String userName) {
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("isLogin", isLogin);
-        bundle.putString("userName", userName);
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainer, fragment);
-        fragmentTransaction.commit();
-
-    }
+//    private void loadFragment(Fragment fragment, Boolean isLogin, String userName) {
+//        Bundle bundle = new Bundle();
+//        bundle.putBoolean("isLogin", isLogin);
+//        bundle.putString("userName", userName);
+//        fragment.setArguments(bundle);
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+//        fragmentTransaction.commit();
+//
+//    }
 
     private void showLoginAlertDialog() {
         new AlertDialog.Builder(Lobby.this)

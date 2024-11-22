@@ -13,6 +13,7 @@
         android:orientation="vertical"> <!-- Optional margin to separate the items -->
 
         <TextView
+            android:id="@+id/policy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -25,6 +26,7 @@
             android:drawableStart="@drawable/baseline_person_24"/>
 
         <TextView
+            android:id="@+id/language"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

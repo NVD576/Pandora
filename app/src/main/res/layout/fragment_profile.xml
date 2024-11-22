@@ -39,18 +39,7 @@
             android:layout_marginTop="10dp"> <!-- Optional margin to separate the items -->
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Thay ảnh đại diện"
-                android:drawablePadding="10dp"
-                android:textSize="30sp"
-                android:textColor="@color/white"
-                android:background="@color/darkPurple"
-                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-                android:drawableStart="@drawable/baseline_person_24"/>
-
-            <TextView
+                android:id="@+id/changeInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -67,6 +56,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Thanh toán"
+                android:drawablePadding="10dp"
+                android:textSize="30sp"
+                android:textColor="@color/white"
+                android:background="@color/darkPurple"
+                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+                android:drawableStart="@drawable/baseline_person_24"/>
+
+            <TextView
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Đăng xuất"
                 android:drawablePadding="10dp"
                 android:textSize="30sp"
                 android:textColor="@color/white"
