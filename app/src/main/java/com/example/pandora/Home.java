@@ -65,10 +65,10 @@ public class Home extends Fragment {
         if (restaurantDatabase.getAllRestaurants().isEmpty())
         {
             // Adding restaurant data using the constructor without 'id'
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", "Đánh giá rất tốt, món ăn ngon", R.drawable.image1));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B", "Không gian thoải mái, phục vụ nhanh", R.drawable.image2));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C", "Món ăn đậm đà, giá cả hợp lý", R.drawable.image3));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", "Đồ ăn không ngon lắm", R.drawable.image4));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", "Đánh giá rất tốt, món ăn ngon", R.drawable.image1,4));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B", "Không gian thoải mái, phục vụ nhanh", R.drawable.image2,3));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C", "Món ăn đậm đà, giá cả hợp lý", R.drawable.image3,5));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", "Đồ ăn không ngon lắm", R.drawable.image4,1));
             restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", "Đồ ăn không ngon lắm", R.drawable.image1,2));
 
         }
@@ -84,6 +84,29 @@ public class Home extends Fragment {
         reviewAdapter = new ReviewAdapter(restaurantList);
         recyclerView.setAdapter(reviewAdapter);
         reviewAdapter.notifyDataSetChanged();
+
+        // Xử lý sự kiện click
+        reviewAdapter.setOnItemClickListener(restaurant -> {
+            DetailRestaurantFragment nextFragment = new DetailRestaurantFragment();
+
+            // Truyền dữ liệu qua Bundle
+            Bundle bundle = new Bundle();
+            bundle.putString("restaurant_name", restaurant.getName());
+            bundle.putString("restaurant_review", restaurant.getReview());
+            bundle.putInt("restaurant_rating", restaurant.getStart());
+            nextFragment.setArguments(bundle);
+
+            // Chuyển Fragment
+            getParentFragmentManager().beginTransaction()
+                    // Áp dụng animation vào fragment xuất hiện và fragment rời đi
+                    .setCustomAnimations(
+                            R.anim.fragment_enter,  // Khi fragment xuất hiện
+                            R.anim.fragment_exit    // Khi fragment rời đi
+                    )
+                    .replace(R.id.fragment_container, nextFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         // Thiết lập ViewPager và bắt đầu tự động cuộn
         viewPager = view.findViewById(R.id.viewPager);

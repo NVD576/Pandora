@@ -16,6 +16,16 @@ import java.util.List;
 class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
     private List<Restaurant> restaurantList;
+    private OnItemClickListener listener;
+
+    // Interface để xử lý sự kiện click
+    public interface OnItemClickListener {
+        void onItemClick(Restaurant restaurant);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public ReviewAdapter(List<Restaurant> restaurants) {
         this.restaurantList = restaurants;
@@ -35,6 +45,12 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         holder.imageView.setImageResource(restaurant.getImageResId());
         holder.ratingBar.setRating(restaurant.getStart());
 
+        // Xử lý sự kiện click
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null && position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(restaurant);
+            }
+        });
     }
 
     @Override
