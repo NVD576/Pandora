@@ -17,18 +17,25 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/userImage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/image1"
+                android:scaleType="centerCrop" /> <!-- Optional: bo tròn hình -->
+
             <TextView
                 android:id="@+id/loginProfile"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Đăng nhập"
                 android:drawablePadding="10dp"
                 android:textSize="20sp"
                 android:textColor="@color/white"
                 android:background="@color/lavender_dark"
-                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-                android:drawableStart="@drawable/baseline_person_24"/>
+                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"/>
         </LinearLayout>
 
         <!-- Second LinearLayout with TextView, can be styled similarly or differently -->

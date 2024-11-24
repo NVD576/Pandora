@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -129,9 +130,12 @@ public class Login extends AppCompatActivity {
                     // Đăng nhập thành công, chuyển sang màn hình tiếp theo
                     Intent myIntent = new Intent(Login.this, Lobby.class);
                     myIntent.putExtra("isLogin", true);
-                    myIntent.putExtra("userName", userName);
+//                    Log.e("Login", "UserID before " +user.getId());
+                    myIntent.putExtra("userid", user.getId());
+//                    Log.e("Login", "UserID aft " +user.getId());
+                    myIntent.putExtra("userName", user.getTaiKhoan());
                     startActivity(myIntent);
-                    finish(); // Đảm bảo không quay lại màn hình đăng nhập
+                     // Đảm bảo không quay lại màn hình đăng nhập
                 } else {
                     // Đăng nhập thất bại
                     Toast.makeText(getApplicationContext(), "Tên đăng nhập hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
