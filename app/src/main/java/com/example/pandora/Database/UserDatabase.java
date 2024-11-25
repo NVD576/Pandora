@@ -16,6 +16,15 @@ public class UserDatabase {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
 
+    String[] columns = {
+            DatabaseHelper.COLUMN_USER_ID,
+            DatabaseHelper.COLUMN_USER_TAIKHOAN,
+            DatabaseHelper.COLUMN_USER_PASSWORD,
+            DatabaseHelper.COLUMN_USER_SDT,
+            DatabaseHelper.COLUMN_USER_NAME,
+            DatabaseHelper.COLUMN_USER_ROLE,
+            DatabaseHelper.COLUMN_USER_IMAGE
+    };
     public UserDatabase(Context context) {
         dbHelper = new DatabaseHelper(context);
     }
@@ -59,6 +68,7 @@ public class UserDatabase {
         values.put(DatabaseHelper.COLUMN_USER_TAIKHOAN, user.getTaiKhoan());
         values.put(DatabaseHelper.COLUMN_USER_PASSWORD, user.getPassword());
         values.put(DatabaseHelper.COLUMN_USER_SDT, user.getSDT());
+        values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole());
         values.put(DatabaseHelper.COLUMN_USER_IMAGE, user.getImage() != null ? user.getImage() : "");
 
 
@@ -67,16 +77,21 @@ public class UserDatabase {
         user.setId((int) id); // Gán ID tự động tăng vào đối tượng user
         return true;
     }
+
+    // Kiểm tra xem bảng users có rỗng hay không
+    public boolean isUserTableEmpty() {
+        Cursor cursor = database.rawQuery("SELECT COUNT(*) FROM " + DatabaseHelper.TABLE_USERS, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int count = cursor.getInt(0);
+            cursor.close();
+            return count == 0; // Nếu số lượng bản ghi là 0, bảng rỗng
+        }
+        return true; // Trường hợp lỗi hoặc không thể truy vấn
+    }
+
     @SuppressLint("Range")
     public User getUserByUsernameAndPassword(String userName, String password) {
-        String[] columns = {
-                DatabaseHelper.COLUMN_USER_ID,
-                DatabaseHelper.COLUMN_USER_TAIKHOAN,
-                DatabaseHelper.COLUMN_USER_PASSWORD,
-                DatabaseHelper.COLUMN_USER_SDT,
-                DatabaseHelper.COLUMN_USER_NAME,
-                DatabaseHelper.COLUMN_USER_IMAGE
-        };
         String selection = DatabaseHelper.COLUMN_USER_TAIKHOAN + " = ? AND " + DatabaseHelper.COLUMN_USER_PASSWORD + " = ?";
         String[] selectionArgs = {userName, password};
 
@@ -88,12 +103,10 @@ public class UserDatabase {
             String pass = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
             String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
             String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
+            boolean role = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)));
             String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
 
-            User user = new User(id,taiKhoan, pass, SDT);
-
-            user.setName(name);
-            user.setImage(image); // Gán giá trị cho ảnh
+            User user = new User(id,taiKhoan, pass,name, SDT, role, image);
             cursor.close();
             return user;
         }
@@ -134,15 +147,6 @@ public class UserDatabase {
     @SuppressLint("Range")
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
-        String[] columns = {
-                DatabaseHelper.COLUMN_USER_ID,
-                DatabaseHelper.COLUMN_USER_TAIKHOAN,
-                DatabaseHelper.COLUMN_USER_PASSWORD,
-                DatabaseHelper.COLUMN_USER_SDT,
-                DatabaseHelper.COLUMN_USER_NAME,
-                DatabaseHelper.COLUMN_USER_IMAGE
-        };
-
         Cursor cursor = database.query(DatabaseHelper.TABLE_USERS, columns, null, null, null, null, null);
 
         if (cursor != null) {
@@ -152,11 +156,10 @@ public class UserDatabase {
                 String password = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
                 String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
                 String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
+                boolean role = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)));
                 String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
 
-                User user = new User(id, taiKhoan, password, SDT);
-                user.setName(name);
-                user.setImage(image);
+                User user = new User(id, taiKhoan, password, name, SDT , role, image);
                 userList.add(user);
             }
             cursor.close();
@@ -168,14 +171,7 @@ public class UserDatabase {
     // Lấy thông tin người dùng theo ID
     @SuppressLint("Range")
     public User getUserById(int userId) {
-        String[] columns = {
-                DatabaseHelper.COLUMN_USER_ID,
-                DatabaseHelper.COLUMN_USER_TAIKHOAN,
-                DatabaseHelper.COLUMN_USER_PASSWORD,
-                DatabaseHelper.COLUMN_USER_SDT,
-                DatabaseHelper.COLUMN_USER_NAME,
-                DatabaseHelper.COLUMN_USER_IMAGE
-        };
+
         String selection = DatabaseHelper.COLUMN_USER_ID + " = ?";
         String[] selectionArgs = {String.valueOf(userId)};
 
@@ -186,12 +182,11 @@ public class UserDatabase {
             String password = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
             String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
             String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
+            boolean role = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)));
             String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
 
-            User user = new User(taiKhoan, password, SDT);
+            User user = new User(taiKhoan, password, name, SDT,  role, image);
             user.setId(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ID)));
-            user.setName(name);
-            user.setImage(image); // Gán giá trị cho ảnh
             cursor.close();
             return user;
         }

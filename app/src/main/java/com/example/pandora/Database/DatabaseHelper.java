@@ -25,6 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USER_PASSWORD = "password";
     public static final String COLUMN_USER_SDT = "SDT";
     public static final String COLUMN_USER_NAME = "name";
+    public static final String COLUMN_USER_ROLE = "role";
     public static final String COLUMN_USER_IMAGE = "image";
 
     // Câu lệnh tạo bảng restaurants
@@ -40,8 +41,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_USER_TAIKHOAN + " TEXT, "
             + COLUMN_USER_PASSWORD + " TEXT, "
-            + COLUMN_USER_SDT + " TEXT, "
             + COLUMN_USER_NAME + " TEXT, "
+            + COLUMN_USER_SDT + " TEXT, "
+            + COLUMN_USER_ROLE + " INTEGER, "
             + COLUMN_USER_IMAGE + " TEXT)";
 
     public DatabaseHelper(Context context) {

@@ -6,7 +6,34 @@ public class User {
     private String password;
     private String name;
     private String SDT;
-    private String Image;
+    private boolean role= false;
+    private String image;
+
+    public User(String taiKhoan, String password, String SDT, boolean role) {
+        this.taiKhoan = taiKhoan;
+        this.password = password;
+        this.SDT = SDT;
+        this.role = role;
+    }
+
+    public User(String taiKhoan, String password, String name, String SDT, boolean role, String image) {
+        this.taiKhoan = taiKhoan;
+        this.password = password;
+        this.name = name;
+        this.SDT = SDT;
+        this.role = role;
+        this.image = image;
+    }
+
+    public User(int id, String taiKhoan, String password, String name, String SDT, boolean role,String image ) {
+        this.id = id;
+        this.taiKhoan = taiKhoan;
+        this.password = password;
+        this.name = name;
+        this.SDT = SDT;
+        this.image = image;
+        this.role = role;
+    }
 
     public User(int id, String taiKhoan, String password, String SDT) {
         this.id = id;
@@ -21,6 +48,13 @@ public class User {
         this.SDT = SDT;
     }
 
+    public boolean isRole() {
+        return role;
+    }
+
+    public void setRole(boolean role) {
+        this.role = role;
+    }
 
     public String getName() {
         return name;
@@ -31,11 +65,11 @@ public class User {
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
 
     public void setImage(String image) {
-        Image = image;
+        this.image = image;
     }
 
     public int getId() {

@@ -29,6 +29,7 @@ public class Lobby extends AppCompatActivity {
 
     ViewPager2 viewPager2;
     String userName;
+    int userid;
     Boolean isLogin = false;
     BottomNavigationView bottomNavigationView;
     @SuppressLint({"MissingInflatedId", "NonConstantResourceId"})
@@ -41,6 +42,7 @@ public class Lobby extends AppCompatActivity {
         isLogin = intent.getBooleanExtra("isLogin", false);
         if (isLogin){
             userName = intent.getStringExtra("userName");
+            userid= intent.getIntExtra("userid", -1);
         }
         ImageView btnSave = findViewById(R.id.save);
         btnSave.setOnClickListener(view -> showLoginAlertDialog());
@@ -49,7 +51,7 @@ public class Lobby extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         viewPager2 = findViewById(R.id.viewPager2);
-        SliderPagerAdapter adapter = new SliderPagerAdapter(this, isLogin, userName);
+        SliderPagerAdapter adapter = new SliderPagerAdapter(this, isLogin, userName, userid);
         viewPager2.setAdapter(adapter);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

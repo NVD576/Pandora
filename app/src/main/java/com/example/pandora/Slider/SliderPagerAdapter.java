@@ -14,10 +14,12 @@ import com.example.pandora.Setting;
 public class SliderPagerAdapter extends FragmentStateAdapter {
     private final boolean isLogin;
     private final String userName;
-    public SliderPagerAdapter(@NonNull FragmentActivity fragmentActivity, boolean isLogin, String userName) {
+    int userid;
+    public SliderPagerAdapter(@NonNull FragmentActivity fragmentActivity, boolean isLogin, String userName, int userid) {
         super(fragmentActivity);
         this.isLogin = isLogin;
         this.userName = userName;
+        this.userid= userid;
     }
 
     @NonNull
@@ -41,6 +43,7 @@ public class SliderPagerAdapter extends FragmentStateAdapter {
         Bundle bundle = new Bundle();
         bundle.putBoolean("isLogin", isLogin);
         bundle.putString("userName", userName);
+        bundle.putInt("userid", userid);
         fragment.setArguments(bundle);
         return fragment;
     }

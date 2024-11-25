@@ -8,6 +8,8 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,13 +36,16 @@ import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.Login.Login;
 import com.example.pandora.Main.Lobby;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
 public class Profile extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
-
+    ImageView userImage;
     boolean isLogin = false;
     String userName = "";
     int userid;
@@ -84,6 +89,7 @@ public class Profile extends Fragment {
 
             }
         }
+        userImage= view.findViewById(R.id.userImage);
         if (isLogin)
         {
             login.setText(userName);
@@ -100,9 +106,14 @@ public class Profile extends Fragment {
 
             // Nếu có đường dẫn ảnh, cập nhật ImageView
             if (userImagePath != null && !userImagePath.isEmpty()) {
-                ImageView userImage = view.findViewById(R.id.userImage);
-                Uri imageUri = Uri.parse(userImagePath);
-                userImage.setImageURI(imageUri);
+
+//                Uri imageUri = Uri.parse(userImagePath);
+//                userImage.setImageURI(imageUri);
+
+                Bitmap bitmap = loadImageFromInternalStorage(userImagePath);
+                if (bitmap != null) {
+                    userImage.setImageBitmap(bitmap);
+                }
             }
         }
         login.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +158,7 @@ public class Profile extends Fragment {
                 else {
                     Toast.makeText(getActivity(),"Đăng xuất thành công", Toast.LENGTH_SHORT).show();
                     login.setText("Đăng nhập");
+                    userImage.setImageResource(R.drawable.person_icon);
                     Drawable drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_arrow_forward_ios_24);
                     Drawable[] drawables = login.getCompoundDrawablesRelative();
                     login.setCompoundDrawablesRelativeWithIntrinsicBounds(
@@ -155,6 +167,7 @@ public class Profile extends Fragment {
                             drawableEnd,
                             drawables[3]
                     );
+
                     isLogin = false;
                 }
             }
@@ -216,8 +229,21 @@ public class Profile extends Fragment {
 
             if (imagePath != null) {
                 // Cập nhật vào database
-                updateUserImage(imagePath);
 
+
+                try {
+                    // Chuyển đổi URI sang Bitmap
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+
+                    // Tạo tên file duy nhất
+                    String fileName = "user_image_" + userid + ".png";
+                    updateUserImage(fileName);
+                    // Lưu Bitmap vào bộ nhớ trong
+                    saveImageToInternalStorage(bitmap, fileName);
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 // Cập nhật ngay trong ImageView
                 ImageView userImage = requireView().findViewById(R.id.userImage);
                 userImage.setImageURI(selectedImageUri);
@@ -272,5 +298,27 @@ public class Profile extends Fragment {
         return path;
     }
 
+    private void saveImageToInternalStorage(Bitmap bitmap, String fileName) {
+        try {
+            // Lưu ảnh vào bộ nhớ trong
+            FileOutputStream fos = requireContext().openFileOutput(fileName, getContext().MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+            Log.e("SaveImage", "Ảnh đã được lưu vào bộ nhớ trong: " + fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "Lưu ảnh thất bại!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private Bitmap loadImageFromInternalStorage(String fileName) {
+        try {
+            FileInputStream fis = requireContext().openFileInput(fileName);
+            return BitmapFactory.decodeStream(fis); // Chuyển đổi thành Bitmap
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Trả về null nếu không tìm thấy ảnh
+        }
+    }
 
 }

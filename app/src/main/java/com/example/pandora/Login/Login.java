@@ -121,6 +121,11 @@ public class Login extends AppCompatActivity {
                 UserDatabase db = new UserDatabase(Login.this); // Khởi tạo UserDatabase
                 db.open(); // Mở kết nối cơ sở dữ liệu
 
+                if(db.isUserTableEmpty()){
+                    User admin= new User("duc", "123123","1234567890", true);
+                    db.addUser(admin, getApplicationContext());
+                }
+
                 // Tìm người dùng theo tài khoản và mật khẩu
                 User user = db.getUserByUsernameAndPassword(userName, pw);
 
