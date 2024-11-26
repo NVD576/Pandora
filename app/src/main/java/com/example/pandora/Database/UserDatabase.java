@@ -68,7 +68,7 @@ public class UserDatabase {
         values.put(DatabaseHelper.COLUMN_USER_TAIKHOAN, user.getTaiKhoan());
         values.put(DatabaseHelper.COLUMN_USER_PASSWORD, user.getPassword());
         values.put(DatabaseHelper.COLUMN_USER_SDT, user.getSDT());
-        values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole());
+        values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole() ? 1 : 0);
         values.put(DatabaseHelper.COLUMN_USER_IMAGE, user.getImage() != null ? user.getImage() : "");
 
 
