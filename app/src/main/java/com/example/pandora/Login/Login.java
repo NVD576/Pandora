@@ -123,6 +123,7 @@ public class Login extends AppCompatActivity {
 
                 if(db.isUserTableEmpty()){
                     User admin= new User("duc", "123123","1234567890", true);
+
                     db.addUser(admin, getApplicationContext());
                 }
 
@@ -132,6 +133,7 @@ public class Login extends AppCompatActivity {
                 db.close(); // Đóng kết nối cơ sở dữ liệu
 
                 if (user != null) {
+                    Log.e("Login", String.valueOf(user.isRole()));
                     // Đăng nhập thành công, chuyển sang màn hình tiếp theo
                     Intent myIntent = new Intent(Login.this, Lobby.class);
                     myIntent.putExtra("isLogin", true);

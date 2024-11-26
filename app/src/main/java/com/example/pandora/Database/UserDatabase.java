@@ -103,7 +103,7 @@ public class UserDatabase {
             String pass = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
             String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
             String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
-            boolean role = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)));
+            boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
             String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
 
             User user = new User(id,taiKhoan, pass,name, SDT, role, image);
@@ -156,7 +156,7 @@ public class UserDatabase {
                 String password = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
                 String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
                 String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
-                boolean role = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)));
+                boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
                 String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
 
                 User user = new User(id, taiKhoan, password, name, SDT , role, image);
@@ -182,7 +182,7 @@ public class UserDatabase {
             String password = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
             String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
             String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
-            boolean role = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)));
+            boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
             String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
 
             User user = new User(taiKhoan, password, name, SDT,  role, image);
