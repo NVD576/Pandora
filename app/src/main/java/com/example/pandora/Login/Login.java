@@ -23,6 +23,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.pandora.Class.AdminProperties;
 import com.example.pandora.ForgetPassword.ForgetPassword;
 import com.example.pandora.Main.Lobby;
 import com.example.pandora.R;
@@ -133,16 +134,24 @@ public class Login extends AppCompatActivity {
                 db.close(); // Đóng kết nối cơ sở dữ liệu
 
                 if (user != null) {
-                    Log.e("Login", String.valueOf(user.isRole()));
-                    // Đăng nhập thành công, chuyển sang màn hình tiếp theo
-                    Intent myIntent = new Intent(Login.this, Lobby.class);
-                    myIntent.putExtra("isLogin", true);
+                    if (user.isRole())
+                    {
+                        Intent myIntent = new Intent(Login.this, AdminProperties.class);
+                        startActivity(myIntent);
+                    }
+                    else {
+                        Log.e("Login", String.valueOf(user.isRole()));
+                        // Đăng nhập thành công, chuyển sang màn hình tiếp theo
+                        Intent myIntent = new Intent(Login.this, Lobby.class);
+                        myIntent.putExtra("isLogin", true);
 //                    Log.e("Login", "UserID before " +user.getId());
-                    myIntent.putExtra("userid", user.getId());
+                        myIntent.putExtra("userid", user.getId());
 //                    Log.e("Login", "UserID aft " +user.getId());
-                    myIntent.putExtra("userName", user.getTaiKhoan());
-                    startActivity(myIntent);
-                     // Đảm bảo không quay lại màn hình đăng nhập
+                        myIntent.putExtra("userName", user.getTaiKhoan());
+                        startActivity(myIntent);
+                        // Đảm bảo không quay lại màn hình đăng nhập
+                    }
+
                 } else {
                     // Đăng nhập thất bại
                     Toast.makeText(getApplicationContext(), "Tên đăng nhập hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
