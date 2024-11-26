@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pandora.Class.User;
 import com.example.pandora.Database.DatabaseHelper;
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.Login.Login;
@@ -51,6 +52,7 @@ public class Profile extends Fragment {
     int userid;
     private Uri contentUri;
     TextView login;
+    User user;
     public Profile() {
         // Required empty public constructor
     }
@@ -84,7 +86,7 @@ public class Profile extends Fragment {
                 userid= bundle.getInt("userid");  // Sử dụng giá trị mặc định nếu không tìm thấy
                 Log.e("Login", "UserID " +userid);
                 userName = bundle.getString("userName");
-
+                user = (User) bundle.getSerializable("user");
                 Log.e("Login", "name "+userName );
 
             }
@@ -92,14 +94,27 @@ public class Profile extends Fragment {
         userImage= view.findViewById(R.id.userImage);
         if (isLogin)
         {
-            login.setText(userName);
-            Drawable[] drawables = login.getCompoundDrawablesRelative();
-            login.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    drawables[0], // drawableStart
-                    drawables[1], // drawableTop
-                    null,         // drawableEnd
-                    drawables[3]  // drawableBottom
-            );
+            if (user.getName()==null)
+            {
+                login.setText(userName);
+                Drawable[] drawables = login.getCompoundDrawablesRelative();
+                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        drawables[0], // drawableStart
+                        drawables[1], // drawableTop
+                        null,         // drawableEnd
+                        drawables[3]  // drawableBottom
+                );
+            }
+            else {
+                login.setText(user.getName());
+                Drawable[] drawables = login.getCompoundDrawablesRelative();
+                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        drawables[0], // drawableStart
+                        drawables[1], // drawableTop
+                        null,         // drawableEnd
+                        drawables[3]  // drawableBottom
+                );
+            }
 
             // Lấy đường dẫn ảnh từ cơ sở dữ liệu
             String userImagePath = getUserImageFromDatabase(userid);
@@ -184,8 +199,18 @@ public class Profile extends Fragment {
         View dialogView = inflater.inflate(R.layout.dialog_edit_profile, null);
 
         // Ánh xạ các EditText trong hộp thoại
+        EditText edtName = dialogView.findViewById(R.id.edtName);
         EditText edtNumberPhone = dialogView.findViewById(R.id.edtNumberPhone);
-        EditText edtEmail = dialogView.findViewById(R.id.edtEmail);
+
+        if (user.getName()==null)
+        {
+            edtName.setText("");
+        }
+
+        else {
+            edtName.setText(user.getName());
+        }
+        edtNumberPhone.setText(user.getSDT());
 
         // Tạo hộp thoại
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -195,11 +220,11 @@ public class Profile extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // Lấy dữ liệu từ các EditText
+                        String newName = edtName.getText().toString();
                         String newNumberPhone = edtNumberPhone.getText().toString();
-                        String newEmail = edtEmail.getText().toString();
 
                         // Cập nhật thông tin (Ví dụ: bạn có thể lưu vào cơ sở dữ liệu)
-                        updateProfile(newNumberPhone, newEmail);
+                        updateProfile(newName, newNumberPhone);
                     }
                 })
                 .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -211,7 +236,7 @@ public class Profile extends Fragment {
                 .show();
     }
 
-    private void updateProfile(String numberPhone, String email) {
+    private void updateProfile(String name, String numberPhone) {
         // Cập nhật UI hoặc dữ liệu (ví dụ, cập nhật TextView hoặc lưu vào cơ sở dữ liệu)
     }
 

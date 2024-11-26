@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.pandora.Class.User;
 import com.example.pandora.Home;
 import com.example.pandora.Profile;
 import com.example.pandora.R;
@@ -31,6 +32,7 @@ public class Lobby extends AppCompatActivity {
     String userName;
     int userid;
     Boolean isLogin = false;
+    User user;
     BottomNavigationView bottomNavigationView;
     @SuppressLint({"MissingInflatedId", "NonConstantResourceId"})
     @Override
@@ -41,6 +43,7 @@ public class Lobby extends AppCompatActivity {
         Intent intent = getIntent();
         isLogin = intent.getBooleanExtra("isLogin", false);
         if (isLogin){
+            user = (User) getIntent().getSerializableExtra("user");
             userName = intent.getStringExtra("userName");
             userid= intent.getIntExtra("userid", -1);
         }
@@ -51,7 +54,7 @@ public class Lobby extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         viewPager2 = findViewById(R.id.viewPager2);
-        SliderPagerAdapter adapter = new SliderPagerAdapter(this, isLogin, userName, userid);
+        SliderPagerAdapter adapter = new SliderPagerAdapter(this, isLogin, userName, userid, user);
         viewPager2.setAdapter(adapter);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

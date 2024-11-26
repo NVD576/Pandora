@@ -8,13 +8,13 @@
 
     <!-- EditText để chỉnh sửa email hoặc thông tin khác -->
     <EditText
-        android:id="@+id/edtEmail"
+        android:id="@+id/edtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
         android:text=""
-        android:hint="Email"
+        android:hint="Tên người dùng"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <EditText

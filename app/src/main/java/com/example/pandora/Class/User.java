@@ -1,10 +1,12 @@
 package com.example.pandora.Class;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private int id;
     private String taiKhoan;
     private String password;
-    private String name;
+    private String name = null;
     private String SDT;
     private boolean role= false;
     private String image;

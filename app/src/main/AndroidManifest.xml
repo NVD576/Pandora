@@ -19,7 +19,16 @@
         android:theme="@style/Theme.Pandora"
         tools:targetApi="31">
         <activity
-            android:name=".Class.AdminProperties"
+            android:name=".AdminProperties.RoleProperties"
+            android:exported="false" />
+        <activity
+            android:name=".AdminProperties.AccountProperties"
+            android:exported="false" />
+        <activity
+            android:name=".AdminProperties.RestaurantProperties"
+            android:exported="false" />
+        <activity
+            android:name=".AdminProperties.AdminProperties"
             android:exported="false" />
         <activity
             android:name=".SaveLocationReview"

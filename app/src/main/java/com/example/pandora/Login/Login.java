@@ -23,7 +23,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.pandora.Class.AdminProperties;
+import com.example.pandora.AdminProperties.AdminProperties;
 import com.example.pandora.ForgetPassword.ForgetPassword;
 import com.example.pandora.Main.Lobby;
 import com.example.pandora.R;
@@ -148,6 +148,7 @@ public class Login extends AppCompatActivity {
                         myIntent.putExtra("userid", user.getId());
 //                    Log.e("Login", "UserID aft " +user.getId());
                         myIntent.putExtra("userName", user.getTaiKhoan());
+                        myIntent.putExtra("user", user);
                         startActivity(myIntent);
                         // Đảm bảo không quay lại màn hình đăng nhập
                     }
