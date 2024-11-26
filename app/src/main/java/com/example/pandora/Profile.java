@@ -225,6 +225,8 @@ public class Profile extends Fragment {
 
                         // Cập nhật thông tin (Ví dụ: bạn có thể lưu vào cơ sở dữ liệu)
                         updateProfile(newName, newNumberPhone);
+
+                        login.setText(newName);
                     }
                 })
                 .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -238,6 +240,14 @@ public class Profile extends Fragment {
 
     private void updateProfile(String name, String numberPhone) {
         // Cập nhật UI hoặc dữ liệu (ví dụ, cập nhật TextView hoặc lưu vào cơ sở dữ liệu)
+        UserDatabase db= new UserDatabase(getContext());
+        db.open();
+        User u= db.getUserById(userid);
+        u.setName(name);
+        u.setSDT(numberPhone);
+        db.updateUser(u);
+        db.close();
+
     }
 
 

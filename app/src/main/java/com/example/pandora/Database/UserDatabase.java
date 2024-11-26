@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.example.pandora.Class.User;
+import com.example.pandora.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,8 @@ public class UserDatabase {
     public UserDatabase(Context context) {
         dbHelper = new DatabaseHelper(context);
     }
+
+
 
 
     // Mở kết nối đến cơ sở dữ liệu
@@ -67,6 +70,7 @@ public class UserDatabase {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_USER_TAIKHOAN, user.getTaiKhoan());
         values.put(DatabaseHelper.COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(DatabaseHelper.COLUMN_USER_NAME, user.getName());
         values.put(DatabaseHelper.COLUMN_USER_SDT, user.getSDT());
         values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole() ? 1 : 0);
         values.put(DatabaseHelper.COLUMN_USER_IMAGE, user.getImage() != null ? user.getImage() : "");
@@ -113,7 +117,6 @@ public class UserDatabase {
         return null;
     }
 
-
     public void updateUserImage(int userId, String imagePath) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_USER_IMAGE, imagePath);
@@ -121,6 +124,25 @@ public class UserDatabase {
         String whereClause = DatabaseHelper.COLUMN_USER_ID + " = ?";
         String[] whereArgs = {String.valueOf(userId)};
 
+        database.update(DatabaseHelper.TABLE_USERS, values, whereClause, whereArgs);
+    }
+
+    public void updateUser(User user) {
+        ContentValues values = new ContentValues();
+
+        // Cập nhật các trường cần thiết
+        values.put(DatabaseHelper.COLUMN_USER_TAIKHOAN, user.getTaiKhoan());
+        values.put(DatabaseHelper.COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(DatabaseHelper.COLUMN_USER_NAME, user.getName());
+        values.put(DatabaseHelper.COLUMN_USER_SDT, user.getSDT());
+        values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_IMAGE, user.getImage() != null ? user.getImage() : "");
+
+        // Điều kiện để xác định người dùng cần cập nhật (theo ID)
+        String whereClause = DatabaseHelper.COLUMN_USER_ID + " = ?";
+        String[] whereArgs = {String.valueOf(user.getId())};
+
+        // Cập nhật dữ liệu trong cơ sở dữ liệu
         database.update(DatabaseHelper.TABLE_USERS, values, whereClause, whereArgs);
     }
 
