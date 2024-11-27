@@ -27,7 +27,7 @@ public class Home extends Fragment {
 
 
     private RecyclerView recyclerView;
-    private ReviewAdapter reviewAdapter;
+    private RestaurantAdapter restaurantAdapter;
     private ViewPager2 viewPager;
     private RestaurantDatabase restaurantDatabase;
     private List<Restaurant> restaurantList;
@@ -81,12 +81,12 @@ public class Home extends Fragment {
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        reviewAdapter = new ReviewAdapter(restaurantList);
-        recyclerView.setAdapter(reviewAdapter);
-        reviewAdapter.notifyDataSetChanged();
+        restaurantAdapter = new RestaurantAdapter(restaurantList);
+        recyclerView.setAdapter(restaurantAdapter);
+        restaurantAdapter.notifyDataSetChanged();
 
         // Xử lý sự kiện click
-        reviewAdapter.setOnItemClickListener(restaurant -> {
+        restaurantAdapter.setOnItemClickListener(restaurant -> {
             DetailRestaurantFragment nextFragment = new DetailRestaurantFragment();
 
             // Truyền dữ liệu qua Bundle

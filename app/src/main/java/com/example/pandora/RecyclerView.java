@@ -13,7 +13,7 @@ import com.example.pandora.Class.Restaurant;
 
 import java.util.List;
 
-class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
+class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ReviewViewHolder> {
 
     private List<Restaurant> restaurantList;
     private OnItemClickListener listener;
@@ -27,7 +27,7 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         this.listener = listener;
     }
 
-    public ReviewAdapter(List<Restaurant> restaurants) {
+    public RestaurantAdapter(List<Restaurant> restaurants) {
         this.restaurantList = restaurants;
     }
 
