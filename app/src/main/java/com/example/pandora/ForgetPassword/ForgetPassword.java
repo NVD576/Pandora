@@ -1,5 +1,6 @@
 package com.example.pandora.ForgetPassword;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -41,21 +43,21 @@ public class ForgetPassword extends AppCompatActivity {
         EditText numberPhone = findViewById(R.id.numberPhone);
         Random rd = new Random();
         acp.setOnClickListener(view -> {
-            Integer code = 100000 + rd.nextInt(900000);
-//                if (ActivityCompat.checkSelfPermission(ForgetPassword.this,Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED)
-//                {
-//                    ActivityCompat.requestPermissions(ForgetPassword.this,new String[]{Manifest.permission.SEND_SMS},SMS_PERMISSION_CODE);
-//                }
-//                else
-//                {
-//                    sendSms(numberPhone.getText().toString(), Integer.toString(code));
-//                }
-            String s= code.toString();
-            Toast.makeText(ForgetPassword.this, s, Toast.LENGTH_LONG).show();
+            int code = 100000 + rd.nextInt(900000);
+                if (ActivityCompat.checkSelfPermission(ForgetPassword.this, Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions(ForgetPassword.this,new String[]{Manifest.permission.SEND_SMS},SMS_PERMISSION_CODE);
+                }
+                else
+                {
+                    sendSms(numberPhone.getText().toString(), String.valueOf(code));
+                }
+//            String s= String.valueOf(code);
+//            Toast.makeText(ForgetPassword.this, s, Toast.LENGTH_LONG).show();
 
 
             Intent myIntent = new Intent(ForgetPassword.this, AuthenticationCode.class);
-            myIntent.putExtra("code",s);
+            myIntent.putExtra("code",code);
             startActivity(myIntent);
         });
     }
@@ -66,15 +68,15 @@ public class ForgetPassword extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode==SMS_PERMISSION_CODE)
-        {
-            if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-
+        if (requestCode == SMS_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Quyền gửi SMS đã được cấp.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Bạn cần cấp quyền gửi SMS để sử dụng chức năng này.", Toast.LENGTH_LONG).show();
             }
         }
     }
+
 }
