@@ -263,8 +263,6 @@ public class Profile extends Fragment {
             String imagePath = getRealPathFromURI(selectedImageUri);
 
             if (imagePath != null) {
-                // Cập nhật vào database
-
 
                 try {
                     // Chuyển đổi URI sang Bitmap
@@ -272,6 +270,8 @@ public class Profile extends Fragment {
 
                     // Tạo tên file duy nhất
                     String fileName = "user_image_" + userid + ".png";
+
+                    // Cập nhật vào database
                     updateUserImage(fileName);
                     // Lưu Bitmap vào bộ nhớ trong
                     saveImageToInternalStorage(bitmap, fileName);
