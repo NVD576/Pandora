@@ -42,6 +42,9 @@ public class ChangePassword extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(edMK.getText().toString().equals(edMK2.getText().toString())){
+                    Toast.makeText(getApplicationContext(),"Đổi mật khẩu thành công",Toast.LENGTH_SHORT).show();
+                    String passUpdate = edMK.getText().toString();
+                    updatePassword(passUpdate);
                     Intent intent= new Intent(ChangePassword.this, Login.class);
                     startActivity(intent);
                 }
@@ -50,6 +53,10 @@ public class ChangePassword extends AppCompatActivity {
                 }
             }
         });
+
+    }
+
+    private void updatePassword(String passUpdate){
 
     }
 }

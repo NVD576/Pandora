@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.pandora.R;
 
 public class AuthenticationCode extends AppCompatActivity {
-    String codeAcp = "";
+    String codeAcp;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -26,7 +27,7 @@ public class AuthenticationCode extends AppCompatActivity {
         setContentView(R.layout.activity_authentication_code);
 
         Intent intent = getIntent();
-        String codeAcp = intent.getStringExtra("code");
+        codeAcp = String.valueOf(intent.getIntExtra("code",-1));
 //        if (getIntent() != null && getIntent().getExtras() != null) {
 //            codeAcp = getIntent().getStringExtra("code");
 //        }
@@ -65,7 +66,10 @@ public class AuthenticationCode extends AppCompatActivity {
 
                     startActivity(myIntent);
 
+                } else {
+                    Toast.makeText(AuthenticationCode.this, "Mã xác nhận không đúng. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
                 }
+
 //                Toast.makeText(getApplicationContext(), "asdasdasdas", Toast.LENGTH_SHORT).show();
             }
         });
