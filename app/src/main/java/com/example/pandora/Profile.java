@@ -242,10 +242,10 @@ public class Profile extends Fragment {
         // Cập nhật UI hoặc dữ liệu (ví dụ, cập nhật TextView hoặc lưu vào cơ sở dữ liệu)
         UserDatabase db= new UserDatabase(getContext());
         db.open();
-        User u= db.getUserById(userid);
-        u.setName(name);
-        u.setSDT(numberPhone);
-        db.updateUser(u);
+
+        user.setName(name);
+        user.setSDT(numberPhone);
+        db.updateUser(user);
         db.close();
 
     }

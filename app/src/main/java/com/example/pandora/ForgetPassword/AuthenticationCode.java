@@ -3,6 +3,7 @@ package com.example.pandora.ForgetPassword;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +19,7 @@ import com.example.pandora.R;
 
 public class AuthenticationCode extends AppCompatActivity {
     String codeAcp;
-
+    int userid;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,8 @@ public class AuthenticationCode extends AppCompatActivity {
 
         Intent intent = getIntent();
         codeAcp = String.valueOf(intent.getIntExtra("code",-1));
+        userid= intent.getIntExtra("userid", -1);
+        Log.e("auth", String.valueOf(userid));
 //        if (getIntent() != null && getIntent().getExtras() != null) {
 //            codeAcp = getIntent().getStringExtra("code");
 //        }
@@ -62,7 +65,7 @@ public class AuthenticationCode extends AppCompatActivity {
                 if (codeAcp.equals( acpCode.getText().toString()))
                 {
                     Intent myIntent = new Intent(AuthenticationCode.this, ChangePassword.class);
-
+                    myIntent.putExtra("userid", userid);
 
                     startActivity(myIntent);
 

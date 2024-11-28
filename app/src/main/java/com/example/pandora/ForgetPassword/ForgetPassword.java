@@ -20,6 +20,10 @@ import androidx.core.view.WindowInsetsCompat;
 import android.widget.Toast;
 
 
+import com.example.pandora.AdminProperties.AdminProperties;
+import com.example.pandora.Class.User;
+import com.example.pandora.Database.UserDatabase;
+import com.example.pandora.Login.Login;
 import com.example.pandora.R;
 
 import java.util.Random;
@@ -48,17 +52,28 @@ public class ForgetPassword extends AppCompatActivity {
                 {
                     ActivityCompat.requestPermissions(ForgetPassword.this,new String[]{Manifest.permission.SEND_SMS},SMS_PERMISSION_CODE);
                 }
-                else
-                {
-                    sendSms(numberPhone.getText().toString(), String.valueOf(code));
-                }
+            UserDatabase db= new UserDatabase(ForgetPassword.this);
+                db.open();
+                User u= db.getUserBySDT(numberPhone.getText().toString());
+                db.close();
+            if(u!=null){
+
+                sendSms(numberPhone.getText().toString(), String.valueOf(code));
+                Toast.makeText(getApplicationContext(),String.valueOf(code), Toast.LENGTH_LONG).show();
+
 //            String s= String.valueOf(code);
 //            Toast.makeText(ForgetPassword.this, s, Toast.LENGTH_LONG).show();
 
 
-            Intent myIntent = new Intent(ForgetPassword.this, AuthenticationCode.class);
-            myIntent.putExtra("code",code);
-            startActivity(myIntent);
+                Intent myIntent = new Intent(ForgetPassword.this, AuthenticationCode.class);
+                myIntent.putExtra("code",code);
+                myIntent.putExtra("userid", u.getId());
+                startActivity(myIntent);
+            }
+            else {
+                Toast.makeText(getApplicationContext(),"Sdt không hợp le", Toast.LENGTH_SHORT).show();
+            }
+
         });
     }
     private void sendSms(String phoneNumeber,String message)

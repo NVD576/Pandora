@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "414312040508",
+    "project_id": "login-53f05",
+    "storage_bucket": "login-53f05.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414312040508:android:30a3f05dca591b32f75b39",
+        "android_client_info": {
+          "package_name": "com.example.pandora"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb6HHLYE7e0Bi4tkOj1-6U4UsxhrMf3Pg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

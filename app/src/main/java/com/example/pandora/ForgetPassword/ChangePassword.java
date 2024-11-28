@@ -14,15 +14,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.pandora.Class.User;
+import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.Login.Login;
 import com.example.pandora.R;
 
 public class ChangePassword extends AppCompatActivity {
     Button btnXacNhan;
     EditText edMK, edMK2;
+    int userid;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        userid= intent.getIntExtra("userid", -1);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_change_password);
@@ -57,6 +62,11 @@ public class ChangePassword extends AppCompatActivity {
     }
 
     private void updatePassword(String passUpdate){
-
+        UserDatabase db = new UserDatabase(getApplicationContext());
+        db.open();
+        User u=db.getUserById(userid);
+        u.setPassword(passUpdate);
+        db.updateUser(u);
+        db.close();
     }
 }

@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.example.pandora.Class.User;
-import com.example.pandora.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class UserDatabase {
     }
 
     // Kiểm tra tài khoản đã tồn tại chưa
-    public boolean isUsernameExists(String userName) {
+    public boolean isUserTaiKhoanExists(String userName) {
         String[] columns = {DatabaseHelper.COLUMN_USER_TAIKHOAN};
         String selection = DatabaseHelper.COLUMN_USER_TAIKHOAN + " = ?";
         String[] selectionArgs = {userName};
@@ -62,7 +61,7 @@ public class UserDatabase {
     // Thêm một người dùng vào cơ sở dữ liệu
     public boolean addUser(User user, Context context) {
         // Kiểm tra xem tài khoản đã tồn tại chưa
-        if (isUsernameExists(user.getTaiKhoan())) {
+        if (isUserTaiKhoanExists(user.getTaiKhoan())) {
             // Tài khoản đã tồn tại, thông báo cho người dùng
             Toast.makeText(context, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
             return false;
@@ -116,6 +115,53 @@ public class UserDatabase {
         }
         return null;
     }
+    @SuppressLint("Range")
+    public User getUserBySDT(String sdt) {
+        String selection = DatabaseHelper.COLUMN_USER_SDT + " = ? ";
+        String[] selectionArgs = {sdt};
+
+        Cursor cursor = database.query(DatabaseHelper.TABLE_USERS, columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id= cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ID));
+            String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_TAIKHOAN));
+            String pass = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
+            String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
+            String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
+            boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
+            String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
+
+            User user = new User(id,taiKhoan, pass,name, SDT, role, image);
+            cursor.close();
+            return user;
+        }
+        return null;
+    }
+
+    @SuppressLint("Range")
+    public User getUserByTaiKhoan(String taikhoan) {
+        String selection = DatabaseHelper.COLUMN_USER_TAIKHOAN + " = ? ";
+        String[] selectionArgs = {taikhoan};
+
+        Cursor cursor = database.query(DatabaseHelper.TABLE_USERS, columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id= cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ID));
+            String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_TAIKHOAN));
+            String pass = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
+            String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
+            String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
+            boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
+            String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
+
+            User user = new User(id,taiKhoan, pass,name, SDT, role, image);
+            cursor.close();
+            return user;
+        }
+        return null;
+    }
+
+
 
     public void updateUserImage(int userId, String imagePath) {
         ContentValues values = new ContentValues();

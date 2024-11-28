@@ -11,6 +11,11 @@ public class User implements Serializable {
     private boolean role= false;
     private String image;
 
+    public User(String taiKhoan, String name) {
+        this.taiKhoan = taiKhoan;
+        this.name = name;
+    }
+
     public User(String taiKhoan, String password, String SDT, boolean role) {
         this.taiKhoan = taiKhoan;
         this.password = password;

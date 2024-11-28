@@ -25,17 +25,31 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.pandora.AdminProperties.AdminProperties;
 import com.example.pandora.ForgetPassword.ForgetPassword;
+import com.example.pandora.Home;
 import com.example.pandora.Main.Lobby;
 import com.example.pandora.R;
 import com.example.pandora.Register.Register;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.UserDatabase;
+import com.example.pandora.Register.RegisterInfomation;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 public class Login extends AppCompatActivity {
 
     EditText edUserName ;
     EditText password;
 
+    SignInButton btnGoogle;
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+    String name;
+    String email;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -91,6 +105,21 @@ public class Login extends AppCompatActivity {
                 password.setSelection(password.getText().length());
             }
         });
+
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this, gso);
+
+        btnGoogle= findViewById(R.id.btnGoogleSignIn);
+        btnGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
+
+
+
         TextView forgetText = findViewById(R.id.forget);
         forgetText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,5 +188,58 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+    }
+    void signIn(){
+        gsc.signOut().addOnCompleteListener(task -> {
+            Intent signInIntent = gsc.getSignInIntent();
+            startActivityForResult(signInIntent, 1000);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if( requestCode==1000){
+            Task<GoogleSignInAccount> task= GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            try{
+                task.getResult(ApiException.class);
+
+                navigateToSecondActivity(task);
+            } catch (ApiException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+    }
+    void navigateToSecondActivity(Task<GoogleSignInAccount> completedTask) throws ApiException {
+
+        GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
+        if(acct!=null){
+            email= acct.getEmail();
+            name= acct.getDisplayName();
+        }
+        UserDatabase db = new UserDatabase(this);
+        db.open();
+
+        User nUser= db.getUserByTaiKhoan(email);
+        if (nUser == null) {
+            nUser.setTaiKhoan(email);
+            nUser.setName(name);
+            db.addUser(nUser, this);
+        }
+
+
+        Intent  intent= new Intent(Login.this, Lobby.class);
+        intent.putExtra("isLogin", true);
+//                    Log.e("Login", "UserID before " +user.getId());
+        intent.putExtra("userid", nUser.getId());
+//                    Log.e("Login", "UserID aft " +user.getId());
+        intent.putExtra("userName", nUser.getTaiKhoan());
+        intent.putExtra("user", nUser);
+        db.close();
+        startActivity(intent);
+        finish();
     }
 }
