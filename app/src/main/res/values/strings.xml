@@ -26,5 +26,10 @@
 
     <string name="searchHint">Bạn muốn tìm gì?</string>
     <string name="bookmark_icon">Bookmark icon</string>
-
+    <string-array name="location_array">
+        <item>Hà Nội</item>
+        <item>Hồ Chí Minh</item>
+        <item>Đăk Lăk</item>
+        <item>Vũng Tàu</item>
+    </string-array>
 </resources>

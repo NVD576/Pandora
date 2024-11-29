@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -14,18 +15,26 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.pandora.Class.Restaurant;
+import com.example.pandora.Class.User;
 import com.example.pandora.Database.RestaurantDatabase;
+import com.example.pandora.Slider.SliderHomeAdapter;
+import com.example.pandora.Slider.SliderPagerAdapter;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class Home extends Fragment {
 
-
+    ViewPager2 viewPager2;
+    Button btnLocation;
+    Button btnAddReview;
+    Button btnReviewList;
+    Button btnShare;
     private RecyclerView recyclerView;
     private RestaurantAdapter restaurantAdapter;
     private ViewPager2 viewPager;
@@ -57,26 +66,20 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-//        Context context = null;
-//        context.deleteDatabase("restaurant_db"); // Xóa cơ sở dữ liệu cũ
 
         restaurantDatabase = new RestaurantDatabase(getContext());
         restaurantDatabase.open();
-        if (restaurantDatabase.getAllRestaurants().isEmpty())
-        {
-            // Adding restaurant data using the constructor without 'id'
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", "Đánh giá rất tốt, món ăn ngon", R.drawable.image1,4));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B", "Không gian thoải mái, phục vụ nhanh", R.drawable.image2,3));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C", "Món ăn đậm đà, giá cả hợp lý", R.drawable.image3,5));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", "Đồ ăn không ngon lắm", R.drawable.image4,1));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", "Đồ ăn không ngon lắm", R.drawable.image1,2));
-
+        if (restaurantDatabase.getAllRestaurants().isEmpty()) {
+            // Thêm dữ liệu vào cơ sở dữ liệu
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", "Đánh giá rất tốt, món ăn ngon", R.drawable.image1, 4));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B", "Không gian thoải mái, phục vụ nhanh", R.drawable.image2, 3));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C", "Món ăn đậm đà, giá cả hợp lý", R.drawable.image3, 5));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", "Đồ ăn không ngon lắm", R.drawable.image4, 1));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", "Đồ ăn không ngon lắm", R.drawable.image1, 2));
         }
 
-
-        // Lấy lại danh sách nhà hàng sau khi thêm
+        // Lấy lại danh sách nhà hàng
         restaurantList = restaurantDatabase.getAllRestaurants();
-
 
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
@@ -98,7 +101,6 @@ public class Home extends Fragment {
 
             // Chuyển Fragment
             getParentFragmentManager().beginTransaction()
-                    // Áp dụng animation vào fragment xuất hiện và fragment rời đi
                     .setCustomAnimations(
                             R.anim.fragment_enter,  // Khi fragment xuất hiện
                             R.anim.fragment_exit    // Khi fragment rời đi
@@ -112,7 +114,6 @@ public class Home extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
         viewPager.setAdapter(new ImageAdapter(images));
         viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-
         handler.postDelayed(runnable, 2000); // Bắt đầu tự động lướt
 
         // Thiết lập chấm chỉ báo
@@ -127,6 +128,19 @@ public class Home extends Fragment {
                 handler.postDelayed(runnable, 3000);
             }
         });
+
+        // Xử lý sự kiện click cho các button
+        btnLocation = view.findViewById(R.id.btnLocation);
+        btnLocation.setOnClickListener(v -> replaceFragment(new LocationFragment()));
+
+//        btnAddReview = view.findViewById(R.id.btnAddReview);
+//        btnAddReview.setOnClickListener(v -> replaceFragment(new AddReviewFragment()));
+//
+//        btnReviewList = view.findViewById(R.id.btnReviewList);
+//        btnReviewList.setOnClickListener(v -> replaceFragment(new ReviewListFragment()));
+//
+//        btnShare = view.findViewById(R.id.btnShare);
+//        btnShare.setOnClickListener(v -> replaceFragment(new ShareFragment()));
 
         return view;
     }
@@ -169,5 +183,18 @@ public class Home extends Fragment {
                 }
             }
         });
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
+        // Thay thế fragment hiện tại bằng fragment mới
+        transaction.replace(R.id.fragment_container, fragment);
+
+        // Thêm vào back stack nếu muốn có khả năng quay lại fragment trước đó
+        transaction.addToBackStack(null);
+
+        // Commit transaction
+        transaction.commit();
     }
 }
