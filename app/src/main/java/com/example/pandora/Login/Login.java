@@ -75,16 +75,24 @@ public class Login extends AppCompatActivity {
         animationImage.setStartDelay(1000);
         animationImage.setDuration(750);
         animationImage.start();
+
         LinearLayout layoutLogin = findViewById(R.id.loginInterface);
         layoutLogin.setAlpha(0f);
         layoutLogin.setVisibility(ImageView.VISIBLE);
         ObjectAnimator loginInterface = ObjectAnimator.ofFloat(layoutLogin, "alpha",0f,1f);
+
         LinearLayout layoutButton = findViewById(R.id.layoutButton);
         layoutButton.setAlpha(0f);
         layoutButton.setVisibility(ImageView.VISIBLE);
         ObjectAnimator buttonInterface = ObjectAnimator.ofFloat(layoutButton,"alpha",0f,1f);
+
+        LinearLayout layoutGoogle = findViewById(R.id.layoutGoogle);
+        layoutGoogle.setAlpha(0f);
+        layoutGoogle.setVisibility(ImageView.VISIBLE);
+        ObjectAnimator googleInterface = ObjectAnimator.ofFloat(layoutGoogle,"alpha",0f,1f);
+
         AnimatorSet animationLinerLayout = new AnimatorSet();
-        animationLinerLayout.playTogether(loginInterface,buttonInterface);
+        animationLinerLayout.playTogether(loginInterface,buttonInterface, googleInterface);
         animationLinerLayout.setStartDelay(1000);
         animationLinerLayout.setDuration(500);
         animationLinerLayout.start();

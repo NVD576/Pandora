@@ -1,27 +1,23 @@
 package com.example.pandora.Main;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pandora.Class.User;
-import com.example.pandora.Home;
-import com.example.pandora.Profile;
 import com.example.pandora.R;
 import com.example.pandora.SaveLocationReview;
-import com.example.pandora.Setting;
 import com.example.pandora.Slider.SliderPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -120,10 +116,27 @@ public class Lobby extends AppCompatActivity {
 //    }
 
     private void showLoginAlertDialog() {
-        new AlertDialog.Builder(Lobby.this)
-                .setTitle("Thông báo")
-                .setMessage("Bạn cần đăng nhập để sử dụng tính năng này")
-                .setPositiveButton("Ok", (dialogInterface, i) -> dialogInterface.dismiss())
-                .show();
+        // Inflate custom layout
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.dialogsavelocation_custom_alert, null);
+
+        // Tạo AlertDialog
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setCancelable(true)
+                .create();
+
+        // Tìm các thành phần trong layout
+        ImageView iconAlert = dialogView.findViewById(R.id.iconAlert);
+        TextView titleAlert = dialogView.findViewById(R.id.titleAlert);
+        TextView messageAlert = dialogView.findViewById(R.id.messageAlert);
+        Button btnPositive = dialogView.findViewById(R.id.btnPositive);
+
+        // Thiết lập hành động nút
+        btnPositive.setOnClickListener(v -> alertDialog.dismiss());
+
+        // Hiển thị hộp thoại
+        alertDialog.show();
     }
+
 }

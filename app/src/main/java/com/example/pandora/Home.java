@@ -188,6 +188,14 @@ public class Home extends Fragment {
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
 
+        // Thêm hiệu ứng chuyển đổi
+        transaction.setCustomAnimations(
+                R.anim.slide_in_bottom, // Hiện từ dưới lên
+                R.anim.fade_out,        // Mất đi khi chuyển tiếp
+                R.anim.fade_in,         // Hiện lại khi quay lại
+                R.anim.slide_out_top    // Mất từ trên xuống khi quay lại
+        );
+
         // Thay thế fragment hiện tại bằng fragment mới
         transaction.replace(R.id.fragment_container, fragment);
 
@@ -197,4 +205,5 @@ public class Home extends Fragment {
         // Commit transaction
         transaction.commit();
     }
+
 }

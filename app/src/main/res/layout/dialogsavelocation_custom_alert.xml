@@ -7,13 +7,22 @@
     android:background="@drawable/dialog_background"
     android:gravity="center_horizontal">
 
+    <!-- Biểu tượng -->
+    <ImageView
+        android:id="@+id/iconAlert"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/baseline_warning_24"
+        android:layout_gravity="center"
+        android:contentDescription="Icon Alert"
+        android:layout_marginBottom="15dp"/>
 
     <!-- Tiêu đề -->
     <TextView
         android:id="@+id/titleAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chính sách"
+        android:text="Thông báo"
         android:textSize="20sp"
         android:textColor="@color/darkPurple"
         android:fontFamily="sans-serif-medium"
@@ -26,7 +35,7 @@
         android:id="@+id/messageAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tạo cái này để đủ chức năng á mà"
+        android:text="Bạn cần đăng nhập để sử dụng tính năng này."
         android:textSize="16sp"
         android:textColor="@color/darkPurple"
         android:gravity="center"
@@ -34,12 +43,13 @@
 
     <!-- Nút hành động -->
     <Button
-        android:id="@+id/btnOk"
+        android:id="@+id/btnPositive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_primary"
-        android:text="Đồng ý"
+        android:text="OK"
         android:textColor="@color/darkPurple"
         android:textSize="16sp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp"/>
 </LinearLayout>
