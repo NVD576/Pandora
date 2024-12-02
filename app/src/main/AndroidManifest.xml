@@ -49,6 +49,7 @@
             android:exported="false" />
         <activity
             android:name=".Main.Lobby"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".Trash.MainActivity"

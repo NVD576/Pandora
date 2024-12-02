@@ -1,30 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp">
 
-    <!-- EditText để chỉnh sửa email hoặc thông tin khác -->
+    <TextView
+        android:id="@+id/titleAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="Thay đổi thông tin"
+        android:textColor="@color/darkPurple"
+        android:textSize="20sp" />
+
+    <!-- EditText để chỉnh sửa tên người dùng -->
     <EditText
         android:id="@+id/edtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp"
-        android:text=""
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edittext_background"
         android:hint="Tên người dùng"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text=""
+        android:textColor="@color/darkPurple"
+        android:textColorHint="@color/gray"
+        android:textSize="16sp" />
 
+    <!-- EditText để chỉnh sửa số điện thoại -->
     <EditText
         android:id="@+id/edtNumberPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp"
-        android:text=""
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edittext_background"
         android:hint="Số điện thoại"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:inputType="phone"
+        android:minHeight="48dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text=""
+        android:textColor="@color/darkPurple"
+        android:textColorHint="@color/gray"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_primary"
+            android:text="Lưu"
+            android:textColor="@color/darkPurple"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnDismiss"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_primary"
+            android:text="Hủy"
+            android:textColor="@color/darkPurple"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </LinearLayout>

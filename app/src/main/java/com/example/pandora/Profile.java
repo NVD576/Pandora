@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class Profile extends Fragment {
     private Uri contentUri;
     TextView login;
     User user;
+
     public Profile() {
         // Required empty public constructor
     }
@@ -74,46 +76,43 @@ public class Profile extends Fragment {
 
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        login= view.findViewById(R.id.loginProfile);
+        login = view.findViewById(R.id.loginProfile);
 
 
         Bundle bundle = getArguments();
 
-        if (bundle!=null){
+        if (bundle != null) {
 
             isLogin = bundle.getBoolean("isLogin", false);
-            if (isLogin){
-                userid= bundle.getInt("userid");  // Sử dụng giá trị mặc định nếu không tìm thấy
-                Log.e("Login", "UserID " +userid);
+            if (isLogin) {
+                userid = bundle.getInt("userid");  // Sử dụng giá trị mặc định nếu không tìm thấy
+                Log.e("Login", "UserID " + userid);
                 userName = bundle.getString("userName");
                 user = (User) bundle.getSerializable("user");
-                Log.e("Login", "name "+userName );
+                Log.e("Login", "name " + userName);
 
             }
         }
-        userImage= view.findViewById(R.id.userImage);
-        if (isLogin)
-        {
-            if (user.getName()==null)
-            {
+        userImage = view.findViewById(R.id.userImage);
+        if (isLogin) {
+            if (user.getName() == null) {
                 login.setText(userName);
-                Drawable[] drawables = login.getCompoundDrawablesRelative();
-                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        drawables[0], // drawableStart
-                        drawables[1], // drawableTop
-                        null,         // drawableEnd
-                        drawables[3]  // drawableBottom
-                );
-            }
-            else {
+//                Drawable[] drawables = login.getCompoundDrawablesRelative();
+//                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                        drawables[0], // drawableStart
+//                        drawables[1], // drawableTop
+//                        null,         // drawableEnd
+//                        drawables[3]  // drawableBottom
+//                );
+            } else {
                 login.setText(user.getName());
-                Drawable[] drawables = login.getCompoundDrawablesRelative();
-                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        drawables[0], // drawableStart
-                        drawables[1], // drawableTop
-                        null,         // drawableEnd
-                        drawables[3]  // drawableBottom
-                );
+//                Drawable[] drawables = login.getCompoundDrawablesRelative();
+//                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                        drawables[0], // drawableStart
+//                        drawables[1], // drawableTop
+//                        null,         // drawableEnd
+//                        drawables[3]  // drawableBottom
+//                );
             }
 
             // Lấy đường dẫn ảnh từ cơ sở dữ liệu
@@ -134,15 +133,24 @@ public class Profile extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isLogin)
-                {
+                if (!isLogin) {
                     Intent myIntent = new Intent(getActivity(), Login.class);
                     startActivity(myIntent);
-                }  else {
-                    // Mở Image Picker khi đã đăng nhập
+                } else {
+
+                }
+            }
+        });
+
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isLogin) {
                     Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType("image/*");
                     startActivityForResult(intent, PICK_IMAGE_REQUEST);
+                } else {
+                    Toast.makeText(getActivity(), "Yêu cầu đăng nhập để thay đổi ảnh", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -152,11 +160,9 @@ public class Profile extends Fragment {
         changeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isLogin)
-                {
-                    Toast.makeText(getActivity(),"Yêu cầu đăng nhập",Toast.LENGTH_SHORT).show();
-                }
-                else {
+                if (!isLogin) {
+                    Toast.makeText(getActivity(), "Yêu cầu đăng nhập", Toast.LENGTH_SHORT).show();
+                } else {
                     showEditProfileDialog();
                 }
             }
@@ -166,22 +172,20 @@ public class Profile extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isLogin)
-                {
-                    Toast.makeText(getActivity(),"Yêu cầu đăng nhập",Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(getActivity(),"Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                if (!isLogin) {
+                    Toast.makeText(getActivity(), "Yêu cầu đăng nhập", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
                     login.setText("Đăng nhập");
                     userImage.setImageResource(R.drawable.person_icon);
-                    Drawable drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_arrow_forward_ios_24);
-                    Drawable[] drawables = login.getCompoundDrawablesRelative();
-                    login.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            drawables[0],
-                            drawables[1],
-                            drawableEnd,
-                            drawables[3]
-                    );
+//                    Drawable drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_arrow_forward_ios_24);
+//                    Drawable[] drawables = login.getCompoundDrawablesRelative();
+//                    login.setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                            drawables[0],
+//                            drawables[1],
+//                            drawableEnd,
+//                            drawables[3]
+//                    );
 
                     isLogin = false;
                 }
@@ -190,7 +194,6 @@ public class Profile extends Fragment {
 
         return view;
     }
-
 
 
     private void showEditProfileDialog() {
@@ -202,23 +205,23 @@ public class Profile extends Fragment {
         EditText edtName = dialogView.findViewById(R.id.edtName);
         EditText edtNumberPhone = dialogView.findViewById(R.id.edtNumberPhone);
 
-        if (user.getName()==null)
-        {
+        if (user.getName() == null) {
             edtName.setText("");
-        }
-
-        else {
+        } else {
             edtName.setText(user.getName());
         }
         edtNumberPhone.setText(user.getSDT());
 
         // Tạo hộp thoại
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Chỉnh sửa thông tin cá nhân")
+        AlertDialog alertDialog = new AlertDialog.Builder(requireContext())
                 .setView(dialogView)
-                .setPositiveButton("Lưu", new DialogInterface.OnClickListener() {
+                .setCancelable(true)
+                .create();
+
+        Button btnSave = dialogView.findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(View view) {
                         // Lấy dữ liệu từ các EditText
                         String newName = edtName.getText().toString();
                         String newNumberPhone = edtNumberPhone.getText().toString();
@@ -227,20 +230,18 @@ public class Profile extends Fragment {
                         updateProfile(newName, newNumberPhone);
 
                         login.setText(newName);
+                        alertDialog.dismiss();
                     }
-                })
-                .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .show();
+                });
+
+        Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
+        btnDismiss.setOnClickListener(v -> alertDialog.dismiss());
+        alertDialog.show();
     }
 
     private void updateProfile(String name, String numberPhone) {
         // Cập nhật UI hoặc dữ liệu (ví dụ, cập nhật TextView hoặc lưu vào cơ sở dữ liệu)
-        UserDatabase db= new UserDatabase(getContext());
+        UserDatabase db = new UserDatabase(getContext());
         db.open();
 
         user.setName(name);

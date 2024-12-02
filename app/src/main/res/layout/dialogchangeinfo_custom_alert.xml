@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/dialog_background"
+    android:gravity="center_horizontal">
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/titleAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thay đổi thông tin"
+        android:textSize="20sp"
+        android:textColor="@color/darkPurple"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:layout_marginTop="10dp" />
+
+    <!-- Nội dung -->
+    <TextView
+        android:id="@+id/messageAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bạn cần đăng nhập để sử dụng tính năng này."
+        android:textSize="16sp"
+        android:textColor="@color/darkPurple"
+        android:gravity="center"
+        android:layout_marginVertical="15dp" />
+
+    <!-- Nút hành động -->
+    <Button
+        android:id="@+id/btnPositive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_primary"
+        android:text="OK"
+        android:textColor="@color/darkPurple"
+        android:textSize="16sp" />
+</LinearLayout>

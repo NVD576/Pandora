@@ -1,56 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/chuong"
+    android:background="@drawable/background_gradient"
     tools:context=".Setting">
 
-    <!-- Second LinearLayout with TextView, can be styled similarly or differently -->
+    <!-- Container for items -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"> <!-- Optional margin to separate the items -->
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <TextView
-            android:id="@+id/policy"
+        <!-- Item: Policy -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Chính sách quy định"
-            android:drawablePadding="10dp"
-            android:textSize="30sp"
-            android:textColor="@color/white"
-            android:background="@color/darkPurple"
-            android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-            android:drawableStart="@drawable/baseline_person_24"/>
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/language"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Ngôn ngữ"
-            android:drawablePadding="10dp"
-            android:textSize="30sp"
-            android:textColor="@color/white"
-            android:background="@color/darkPurple"
-            android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-            android:drawableStart="@drawable/baseline_person_24"/>
+            <!-- Mỗi mục sử dụng CardView hoặc bo góc -->
+            <TextView
+                android:id="@+id/policy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chính sách quy định"
+                android:drawableStart="@drawable/baseline_security_24"
+                android:drawablePadding="12dp"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:background="@drawable/item_background"
+                android:layout_marginBottom="12dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Xóa tài khoản"
-            android:drawablePadding="10dp"
-            android:textSize="30sp"
-            android:textColor="@color/white"
-            android:background="@color/darkPurple"
-            android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-            android:drawableStart="@drawable/baseline_person_24"/>
+            <TextView
+                android:id="@+id/language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ngôn ngữ"
+                android:drawableStart="@drawable/baseline_language_24"
+                android:drawablePadding="12dp"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:background="@drawable/item_background"
+                android:layout_marginBottom="12dp" />
 
+            <TextView
+                android:id="@+id/deleteAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Xóa tài khoản"
+                android:drawableStart="@drawable/baseline_delete_24"
+                android:drawablePadding="12dp"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:background="@drawable/item_background"
+                android:layout_marginBottom="12dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
 </FrameLayout>
