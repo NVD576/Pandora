@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -163,6 +164,13 @@ public class Login extends AppCompatActivity {
                 db.close(); // Đóng kết nối cơ sở dữ liệu
 
                 if (user != null) {
+                    //lưu vào biến toàn cục
+                    SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("userid", user.getId());
+                    editor.apply();
+
+
                     if (user.isRole())
                     {
                         Intent myIntent = new Intent(Login.this, AdminProperties.class);
@@ -225,8 +233,7 @@ public class Login extends AppCompatActivity {
 
         User nUser= db.getUserByTaiKhoan(email);
         if (nUser == null) {
-            nUser.setTaiKhoan(email);
-            nUser.setName(name);
+            nUser= new User(email,name);
             db.addUser(nUser, this);
         }
 
@@ -239,6 +246,12 @@ public class Login extends AppCompatActivity {
         intent.putExtra("userName", nUser.getTaiKhoan());
         intent.putExtra("user", nUser);
         db.close();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("userid", nUser.getId());
+        editor.apply();
+
         startActivity(intent);
         finish();
     }

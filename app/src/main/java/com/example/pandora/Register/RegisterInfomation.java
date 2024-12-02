@@ -142,10 +142,10 @@ public class RegisterInfomation extends AppCompatActivity {
         UserDatabase db = new UserDatabase(this);
         User nUser= db.getUserByTaiKhoan(email);
         if (nUser == null) {
-            nUser.setTaiKhoan(email);
-            nUser.setName(name);
+            nUser= new User(email,name);
             db.addUser(nUser, this);
         }
+        db.close();
         startActivity(intent);
     }
 }
