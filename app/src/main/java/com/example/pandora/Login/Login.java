@@ -43,7 +43,7 @@ import com.google.android.gms.tasks.Task;
 
 public class Login extends AppCompatActivity {
 
-    EditText edUserName ;
+    EditText edUserName;
     EditText password;
 
     SignInButton btnGoogle;
@@ -65,14 +65,14 @@ public class Login extends AppCompatActivity {
         });
         ImageView img = findViewById(R.id.imageView);
         TextView titleLogin = findViewById(R.id.titleLogin);
-        ObjectAnimator animatorImage = ObjectAnimator.ofFloat(img,"translationY",0f,-600f);
-        ObjectAnimator scaleXImage = ObjectAnimator.ofFloat(img,"scaleX",1f,0.8f);
-        ObjectAnimator scaleYImage = ObjectAnimator.ofFloat(img,"scaleY",1f,0.8f);
-        ObjectAnimator animatorTitle = ObjectAnimator.ofFloat(titleLogin,"translationY",0f,-10f);
-        ObjectAnimator scaleXTitle = ObjectAnimator.ofFloat(titleLogin,"scaleX",0.5f,1.5f);
-        ObjectAnimator scaleYTitle = ObjectAnimator.ofFloat(titleLogin,"scaleY",0.5f,1.5f);
+        ObjectAnimator animatorImage = ObjectAnimator.ofFloat(img, "translationY", 0f, -600f);
+        ObjectAnimator scaleXImage = ObjectAnimator.ofFloat(img, "scaleX", 1f, 0.8f);
+        ObjectAnimator scaleYImage = ObjectAnimator.ofFloat(img, "scaleY", 1f, 0.8f);
+        ObjectAnimator animatorTitle = ObjectAnimator.ofFloat(titleLogin, "translationY", 0f, -10f);
+        ObjectAnimator scaleXTitle = ObjectAnimator.ofFloat(titleLogin, "scaleX", 0.5f, 1.5f);
+        ObjectAnimator scaleYTitle = ObjectAnimator.ofFloat(titleLogin, "scaleY", 0.5f, 1.5f);
         AnimatorSet animationImage = new AnimatorSet();
-        animationImage.playTogether(animatorImage,scaleXImage,scaleYImage,animatorTitle,scaleXTitle,scaleYTitle);
+        animationImage.playTogether(animatorImage, scaleXImage, scaleYImage, animatorTitle, scaleXTitle, scaleYTitle);
         animationImage.setStartDelay(1000);
         animationImage.setDuration(750);
         animationImage.start();
@@ -80,20 +80,20 @@ public class Login extends AppCompatActivity {
         LinearLayout layoutLogin = findViewById(R.id.loginInterface);
         layoutLogin.setAlpha(0f);
         layoutLogin.setVisibility(ImageView.VISIBLE);
-        ObjectAnimator loginInterface = ObjectAnimator.ofFloat(layoutLogin, "alpha",0f,1f);
+        ObjectAnimator loginInterface = ObjectAnimator.ofFloat(layoutLogin, "alpha", 0f, 1f);
 
         LinearLayout layoutButton = findViewById(R.id.layoutButton);
         layoutButton.setAlpha(0f);
         layoutButton.setVisibility(ImageView.VISIBLE);
-        ObjectAnimator buttonInterface = ObjectAnimator.ofFloat(layoutButton,"alpha",0f,1f);
+        ObjectAnimator buttonInterface = ObjectAnimator.ofFloat(layoutButton, "alpha", 0f, 1f);
 
         LinearLayout layoutGoogle = findViewById(R.id.layoutGoogle);
         layoutGoogle.setAlpha(0f);
         layoutGoogle.setVisibility(ImageView.VISIBLE);
-        ObjectAnimator googleInterface = ObjectAnimator.ofFloat(layoutGoogle,"alpha",0f,1f);
+        ObjectAnimator googleInterface = ObjectAnimator.ofFloat(layoutGoogle, "alpha", 0f, 1f);
 
         AnimatorSet animationLinerLayout = new AnimatorSet();
-        animationLinerLayout.playTogether(loginInterface,buttonInterface, googleInterface);
+        animationLinerLayout.playTogether(loginInterface, buttonInterface, googleInterface);
         animationLinerLayout.setStartDelay(1000);
         animationLinerLayout.setDuration(500);
         animationLinerLayout.start();
@@ -103,13 +103,10 @@ public class Login extends AppCompatActivity {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (checkBox.isChecked())
-                {
+                if (checkBox.isChecked()) {
                     password.setInputType(InputType.TYPE_CLASS_TEXT);
-                }
-                else
-                {
-                    password.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                } else {
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
                 password.setSelection(password.getText().length());
             }
@@ -119,14 +116,13 @@ public class Login extends AppCompatActivity {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
 
-        btnGoogle= findViewById(R.id.btnGoogleSignIn);
+        btnGoogle = findViewById(R.id.btnGoogleSignIn);
         btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signIn();
             }
         });
-
 
 
         TextView forgetText = findViewById(R.id.forget);
@@ -172,27 +168,17 @@ public class Login extends AppCompatActivity {
                     editor.putInt("userid", user.getId());
                     editor.putBoolean("isLogin", true);
                     editor.apply();
-
-
-                    if (user.isRole())
-                    {
-                        Intent myIntent = new Intent(Login.this, AdminProperties.class);
-                        startActivity(myIntent);
-                    }
-                    else {
-                        Log.e("Login", String.valueOf(user.isRole()));
-                        // Đăng nhập thành công, chuyển sang màn hình tiếp theo
-                        Intent myIntent = new Intent(Login.this, Lobby.class);
-                        myIntent.putExtra("isLogin", true);
+                    Log.e("Login", String.valueOf(user.isRole()));
+                    // Đăng nhập thành công, chuyển sang màn hình tiếp theo
+                    Intent myIntent = new Intent(Login.this, Lobby.class);
+                    myIntent.putExtra("isLogin", true);
 //                    Log.e("Login", "UserID before " +user.getId());
-                        myIntent.putExtra("userid", user.getId());
+                    myIntent.putExtra("userid", user.getId());
 //                    Log.e("Login", "UserID aft " +user.getId());
-                        myIntent.putExtra("userName", user.getTaiKhoan());
-                        myIntent.putExtra("user", user);
-                        startActivity(myIntent);
-                        // Đảm bảo không quay lại màn hình đăng nhập
-                    }
-
+                    myIntent.putExtra("userName", user.getTaiKhoan());
+                    myIntent.putExtra("user", user);
+                    startActivity(myIntent);
+                    // Đảm bảo không quay lại màn hình đăng nhập
                 } else {
                     // Đăng nhập thất bại
                     Toast.makeText(getApplicationContext(), "Tên đăng nhập hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
@@ -200,7 +186,8 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-    void signIn(){
+
+    void signIn() {
         gsc.signOut().addOnCompleteListener(task -> {
             Intent signInIntent = gsc.getSignInIntent();
             startActivityForResult(signInIntent, 1000);
@@ -210,10 +197,10 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if( requestCode==1000){
-            Task<GoogleSignInAccount> task= GoogleSignIn.getSignedInAccountFromIntent(data);
+        if (requestCode == 1000) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
-            try{
+            try {
                 task.getResult(ApiException.class);
 
                 navigateToSecondActivity(task);
@@ -224,25 +211,26 @@ public class Login extends AppCompatActivity {
         }
 
     }
+
     void navigateToSecondActivity(Task<GoogleSignInAccount> completedTask) throws ApiException {
 
         GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
-        if(acct!=null){
-            email= acct.getEmail();
-            name= acct.getDisplayName();
+        if (acct != null) {
+            email = acct.getEmail();
+            name = acct.getDisplayName();
         }
         UserDatabase db = new UserDatabase(this);
         db.open();
 
 
-        User nUser= db.getUserByTaiKhoan(email);
+        User nUser = db.getUserByTaiKhoan(email);
         if (nUser == null) {
-            nUser= new User(email,name);
+            nUser = new User(email, name);
             db.addUser(nUser, this);
         }
 
 
-        Intent  intent= new Intent(Login.this, Lobby.class);
+        Intent intent = new Intent(Login.this, Lobby.class);
         intent.putExtra("isLogin", true);
 //                    Log.e("Login", "UserID before " +user.getId());
         intent.putExtra("userid", nUser.getId());

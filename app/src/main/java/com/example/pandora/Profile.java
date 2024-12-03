@@ -32,9 +32,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pandora.AdminProperties.AdminProperties;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.DatabaseHelper;
 import com.example.pandora.Database.UserDatabase;
@@ -84,20 +86,48 @@ public class Profile extends Fragment {
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
-        if (isLogin) {
-            UserDatabase db= new UserDatabase(getContext());
-            db.open();
-            user = db.getUserById(userid);
-            db.close();
-            userName=user.getName();
-            Log.e("Login", "name " + userName);
 
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+
+        Bundle bundle = getArguments();
+
+        if (bundle != null) {
+
+//            isLogin = bundle.getBoolean("isLogin", false);
+            if (isLogin) {
+//                userid = bundle.getInt("userid");  // Sử dụng giá trị mặc định nếu không tìm thấy
+                Log.e("Login", "UserID " + userid);
+//                userName = bundle.getString("userName");
+                UserDatabase db= new UserDatabase(getContext());
+                db.open();
+                user = db.getUserById(userid);
+                db.close();
+                userName=user.getName();
+                Log.e("Login", "name " + userName);
+
+            }
         }
-
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        TextView adminMode = view.findViewById(R.id.adminMode);
+        adminMode.setAlpha(0f);
+        adminMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isLogin) {
+                    if (user.isRole()) {
+                        Intent myIntent = new Intent(requireContext(), AdminProperties.class);
+                        startActivity(myIntent);
+                    }
+                }
+            }
+        });
         userImage = view.findViewById(R.id.userImage);
         if (isLogin) {
+            if (user.isRole()){
+                adminMode.setAlpha(1f);
+            } else adminMode.setAlpha(0f);
             if (user.getName() == null) {
-                login.setText("UserName");
+                login.setText(userName);
 //                Drawable[] drawables = login.getCompoundDrawablesRelative();
 //                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
 //                        drawables[0], // drawableStart
@@ -177,6 +207,7 @@ public class Profile extends Fragment {
                     Toast.makeText(getActivity(), "Yêu cầu đăng nhập", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                    adminMode.setAlpha(0f);
                     login.setText("Đăng nhập");
                     SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();

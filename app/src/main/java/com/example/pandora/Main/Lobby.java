@@ -2,6 +2,7 @@ package com.example.pandora.Main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -35,16 +36,18 @@ public class Lobby extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
-
+        SharedPreferences sharedPreferences = this.getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
+        isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
         Intent intent = getIntent();
-        isLogin = intent.getBooleanExtra("isLogin", false);
+//        isLogin = intent.getBooleanExtra("isLogin", false);
         if (isLogin){
             user = (User) getIntent().getSerializableExtra("user");
             userName = intent.getStringExtra("userName");
             userid= intent.getIntExtra("userid", -1);
         }
-        ImageView btnSave = findViewById(R.id.save);
-        btnSave.setOnClickListener(view -> showLoginAlertDialog());
+//        ImageView btnSave = findViewById(R.id.save);
+//        btnSave.setOnClickListener(view -> showLoginAlertDialog());
 
 //        loadFragment(new Home(), isLogin, userName);
 
@@ -89,18 +92,18 @@ public class Lobby extends AppCompatActivity {
             }
         });
 
-        if (isLogin){
-            btnSave.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent myIntent = new Intent(Lobby.this, SaveLocationReview.class);
-                    startActivity(myIntent);
-                }
-            });
-        }
-        else{
-            btnSave.setOnClickListener(view -> showLoginAlertDialog());
-        }
+//        if (isLogin){
+//            btnSave.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent myIntent = new Intent(Lobby.this, SaveLocationReview.class);
+//                    startActivity(myIntent);
+//                }
+//            });
+//        }
+//        else{
+//            btnSave.setOnClickListener(view -> showLoginAlertDialog());
+//        }
     }
 
 //    private void loadFragment(Fragment fragment, Boolean isLogin, String userName) {
