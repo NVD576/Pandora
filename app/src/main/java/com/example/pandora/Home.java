@@ -1,8 +1,11 @@
 package com.example.pandora;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,8 +21,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.pandora.Class.Restaurant;
+import com.example.pandora.Class.User;
 import com.example.pandora.Database.RestaurantDatabase;
 
 import java.util.Arrays;
@@ -28,10 +33,12 @@ import java.util.List;
 public class Home extends Fragment {
 
     ViewPager2 viewPager2;
+    User user;
     Button btnLocation;
     Button btnAddReview;
     Button btnReviewList;
     Button btnShare;
+    boolean isLogin = false;
     private RecyclerView recyclerView;
     private RestaurantAdapter restaurantAdapter;
     private ViewPager2 viewPager;
@@ -63,6 +70,8 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
+        isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
         restaurantDatabase = new RestaurantDatabase(getContext());
         restaurantDatabase.open();
@@ -139,6 +148,26 @@ public class Home extends Fragment {
 //        btnShare = view.findViewById(R.id.btnShare);
 //        btnShare.setOnClickListener(v -> replaceFragment(new ShareFragment()));
 
+        Bundle bundle = getArguments();
+//        if (bundle!=null)
+//        {
+//            isLogin = bundle.getBoolean("isLogin");
+//        }
+        ImageView btnSave = view.findViewById(R.id.save);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isLogin)
+                {
+                    Intent myIntent = new Intent(requireContext(), SaveLocationReview.class);
+                    startActivity(myIntent);
+                }
+                else {
+                    showLoginAlertDialog();
+                }
+            }
+        });
+
         return view;
     }
 
@@ -201,6 +230,30 @@ public class Home extends Fragment {
 
         // Commit transaction
         transaction.commit();
+    }
+
+    private void showLoginAlertDialog() {
+        // Inflate custom layout
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View dialogView = inflater.inflate(R.layout.dialogsavelocation_custom_alert, null);
+
+        // Tạo AlertDialog
+        AlertDialog alertDialog = new AlertDialog.Builder(requireContext())
+                .setView(dialogView)
+                .setCancelable(true)
+                .create();
+
+        // Tìm các thành phần trong layout
+        ImageView iconAlert = dialogView.findViewById(R.id.iconAlert);
+        TextView titleAlert = dialogView.findViewById(R.id.titleAlert);
+        TextView messageAlert = dialogView.findViewById(R.id.messageAlert);
+        Button btnPositive = dialogView.findViewById(R.id.btnPositive);
+
+        // Thiết lập hành động nút
+        btnPositive.setOnClickListener(v -> alertDialog.dismiss());
+
+        // Hiển thị hộp thoại
+        alertDialog.show();
     }
 
 }

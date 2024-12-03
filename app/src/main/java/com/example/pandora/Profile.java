@@ -109,11 +109,16 @@ public class Profile extends Fragment {
         }
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         TextView adminMode = view.findViewById(R.id.adminMode);
+        adminMode.setAlpha(0f);
         adminMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(requireContext(), AdminProperties.class);
-                startActivity(myIntent);
+                if (isLogin) {
+                    if (user.isRole()) {
+                        Intent myIntent = new Intent(requireContext(), AdminProperties.class);
+                        startActivity(myIntent);
+                    }
+                }
             }
         });
         userImage = view.findViewById(R.id.userImage);
@@ -131,7 +136,6 @@ public class Profile extends Fragment {
 //                        drawables[3]  // drawableBottom
 //                );
             } else {
-                adminMode.setAlpha(0f);
                 login.setText(user.getName());
 //                Drawable[] drawables = login.getCompoundDrawablesRelative();
 //                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
@@ -203,6 +207,7 @@ public class Profile extends Fragment {
                     Toast.makeText(getActivity(), "Yêu cầu đăng nhập", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                    adminMode.setAlpha(0f);
                     login.setText("Đăng nhập");
                     SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
