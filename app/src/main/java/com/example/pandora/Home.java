@@ -20,10 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.pandora.Class.Restaurant;
-import com.example.pandora.Class.User;
 import com.example.pandora.Database.RestaurantDatabase;
-import com.example.pandora.Slider.SliderHomeAdapter;
-import com.example.pandora.Slider.SliderPagerAdapter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -71,16 +68,17 @@ public class Home extends Fragment {
         restaurantDatabase.open();
         if (restaurantDatabase.getAllRestaurants().isEmpty()) {
             // Thêm dữ liệu vào cơ sở dữ liệu
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", "Đánh giá rất tốt, món ăn ngon", R.drawable.image1, 4));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B", "Không gian thoải mái, phục vụ nhanh", R.drawable.image2, 3));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C", "Món ăn đậm đà, giá cả hợp lý", R.drawable.image3, 5));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", "Đồ ăn không ngon lắm", R.drawable.image4, 1));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", "Đồ ăn không ngon lắm", R.drawable.image1, 2));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", "", 4));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B",  "", 3));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C",  "", 5));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", "", 1));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", "", 2));
         }
 
         // Lấy lại danh sách nhà hàng
         restaurantList = restaurantDatabase.getAllRestaurants();
 
+        restaurantDatabase.close();
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -95,8 +93,7 @@ public class Home extends Fragment {
             // Truyền dữ liệu qua Bundle
             Bundle bundle = new Bundle();
             bundle.putString("restaurant_name", restaurant.getName());
-            bundle.putString("restaurant_review", restaurant.getReview());
-            bundle.putInt("restaurant_rating", restaurant.getStart());
+            bundle.putInt("restaurant_rating", restaurant.getStar());
             nextFragment.setArguments(bundle);
 
             // Chuyển Fragment

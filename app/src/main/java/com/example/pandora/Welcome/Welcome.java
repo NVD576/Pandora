@@ -13,6 +13,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.pandora.Class.User;
+import com.example.pandora.Database.UserDatabase;
+import com.example.pandora.Login.Login;
 import com.example.pandora.Main.Lobby;
 import com.example.pandora.R;
 
@@ -41,6 +44,15 @@ public class Welcome extends AppCompatActivity {
         Animation blinkAnimation = AnimationUtils.loadAnimation(this, R.anim.blink);
         loadingText.startAnimation(blinkAnimation);
 
+        UserDatabase db = new UserDatabase(Welcome.this); // Khởi tạo UserDatabase
+        db.open(); // Mở kết nối cơ sở dữ liệu
+
+        if(db.isUserTableEmpty()){
+            User admin= new User("duc", "123123","1234567890", true);
+
+            db.addUser(admin, getApplicationContext());
+        }
+        db.close();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

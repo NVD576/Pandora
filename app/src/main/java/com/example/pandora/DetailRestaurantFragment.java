@@ -19,14 +19,12 @@ public class DetailRestaurantFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail_restaurant, container, false);
 
         TextView nameTextView = view.findViewById(R.id.detailName);
-        TextView reviewTextView = view.findViewById(R.id.detailReview);
         RatingBar ratingBar = view.findViewById(R.id.detailRating);
 
         // Nhận dữ liệu từ Bundle
         Bundle bundle = getArguments();
         if (bundle != null) {
             nameTextView.setText(bundle.getString("restaurant_name", "N/A"));
-            reviewTextView.setText(bundle.getString("restaurant_review", "N/A"));
             ratingBar.setRating(bundle.getInt("restaurant_rating", 0));
         }
 

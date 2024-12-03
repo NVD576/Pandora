@@ -30,8 +30,6 @@ public class UserDatabase {
     }
 
 
-
-
     // Mở kết nối đến cơ sở dữ liệu
     public void open() {
         database = dbHelper.getWritableDatabase();
@@ -94,10 +92,7 @@ public class UserDatabase {
     }
 
     @SuppressLint("Range")
-    public User getUserByUsernameAndPassword(String userName, String password) {
-        String selection = DatabaseHelper.COLUMN_USER_TAIKHOAN + " = ? AND " + DatabaseHelper.COLUMN_USER_PASSWORD + " = ?";
-        String[] selectionArgs = {userName, password};
-
+    User Search(String selection,String[] selectionArgs){
         Cursor cursor = database.query(DatabaseHelper.TABLE_USERS, columns, selection, selectionArgs, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -115,27 +110,23 @@ public class UserDatabase {
         }
         return null;
     }
+
+    //tìm user bằng tài khoản và mật khẩu
+    @SuppressLint("Range")
+    public User getUserByUsernameAndPassword(String userName, String password) {
+        String selection = DatabaseHelper.COLUMN_USER_TAIKHOAN + " = ? AND " + DatabaseHelper.COLUMN_USER_PASSWORD + " = ?";
+        String[] selectionArgs = {userName, password};
+
+        return Search(selection,selectionArgs);
+    }
+
+    //tìm user bằng số điện thoại
     @SuppressLint("Range")
     public User getUserBySDT(String sdt) {
         String selection = DatabaseHelper.COLUMN_USER_SDT + " = ? ";
         String[] selectionArgs = {sdt};
 
-        Cursor cursor = database.query(DatabaseHelper.TABLE_USERS, columns, selection, selectionArgs, null, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            int id= cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ID));
-            String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_TAIKHOAN));
-            String pass = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
-            String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
-            String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
-            boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
-            String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
-
-            User user = new User(id,taiKhoan, pass,name, SDT, role, image);
-            cursor.close();
-            return user;
-        }
-        return null;
+        return Search(selection,selectionArgs);
     }
 
     @SuppressLint("Range")
@@ -143,22 +134,7 @@ public class UserDatabase {
         String selection = DatabaseHelper.COLUMN_USER_TAIKHOAN + " = ? ";
         String[] selectionArgs = {taikhoan};
 
-        Cursor cursor = database.query(DatabaseHelper.TABLE_USERS, columns, selection, selectionArgs, null, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            int id= cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ID));
-            String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_TAIKHOAN));
-            String pass = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
-            String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
-            String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
-            boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
-            String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
-
-            User user = new User(id,taiKhoan, pass,name, SDT, role, image);
-            cursor.close();
-            return user;
-        }
-        return null;
+        return  Search(selection,selectionArgs);
     }
 
 
@@ -193,23 +169,6 @@ public class UserDatabase {
     }
 
 
-    @SuppressLint("Range")
-    public String getUserImage(int userId) {
-        String imagePath = null;
-        Cursor cursor = database.query(
-                DatabaseHelper.TABLE_USERS,       // Tên bảng
-                new String[]{DatabaseHelper.COLUMN_USER_IMAGE}, // Cột cần lấy
-                DatabaseHelper.COLUMN_USER_ID + " = ?", // Điều kiện
-                new String[]{String.valueOf(userId)},    // Giá trị điều kiện
-                null, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            imagePath = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
-            cursor.close();
-        }
-        return imagePath;
-    }
-
 
     // Lấy danh sách tất cả người dùng
     @SuppressLint("Range")
@@ -243,22 +202,7 @@ public class UserDatabase {
         String selection = DatabaseHelper.COLUMN_USER_ID + " = ?";
         String[] selectionArgs = {String.valueOf(userId)};
 
-        Cursor cursor = database.query(DatabaseHelper.TABLE_USERS, columns, selection, selectionArgs, null, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_TAIKHOAN));
-            String password = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
-            String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
-            String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
-            boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
-            String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
-
-            User user = new User(taiKhoan, password, name, SDT,  role, image);
-            user.setId(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ID)));
-            cursor.close();
-            return user;
-        }
-        return null;
+        return  Search(selection,selectionArgs);
     }
 
 

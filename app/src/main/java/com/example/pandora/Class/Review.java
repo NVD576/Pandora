@@ -2,17 +2,47 @@ package com.example.pandora.Class;
 
 public class Review {
     private int id;
+    int restaurantid;
     private String name;
     private String review;
-    private int imageResId;
+    int rating;
+    String date;
 
-    public Review(int id, String name, String review, int imageResId) {
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Review(int id, String name, String review) {
         this.id = id;
         this.name = name;
         this.review = review;
-        this.imageResId = imageResId;
     }
 
+    public Review(String name, String review, int rating) {
+        this.name = name;
+        this.review = review;
+        this.rating = rating;
+    }
+
+    public int getRestaurantid() {
+        return restaurantid;
+    }
+
+    public void setRestaurantid(int restaurantid) {
+        this.restaurantid = restaurantid;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
     // Getters và setters
     public int getId() {
         return id;
@@ -38,11 +68,4 @@ public class Review {
         this.review = review;
     }
 
-    public int getImageResId() {
-        return imageResId;
-    }
-
-    public void setImageResId(int imageResId) {
-        this.imageResId = imageResId;
-    }
 }

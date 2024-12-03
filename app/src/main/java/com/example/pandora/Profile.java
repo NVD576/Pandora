@@ -1,12 +1,15 @@
 package com.example.pandora;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.content.Intent.getIntent;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -62,9 +65,9 @@ public class Profile extends Fragment {
     private String getUserImageFromDatabase(int userId) {
         UserDatabase userDatabase = new UserDatabase(getActivity());
         userDatabase.open();
-
+        User u= userDatabase.getUserById(userId);
         // Lấy đường dẫn ảnh của người dùng từ cơ sở dữ liệu
-        String imagePath = userDatabase.getUserImage(userId);
+        String imagePath = u.getImage();
 
         userDatabase.close();
         return imagePath;
@@ -78,17 +81,25 @@ public class Profile extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         login = view.findViewById(R.id.loginProfile);
 
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
+        userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
+        isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
+
 
         Bundle bundle = getArguments();
 
         if (bundle != null) {
 
-            isLogin = bundle.getBoolean("isLogin", false);
+//            isLogin = bundle.getBoolean("isLogin", false);
             if (isLogin) {
-                userid = bundle.getInt("userid");  // Sử dụng giá trị mặc định nếu không tìm thấy
+//                userid = bundle.getInt("userid");  // Sử dụng giá trị mặc định nếu không tìm thấy
                 Log.e("Login", "UserID " + userid);
-                userName = bundle.getString("userName");
-                user = (User) bundle.getSerializable("user");
+//                userName = bundle.getString("userName");
+                UserDatabase db= new UserDatabase(getContext());
+                db.open();
+                user = db.getUserById(userid);
+                db.close();
+                userName=user.getName();
                 Log.e("Login", "name " + userName);
 
             }
@@ -96,7 +107,7 @@ public class Profile extends Fragment {
         userImage = view.findViewById(R.id.userImage);
         if (isLogin) {
             if (user.getName() == null) {
-                login.setText(userName);
+                login.setText("UserName");
 //                Drawable[] drawables = login.getCompoundDrawablesRelative();
 //                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
 //                        drawables[0], // drawableStart
@@ -177,6 +188,10 @@ public class Profile extends Fragment {
                 } else {
                     Toast.makeText(getActivity(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
                     login.setText("Đăng nhập");
+                    SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.apply();
                     userImage.setImageResource(R.drawable.person_icon);
 //                    Drawable drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_arrow_forward_ios_24);
 //                    Drawable[] drawables = login.getCompoundDrawablesRelative();

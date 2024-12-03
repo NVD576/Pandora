@@ -1,5 +1,8 @@
 package com.example.pandora;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pandora.Class.Restaurant;
 
+import java.io.FileInputStream;
 import java.util.List;
 
-class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ReviewViewHolder> {
+class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
 
     private List<Restaurant> restaurantList;
     private OnItemClickListener listener;
+    private Context context;
 
     // Interface để xử lý sự kiện click
     public interface OnItemClickListener {
@@ -32,18 +37,23 @@ class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ReviewVie
     }
 
     @Override
-    public ReviewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RestaurantViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review, parent, false);
-        return new ReviewViewHolder(itemView);
+        return new RestaurantViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ReviewViewHolder holder, int position) {
+    public void onBindViewHolder(RestaurantViewHolder holder, int position) {
         Restaurant restaurant = restaurantList.get(position);
         holder.nameTextView.setText(restaurant.getName());
-        holder.reviewTextView.setText(restaurant.getReview());
-        holder.imageView.setImageResource(restaurant.getImageResId());
-        holder.ratingBar.setRating(restaurant.getStart());
+//        holder.addressTextView.setText(restaurant.getAddress()); // Hiển thị địa chỉ
+//        holder.imageView.setImageResource(restaurant.getImage()); // Hiển thị ảnh
+        Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
+        if (bitmap != null) {
+            holder.imageView.setImageBitmap(bitmap);
+        }
+
+        holder.ratingBar.setRating(restaurant.getStar()); // Hiển thị đánh giá sao
 
         // Xử lý sự kiện click
         holder.itemView.setOnClickListener(v -> {
@@ -53,22 +63,32 @@ class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ReviewVie
         });
     }
 
+    private Bitmap loadImageFromInternalStorage(String fileName) {
+        try {
+            FileInputStream fis = context.openFileInput(fileName);
+            return BitmapFactory.decodeStream(fis); // Chuyển đổi thành Bitmap
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Trả về null nếu không tìm thấy ảnh
+        }
+    }
+
     @Override
     public int getItemCount() {
         return restaurantList.size();
     }
 
-    public static class ReviewViewHolder extends RecyclerView.ViewHolder {
+    public static class RestaurantViewHolder extends RecyclerView.ViewHolder {
 
         TextView nameTextView;
-        TextView reviewTextView;
+        TextView addressTextView; // TextView mới để hiển thị địa chỉ
         ImageView imageView;
         RatingBar ratingBar;
 
-        public ReviewViewHolder(View itemView) {
+        public RestaurantViewHolder(View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.reviewName);
-            reviewTextView = itemView.findViewById(R.id.reviewText);
+//            addressTextView = itemView.findViewById(R.id.reviewAddress); // Kết nối với TextView địa chỉ
             imageView = itemView.findViewById(R.id.reviewImage);
             ratingBar = itemView.findViewById(R.id.reviewRating);
         }

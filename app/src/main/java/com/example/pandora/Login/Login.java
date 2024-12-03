@@ -160,12 +160,6 @@ public class Login extends AppCompatActivity {
                 UserDatabase db = new UserDatabase(Login.this); // Khởi tạo UserDatabase
                 db.open(); // Mở kết nối cơ sở dữ liệu
 
-                if(db.isUserTableEmpty()){
-                    User admin= new User("duc", "123123","1234567890", true);
-
-                    db.addUser(admin, getApplicationContext());
-                }
-
                 // Tìm người dùng theo tài khoản và mật khẩu
                 User user = db.getUserByUsernameAndPassword(userName, pw);
 
@@ -176,6 +170,7 @@ public class Login extends AppCompatActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putInt("userid", user.getId());
+                    editor.putBoolean("isLogin", true);
                     editor.apply();
 
 
@@ -239,6 +234,7 @@ public class Login extends AppCompatActivity {
         UserDatabase db = new UserDatabase(this);
         db.open();
 
+
         User nUser= db.getUserByTaiKhoan(email);
         if (nUser == null) {
             nUser= new User(email,name);
@@ -258,6 +254,7 @@ public class Login extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("userid", nUser.getId());
+        editor.putBoolean("isLogin", true);
         editor.apply();
 
         startActivity(intent);

@@ -8,15 +8,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Tên cơ sở dữ liệu
     private static final String DATABASE_NAME = "reviewFood.db";
-    private static final int DATABASE_VERSION = 3; // Tăng phiên bản để áp dụng nâng cấp
+    private static final int DATABASE_VERSION = 1; // Cập nhật phiên bản lên 4 để áp dụng nâng cấp
 
     // Cấu trúc bảng restaurants
     public static final String TABLE_RESTAURANTS = "restaurants";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_REVIEW = "review";
+    public static final String COLUMN_ADDRESS = "address"; // Thêm cột address
+    public static final String COLUMN_LOCATION_ID = "locationid"; // Thêm cột locationid
+    public static final String COLUMN_CATE_ID = "cateid"; // Thêm cột cateid
     public static final String COLUMN_IMAGE = "image";
-    public static final String COLUMN_START = "start"; // Thêm cột start
+    public static final String COLUMN_STAR = "start"; // Thêm cột start
+    public static final String COLUMN_HISTORY = "history";
 
     // Cấu trúc bảng users
     public static final String TABLE_USERS = "users";
@@ -32,9 +35,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_RESTAURANTS = "CREATE TABLE " + TABLE_RESTAURANTS + " ("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_NAME + " TEXT, "
-            + COLUMN_REVIEW + " TEXT, "
-            + COLUMN_IMAGE + " INTEGER, "
-            + COLUMN_START + " INTEGER)"; // Thêm cột start vào câu lệnh tạo bảng
+            + COLUMN_ADDRESS + " TEXT, "  // Thêm cột address
+            + COLUMN_LOCATION_ID + " INTEGER, "  // Thêm cột locationid
+            + COLUMN_CATE_ID + " INTEGER, "  // Thêm cột cateid
+            + COLUMN_HISTORY + " INTEGER, "
+            + COLUMN_IMAGE + " TEXT, "
+            + COLUMN_STAR + " INTEGER)"; // Thêm cột start vào câu lệnh tạo bảng
 
     // Câu lệnh tạo bảng users
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + " ("
@@ -58,11 +64,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {
-            db.execSQL("ALTER TABLE " + TABLE_RESTAURANTS + " ADD COLUMN " + COLUMN_START + " INTEGER");
-        }
-        if (oldVersion < 3) {
-            db.execSQL(CREATE_TABLE_USERS); // Thêm bảng users trong nâng cấp lên phiên bản 3
-        }
+
     }
 }
