@@ -91,6 +91,20 @@
                 android:background="@drawable/item_background"
                 android:layout_marginBottom="12dp" />
 
+            <TextView
+                android:id="@+id/adminMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quyền Admin"
+                android:drawableStart="@drawable/baseline_admin_panel_settings_24"
+                android:drawablePadding="12dp"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:background="@drawable/item_background"
+                android:layout_marginBottom="12dp" />
+
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

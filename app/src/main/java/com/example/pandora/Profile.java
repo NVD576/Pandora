@@ -32,9 +32,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pandora.AdminProperties.AdminProperties;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.DatabaseHelper;
 import com.example.pandora.Database.UserDatabase;
@@ -85,6 +87,7 @@ public class Profile extends Fragment {
         userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
 
         Bundle bundle = getArguments();
 
@@ -104,10 +107,22 @@ public class Profile extends Fragment {
 
             }
         }
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        TextView adminMode = view.findViewById(R.id.adminMode);
+        adminMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(requireContext(), AdminProperties.class);
+                startActivity(myIntent);
+            }
+        });
         userImage = view.findViewById(R.id.userImage);
         if (isLogin) {
+            if (user.isRole()){
+                adminMode.setAlpha(1f);
+            } else adminMode.setAlpha(0f);
             if (user.getName() == null) {
-                login.setText("UserName");
+                login.setText(userName);
 //                Drawable[] drawables = login.getCompoundDrawablesRelative();
 //                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
 //                        drawables[0], // drawableStart
@@ -116,6 +131,7 @@ public class Profile extends Fragment {
 //                        drawables[3]  // drawableBottom
 //                );
             } else {
+                adminMode.setAlpha(0f);
                 login.setText(user.getName());
 //                Drawable[] drawables = login.getCompoundDrawablesRelative();
 //                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
