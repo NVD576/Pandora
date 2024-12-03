@@ -137,7 +137,15 @@ public class UserDatabase {
         return  Search(selection,selectionArgs);
     }
 
+    // Lấy thông tin người dùng theo ID
+    @SuppressLint("Range")
+    public User getUserById(int userId) {
 
+        String selection = DatabaseHelper.COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+
+        return  Search(selection,selectionArgs);
+    }
 
     public void updateUserImage(int userId, String imagePath) {
         ContentValues values = new ContentValues();
@@ -195,15 +203,7 @@ public class UserDatabase {
     }
 
 
-    // Lấy thông tin người dùng theo ID
-    @SuppressLint("Range")
-    public User getUserById(int userId) {
 
-        String selection = DatabaseHelper.COLUMN_USER_ID + " = ?";
-        String[] selectionArgs = {String.valueOf(userId)};
-
-        return  Search(selection,selectionArgs);
-    }
 
 
     // Xóa một người dùng theo ID

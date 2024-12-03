@@ -84,26 +84,16 @@ public class Profile extends Fragment {
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
+        if (isLogin) {
+            UserDatabase db= new UserDatabase(getContext());
+            db.open();
+            user = db.getUserById(userid);
+            db.close();
+            userName=user.getName();
+            Log.e("Login", "name " + userName);
 
-
-        Bundle bundle = getArguments();
-
-        if (bundle != null) {
-
-//            isLogin = bundle.getBoolean("isLogin", false);
-            if (isLogin) {
-//                userid = bundle.getInt("userid");  // Sử dụng giá trị mặc định nếu không tìm thấy
-                Log.e("Login", "UserID " + userid);
-//                userName = bundle.getString("userName");
-                UserDatabase db= new UserDatabase(getContext());
-                db.open();
-                user = db.getUserById(userid);
-                db.close();
-                userName=user.getName();
-                Log.e("Login", "name " + userName);
-
-            }
         }
+
         userImage = view.findViewById(R.id.userImage);
         if (isLogin) {
             if (user.getName() == null) {
