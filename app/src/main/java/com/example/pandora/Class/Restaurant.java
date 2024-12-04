@@ -115,18 +115,18 @@ public class Restaurant {
     public void setName(String name) {
         this.name = name;
     }
-    public int TB_Star(List<Review> reviews) {
-        if (reviews.isEmpty()) {
-            return 0;
-        }
-
-        int totalStars = 0;
-        for (Review review : reviews) {
-            totalStars += review.getRating();
-        }
-
-        return totalStars / reviews.size();
-    }
+//    public int TB_Star(List<Review> reviews) {
+//        if (reviews.isEmpty()) {
+//            return 0;
+//        }
+//
+//        int totalStars = 0;
+//        for (Review review : reviews) {
+//            totalStars += review.getRating();
+//        }
+//
+//        return totalStars / reviews.size();
+//    }
 }
 
 

@@ -49,6 +49,7 @@ public class Welcome extends AppCompatActivity {
 
         if(db.isUserTableEmpty()){
             User admin= new User("duc", "123123","1234567890", true);
+            admin.setName("Admin");
 
             db.addUser(admin, getApplicationContext());
         }
