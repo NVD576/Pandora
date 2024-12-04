@@ -18,9 +18,12 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.pandora.Class.Restaurant;
@@ -137,7 +140,12 @@ public class Home extends Fragment {
 
         // Xử lý sự kiện click cho các button
         btnLocation = view.findViewById(R.id.btnLocation);
-        btnLocation.setOnClickListener(v -> replaceFragment(new LocationFragment()));
+        btnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showLocationAlertDialog();
+            }
+        });
 
 //        btnAddReview = view.findViewById(R.id.btnAddReview);
 //        btnAddReview.setOnClickListener(v -> replaceFragment(new AddReviewFragment()));
@@ -244,9 +252,6 @@ public class Home extends Fragment {
                 .create();
 
         // Tìm các thành phần trong layout
-        ImageView iconAlert = dialogView.findViewById(R.id.iconAlert);
-        TextView titleAlert = dialogView.findViewById(R.id.titleAlert);
-        TextView messageAlert = dialogView.findViewById(R.id.messageAlert);
         Button btnPositive = dialogView.findViewById(R.id.btnPositive);
 
         // Thiết lập hành động nút
@@ -254,6 +259,89 @@ public class Home extends Fragment {
 
         // Hiển thị hộp thoại
         alertDialog.show();
+    }
+    private void showLocationAlertDialog() {
+        // Inflate custom layout
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View dialogView = inflater.inflate(R.layout.dialogchooselocation_custom_alert, null);
+
+        // Create AlertDialog
+        AlertDialog alertDialog = new AlertDialog.Builder(requireContext())
+                .setView(dialogView)
+                .setCancelable(true)
+                .create();
+
+        // Find the components in the layout
+        Button btnSave = dialogView.findViewById(R.id.btnSave);
+        Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
+        Spinner spinnerLocation = dialogView.findViewById(R.id.spinnerLocation);
+
+        // Use the custom spinner item layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.location_array,
+                R.layout.spinner_item  // Set the custom layout here
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);  // Default dropdown view
+        spinnerLocation.setAdapter(adapter);
+
+        final String[] selectedLocation = new String[1];  // Store the selected location
+
+        // If there is a previously saved location, set it in the Spinner
+        String savedLocation = getSavedLocation();  // Fetch the saved location from SharedPreferences
+        if (savedLocation != null) {
+            // Find the index of the saved location and set it in the Spinner
+            int position = adapter.getPosition(savedLocation);
+            spinnerLocation.setSelection(position);
+        }
+
+        // Set OnItemSelectedListener for the Spinner
+        spinnerLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedLocation[0] = adapterView.getItemAtPosition(i).toString();  // Get the selected location
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // Handle when nothing is selected (optional)
+            }
+        });
+
+        // Handle the save button click
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selectedLocation[0] != null) {
+                    saveLocation(selectedLocation[0]);
+
+                    // Find the btnLocation button in the fragment's root view
+                    Button btnLocation = view.findViewById(R.id.btnLocation);
+                    if (btnLocation != null) {
+                        btnLocation.setText(selectedLocation[0]);
+                    }
+                }
+                alertDialog.dismiss();
+            }
+        });
+
+        btnDismiss.setOnClickListener(v -> alertDialog.dismiss());
+
+        alertDialog.show();
+    }
+
+    // Method to save the selected location in SharedPreferences
+    private void saveLocation(String location) {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("selected_location", location);
+        editor.apply();
+    }
+
+    // Method to retrieve the saved location from SharedPreferences
+    private String getSavedLocation() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
+        return sharedPreferences.getString("selected_location", null);  // Return null if no location is saved
     }
 
 }
