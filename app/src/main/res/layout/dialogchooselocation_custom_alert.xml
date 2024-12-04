@@ -2,22 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp"
     android:background="@drawable/dialog_background"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="24dp">
 
     <TextView
         android:id="@+id/titleAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chọn địa điểm"
-        android:textSize="20sp"
-        android:textColor="@color/darkPurple"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"/>
+        android:text="Chọn địa điểm"
+        android:textColor="@color/darkPurple"
+        android:textSize="20sp" />
 
     <!-- Spinner cho địa điểm -->
     <Spinner
@@ -26,7 +26,10 @@
         android:layout_height="50dp"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="15dp"
-        android:background="@drawable/spinner_ripple_background"/>
+        android:background="@drawable/spinner_background"
+        android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+        android:textColor="@color/darkPurple" />
+
 
     <!-- Nút hành động -->
     <LinearLayout

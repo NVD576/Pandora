@@ -12,4 +12,5 @@
     <color name="darkBlue">#453F78</color>
     <color name="yellow">#E9CE0A</color>
     <color name="gray">#B0B0B0</color>
+    <color name="button_primary">#6200ea</color>
 </resources>

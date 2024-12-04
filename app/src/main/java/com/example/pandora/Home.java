@@ -280,12 +280,12 @@ public class Home extends Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.location_array,
-                R.layout.spinner_item  // Set the custom layout here
+                R.layout.spinner_item // Layout cho item hiển thị trên spinner
         );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);  // Default dropdown view
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item); // Layout cho dropdown items
         spinnerLocation.setAdapter(adapter);
 
-        final String[] selectedLocation = new String[1];  // Store the selected location
+        String[] selectedLocation = new String[1];  // Store the selected location
 
         // If there is a previously saved location, set it in the Spinner
         String savedLocation = getSavedLocation();  // Fetch the saved location from SharedPreferences
@@ -315,11 +315,8 @@ public class Home extends Fragment {
                 if (selectedLocation[0] != null) {
                     saveLocation(selectedLocation[0]);
 
-                    // Find the btnLocation button in the fragment's root view
-                    Button btnLocation = view.findViewById(R.id.btnLocation);
-                    if (btnLocation != null) {
-                        btnLocation.setText(selectedLocation[0]);
-                    }
+                    // Cập nhật text của btnLocation từ bên ngoài dialog
+                    btnLocation.setText(selectedLocation[0]); // Cập nhật Text của Button trong fragment
                 }
                 alertDialog.dismiss();
             }
@@ -329,6 +326,7 @@ public class Home extends Fragment {
 
         alertDialog.show();
     }
+
 
     // Method to save the selected location in SharedPreferences
     private void saveLocation(String location) {
