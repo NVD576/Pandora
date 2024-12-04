@@ -9,7 +9,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.pandora.Class.User;
 import com.example.pandora.Home;
-import com.example.pandora.LocationFragment;
 import com.example.pandora.Profile;
 import com.example.pandora.Setting;
 
@@ -41,9 +40,6 @@ public class SliderPagerAdapter extends FragmentStateAdapter {
             case 2:
                 fragment = new Setting();
                 break;
-            case 3:
-                fragment = new LocationFragment();
-                break;
             default:
                 fragment = new Home();
                 break;
@@ -59,6 +55,6 @@ public class SliderPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 3;
     }
 }

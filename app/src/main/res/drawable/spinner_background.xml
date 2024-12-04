@@ -1,0 +1,6 @@
+<!-- res/drawable/spinner_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#ffffff"/> <!-- Màu nền của Spinner -->
+    <corners android:radius="8dp"/> <!-- Bo góc -->
+    <stroke android:color="#8B7D7B" android:width="2dp"/> <!-- Viền màu nâu sáng -->
+</shape>

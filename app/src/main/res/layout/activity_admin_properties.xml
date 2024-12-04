@@ -6,40 +6,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background_gradient"
     tools:context=".AdminProperties.AdminProperties">
 
-    <TextView
-        android:id="@+id/listUser"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Xem danh sách User"
-        android:textSize="30sp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/textview_background"
-        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-        tools:ignore="MissingConstraints" />
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:layout_marginTop="24dp">
 
-    <TextView
-        android:id="@+id/listRestaurant"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Xem dữ liệu quán ăn"
-        android:textSize="30sp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/textview_background"
-        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-        tools:ignore="MissingConstraints" />
+        <!-- Mỗi mục sử dụng CardView hoặc bo góc -->
+        <TextView
+            android:id="@+id/listUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Xem danh sách User"
+            android:drawableStart="@drawable/baseline_person_24"
+            android:drawablePadding="12dp"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@drawable/item_background"
+            android:layout_marginBottom="12dp" />
 
-    <TextView
-        android:id="@+id/Decentralization"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Phân quyền User"
-        android:textSize="30sp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/textview_background"
-        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-        tools:ignore="MissingConstraints" />
+        <TextView
+            android:id="@+id/listRestaurant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Xem danh sách quán ăn"
+            android:drawableStart="@drawable/baseline_restaurant_24"
+            android:drawablePadding="12dp"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@drawable/item_background"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/Decentralization"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phân quyền User"
+            android:drawableStart="@drawable/baseline_admin_panel_settings_24"
+            android:drawablePadding="12dp"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@drawable/item_background"
+            android:layout_marginBottom="12dp" />
+
+    </LinearLayout>
 
 
 </LinearLayout>
