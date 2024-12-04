@@ -106,6 +106,7 @@ public class Home extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("restaurant_name", restaurant.getName());
             bundle.putInt("restaurant_rating", restaurant.getStar());
+            bundle.putInt("restaurant_id", restaurant.getId());
             nextFragment.setArguments(bundle);
 
             // Chuyển Fragment
@@ -316,7 +317,7 @@ public class Home extends Fragment {
                     saveLocation(selectedLocation[0]);
 
                     // Find the btnLocation button in the fragment's root view
-                    Button btnLocation = view.findViewById(R.id.btnLocation);
+//                    btnLocation = view.findViewById(R.id.btnLocation);
                     if (btnLocation != null) {
                         btnLocation.setText(selectedLocation[0]);
                     }

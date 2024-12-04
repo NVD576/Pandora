@@ -8,17 +8,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Tên cơ sở dữ liệu
     private static final String DATABASE_NAME = "reviewFood.db";
-    private static final int DATABASE_VERSION = 1; // Cập nhật phiên bản lên 4 để áp dụng nâng cấp
+    private static final int DATABASE_VERSION = 2; // Cập nhật phiên bản để kích hoạt onUpgrade
 
     // Cấu trúc bảng restaurants
     public static final String TABLE_RESTAURANTS = "restaurants";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_ADDRESS = "address"; // Thêm cột address
-    public static final String COLUMN_LOCATION_ID = "locationid"; // Thêm cột locationid
-    public static final String COLUMN_CATE_ID = "cateid"; // Thêm cột cateid
+    public static final String COLUMN_ADDRESS = "address";
+    public static final String COLUMN_LOCATION_ID = "locationid";
+    public static final String COLUMN_CATE_ID = "cateid";
     public static final String COLUMN_IMAGE = "image";
-    public static final String COLUMN_STAR = "start"; // Thêm cột start
+    public static final String COLUMN_STAR = "star";
     public static final String COLUMN_HISTORY = "history";
 
     // Cấu trúc bảng users
@@ -31,16 +31,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USER_ROLE = "role";
     public static final String COLUMN_USER_IMAGE = "image";
 
+    // Cấu trúc bảng reviews
+    public static final String TABLE_REVIEWS = "reviews";
+    public static final String COLUMN_REVIEW_ID = "id";
+    public static final String COLUMN_REVIEW_USER_ID = "user_id";
+    public static final String COLUMN_REVIEW_RESTAURANT_ID = "restaurant_id";
+    public static final String COLUMN_REVIEW_REVIEW = "review";
+    public static final String COLUMN_REVIEW_DATE = "date";
+    public static final String COLUMN_REVIEW_RATING = "rating";
+
     // Câu lệnh tạo bảng restaurants
     private static final String CREATE_TABLE_RESTAURANTS = "CREATE TABLE " + TABLE_RESTAURANTS + " ("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_NAME + " TEXT, "
-            + COLUMN_ADDRESS + " TEXT, "  // Thêm cột address
-            + COLUMN_LOCATION_ID + " INTEGER, "  // Thêm cột locationid
-            + COLUMN_CATE_ID + " INTEGER, "  // Thêm cột cateid
-            + COLUMN_HISTORY + " INTEGER, "
+            + COLUMN_ADDRESS + " TEXT, "
+            + COLUMN_LOCATION_ID + " INTEGER, "
+            + COLUMN_CATE_ID + " INTEGER, "
             + COLUMN_IMAGE + " TEXT, "
-            + COLUMN_STAR + " INTEGER)"; // Thêm cột start vào câu lệnh tạo bảng
+            + COLUMN_STAR + " INTEGER, "
+            + COLUMN_HISTORY + " INTEGER)";
 
     // Câu lệnh tạo bảng users
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + " ("
@@ -52,18 +61,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_USER_ROLE + " INTEGER, "
             + COLUMN_USER_IMAGE + " TEXT)";
 
+    // Câu lệnh tạo bảng reviews
+    private static final String CREATE_TABLE_REVIEWS = "CREATE TABLE " + TABLE_REVIEWS + " ("
+            + COLUMN_REVIEW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_REVIEW_USER_ID + " INTEGER, "
+            + COLUMN_REVIEW_RESTAURANT_ID + " INTEGER, "
+            + COLUMN_REVIEW_REVIEW + " TEXT, "
+            + COLUMN_REVIEW_DATE + " TEXT, "
+            + COLUMN_REVIEW_RATING + " REAL, "
+            + "FOREIGN KEY(" + COLUMN_REVIEW_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + "), "
+            + "FOREIGN KEY(" + COLUMN_REVIEW_RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + COLUMN_ID + "))";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_RESTAURANTS); // Tạo bảng restaurants
-        db.execSQL(CREATE_TABLE_USERS);       // Tạo bảng users
+        db.execSQL(CREATE_TABLE_RESTAURANTS);
+        db.execSQL(CREATE_TABLE_USERS);
+        db.execSQL(CREATE_TABLE_REVIEWS); // Tạo bảng reviews
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if (oldVersion < 2) {
+            db.execSQL(CREATE_TABLE_REVIEWS); // Thêm bảng reviews khi nâng cấp cơ sở dữ liệu
+        }
     }
 }

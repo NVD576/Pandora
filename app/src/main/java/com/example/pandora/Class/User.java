@@ -6,7 +6,7 @@ public class User implements Serializable {
     private int id;
     private String taiKhoan;
     private String password;
-    private String name = null;
+    private String name ;
     private String SDT;
     private boolean role= false;
     private String image;
