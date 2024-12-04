@@ -1,25 +1,26 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="64dp"
-    android:background="@color/gray"
-    android:clickable="true"
-    android:focusable="true"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/gray">
 
+    <!-- Nội dung cuộn -->
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollableContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/commentSection">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
+            <!-- Nội dung trên RecyclerView -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
@@ -98,38 +99,40 @@
                     android:text="Tóm tăt" />
             </LinearLayout>
 
+            <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/commentsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Thanh nhập liệu ở dưới -->
     <LinearLayout
+        android:id="@+id/commentSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/darkBlue"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:background="@color/darkBlue"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
             android:id="@+id/txtComment"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
-            android:ems="10"
             android:hint="Comment"
             android:inputType="text"
             android:textColor="@color/black" />
 
         <Button
             android:id="@+id/btnSend"
-            android:layout_width="wrap_content"
+            android:layout_width="68dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.1"
             android:text="Gửi" />
     </LinearLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
