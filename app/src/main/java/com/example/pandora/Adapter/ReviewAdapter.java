@@ -1,9 +1,8 @@
-package com.example.pandora;
+package com.example.pandora.Adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pandora.Class.Review;
 import com.example.pandora.Class.User;
-import com.example.pandora.Database.RestaurantDatabase;
 import com.example.pandora.Database.UserDatabase;
-import com.squareup.picasso.Picasso;
+import com.example.pandora.R;
 
 import java.io.FileInputStream;
 import java.util.List;

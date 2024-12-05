@@ -6,10 +6,12 @@
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_background"
     android:gravity="center_horizontal"
+    android:textColor="@color/black"
     android:orientation="vertical"
     android:padding="24dp">
 
     <!-- Container chứa nút đóng -->
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,16 +82,60 @@
             android:text="User"
             android:textColor="@color/darkPurple"
             android:textSize="16sp" />
+
     </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/cbPhanQuyen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:checked="true"
+            android:background="@color/button_primary"
+            android:text="Quản lý user"
+            android:textColor="#E1BEE7" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:checked="true"
+            android:background="@color/button_primary"
+            android:text="Quản lý danh mục quán ăn "
+            android:textColor="#E1BEE7" />
+
+        <CheckBox
+            android:id="@+id/checkBox3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:checked="true"
+            android:background="@color/button_primary"
+            android:text="Quản lý các đánh giá, bình luận"
+            android:textColor="#E1BEE7" />
+
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/deleteAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
+        android:visibility="visible"
         android:text="Xóa tài khoản"
-        android:layout_marginTop="25dp"
         android:textColor="@color/red"
         android:textSize="20sp" />
+
 </LinearLayout>

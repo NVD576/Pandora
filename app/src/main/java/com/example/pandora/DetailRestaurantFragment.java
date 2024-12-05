@@ -17,17 +17,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pandora.Class.Restaurant;
+import com.example.pandora.Adapter.ReviewAdapter;
 import com.example.pandora.Class.Review;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.ReviewDatabase;
 import com.example.pandora.Database.UserDatabase;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;

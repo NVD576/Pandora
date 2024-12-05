@@ -9,6 +9,10 @@ public class User implements Serializable {
     private String name ;
     private String SDT;
     private boolean role= false;
+    boolean roleUser= false;
+    boolean roleCategory= false;
+    boolean roleRestaurant= false;
+
     private String image;
 
     public User(String taiKhoan, String name) {
@@ -32,7 +36,20 @@ public class User implements Serializable {
         this.image = image;
     }
 
-    public User(int id, String taiKhoan, String password, String name, String SDT, boolean role,String image ) {
+    public User(int id, String taiKhoan, String password, String name, String SDT, boolean role, boolean roleUser, boolean roleCategory, boolean roleRestaurant, String image) {
+        this.id = id;
+        this.taiKhoan = taiKhoan;
+        this.password = password;
+        this.name = name;
+        this.SDT = SDT;
+        this.role = role;
+        this.roleUser = roleUser;
+        this.roleCategory = roleCategory;
+        this.roleRestaurant = roleRestaurant;
+        this.image = image;
+    }
+
+    public User(int id, String taiKhoan, String password, String name, String SDT, boolean role, String image ) {
         this.id = id;
         this.taiKhoan = taiKhoan;
         this.password = password;
@@ -53,6 +70,30 @@ public class User implements Serializable {
         this.taiKhoan = taiKhoan;
         this.password = password;
         this.SDT = SDT;
+    }
+
+    public boolean isRoleUser() {
+        return roleUser;
+    }
+
+    public void setRoleUser(boolean roleUser) {
+        this.roleUser = roleUser;
+    }
+
+    public boolean isRoleCategory() {
+        return roleCategory;
+    }
+
+    public void setRoleCategory(boolean roleCategory) {
+        this.roleCategory = roleCategory;
+    }
+
+    public boolean isRoleRestaurant() {
+        return roleRestaurant;
+    }
+
+    public void setRoleRestaurant(boolean roleRestaurant) {
+        this.roleRestaurant = roleRestaurant;
     }
 
     public boolean isRole() {

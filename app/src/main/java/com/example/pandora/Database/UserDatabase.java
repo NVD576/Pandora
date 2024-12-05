@@ -23,6 +23,9 @@ public class UserDatabase {
             DatabaseHelper.COLUMN_USER_SDT,
             DatabaseHelper.COLUMN_USER_NAME,
             DatabaseHelper.COLUMN_USER_ROLE,
+            DatabaseHelper.COLUMN_USER_ROLE_USER,
+            DatabaseHelper.COLUMN_USER_ROLE_CATEGORY,
+            DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT,
             DatabaseHelper.COLUMN_USER_IMAGE
     };
     public UserDatabase(Context context) {
@@ -72,6 +75,10 @@ public class UserDatabase {
         values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole() ? 1 : 0);
         values.put(DatabaseHelper.COLUMN_USER_IMAGE, user.getImage() != null ? user.getImage() : "");
 
+        // Insert additional role fields
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_USER, user.isRoleUser() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY, user.isRoleCategory() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT, user.isRoleRestaurant() ? 1 : 0);
 
         // Thực hiện chèn và nhận lại ID tự động tăng
         long id = database.insert(DatabaseHelper.TABLE_USERS, null, values);
@@ -104,7 +111,12 @@ public class UserDatabase {
             boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
             String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
 
-            User user = new User(id,taiKhoan, pass,name, SDT, role, image);
+            boolean roleUser = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_USER)) == 1;
+            boolean roleCategory = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY)) == 1;
+            boolean roleRestaurant = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT)) == 1;
+
+
+            User user = new User(id, taiKhoan, pass, name, SDT, role, roleUser, roleCategory, roleRestaurant, image);
             cursor.close();
             return user;
         }
@@ -168,6 +180,11 @@ public class UserDatabase {
         values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole() ? 1 : 0);
         values.put(DatabaseHelper.COLUMN_USER_IMAGE, user.getImage() != null ? user.getImage() : "");
 
+        // Update additional role fields
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_USER, user.isRoleUser() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY, user.isRoleCategory() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT, user.isRoleRestaurant() ? 1 : 0);
+
         // Điều kiện để xác định người dùng cần cập nhật (theo ID)
         String whereClause = DatabaseHelper.COLUMN_USER_ID + " = ?";
         String[] whereArgs = {String.valueOf(user.getId())};
@@ -194,7 +211,12 @@ public class UserDatabase {
                 boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
                 String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
 
-                User user = new User(id, taiKhoan, password, name, SDT , role, image);
+                boolean roleUser = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_USER)) == 1;
+                boolean roleCategory = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY)) == 1;
+                boolean roleRestaurant = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT)) == 1;
+
+
+                User user = new User(id, taiKhoan, password, name, SDT, role, roleUser, roleCategory, roleRestaurant, image);
                 userList.add(user);
             }
             cursor.close();

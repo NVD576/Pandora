@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.pandora.Adapter.RestaurantAdapter;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.RestaurantDatabase;
