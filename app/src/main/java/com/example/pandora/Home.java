@@ -4,15 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -24,7 +15,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.User;
@@ -282,10 +280,10 @@ public class Home extends Fragment {
                 R.array.location_array,
                 R.layout.spinner_item  // Set the custom layout here
         );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);  // Default dropdown view
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);  // Default dropdown view
         spinnerLocation.setAdapter(adapter);
 
-        final String[] selectedLocation = new String[1];  // Store the selected location
+        String[] selectedLocation = new String[1];  // Store the selected location
 
         // If there is a previously saved location, set it in the Spinner
         String savedLocation = getSavedLocation();  // Fetch the saved location from SharedPreferences
@@ -315,15 +313,16 @@ public class Home extends Fragment {
                 if (selectedLocation[0] != null) {
                     saveLocation(selectedLocation[0]);
 
-                    // Find the btnLocation button in the fragment's root view
-                    Button btnLocation = view.findViewById(R.id.btnLocation);
+                    // Truy cập btnLocation từ root view của fragment
+                    Button btnLocation = getView().findViewById(R.id.btnLocation);  // Dùng getView() để lấy view từ fragment
                     if (btnLocation != null) {
-                        btnLocation.setText(selectedLocation[0]);
+                        btnLocation.setText(selectedLocation[0]);  // Cập nhật text của nút
                     }
                 }
                 alertDialog.dismiss();
             }
         });
+
 
         btnDismiss.setOnClickListener(v -> alertDialog.dismiss());
 
