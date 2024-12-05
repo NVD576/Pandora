@@ -19,8 +19,10 @@ import com.example.pandora.Login.Login;
 import com.example.pandora.Main.Lobby;
 import com.example.pandora.R;
 
-public class Welcome extends AppCompatActivity {
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
+public class Welcome extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +50,8 @@ public class Welcome extends AppCompatActivity {
         db.open(); // Mở kết nối cơ sở dữ liệu
 
         if(db.isUserTableEmpty()){
-            User admin= new User("duc", "123123","1234567890", true);
+            String pass= "123123";
+            User admin= new User("duc", hash(pass),"1234567890", true);
             admin.setName("Admin");
 
             db.addUser(admin, getApplicationContext());
@@ -63,4 +66,18 @@ public class Welcome extends AppCompatActivity {
             }
         },2000);
     }
+    public static String hash(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(input.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                hexString.append(String.format("%02x", b));
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

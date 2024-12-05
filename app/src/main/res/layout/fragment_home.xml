@@ -23,6 +23,8 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:background="@drawable/search_background"
             android:drawableStart="@drawable/outline_search_24"
             android:gravity="center_vertical"

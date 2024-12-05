@@ -93,4 +93,9 @@ class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Restauran
             ratingBar = itemView.findViewById(R.id.reviewRating);
         }
     }
+    public void updateData(List<Restaurant> newRestaurantList) {
+        this.restaurantList.clear(); // Xóa dữ liệu cũ
+        this.restaurantList.addAll(newRestaurantList); // Thêm dữ liệu mới
+        notifyDataSetChanged(); // Thông báo dữ liệu thay đổi
+    }
 }

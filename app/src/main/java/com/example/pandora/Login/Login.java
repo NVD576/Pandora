@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -40,6 +41,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Login extends AppCompatActivity {
 
@@ -155,7 +159,7 @@ public class Login extends AppCompatActivity {
                 // Kiểm tra đăng nhập
                 UserDatabase db = new UserDatabase(Login.this); // Khởi tạo UserDatabase
                 db.open(); // Mở kết nối cơ sở dữ liệu
-
+                pw=hash(pw);
                 // Tìm người dùng theo tài khoản và mật khẩu
                 User user = db.getUserByUsernameAndPassword(userName, pw);
 
@@ -214,6 +218,7 @@ public class Login extends AppCompatActivity {
 
     void navigateToSecondActivity(Task<GoogleSignInAccount> completedTask) throws ApiException {
 
+
         GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
         if (acct != null) {
             email = acct.getEmail();
@@ -248,4 +253,19 @@ public class Login extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    public static String hash(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(input.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                hexString.append(String.format("%02x", b));
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+

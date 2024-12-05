@@ -100,6 +100,54 @@ public class RestaurantDatabase {
         return restaurantList;
     }
 
+    //Lấy danh sách các quán ăn theo tên
+    public List<Restaurant> getRestaurantsByName(String name) {
+        List<Restaurant> restaurantList = new ArrayList<>();
+        Cursor cursor = null;
+
+        try {
+            String[] columns = {
+                    DatabaseHelper.COLUMN_ID,
+                    DatabaseHelper.COLUMN_NAME,
+                    DatabaseHelper.COLUMN_ADDRESS,
+                    DatabaseHelper.COLUMN_LOCATION_ID,
+                    DatabaseHelper.COLUMN_CATE_ID,
+                    DatabaseHelper.COLUMN_IMAGE,
+                    DatabaseHelper.COLUMN_STAR,
+                    DatabaseHelper.COLUMN_HISTORY
+            };
+
+            // Sử dụng từ khóa LIKE để tìm kiếm tên gần đúng
+            String selection = DatabaseHelper.COLUMN_NAME + " LIKE ?";
+            String[] selectionArgs = {"%" + name + "%"}; // Tìm kiếm các chuỗi có chứa `name`
+
+            cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, columns, selection, selectionArgs, null, null, null);
+
+            // Duyệt qua kết quả và thêm vào danh sách
+            while (cursor != null && cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
+                String restaurantName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME));
+                String address = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ADDRESS));
+                int locationId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_ID));
+                int cateId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATE_ID));
+                String image = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IMAGE));
+                int star = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STAR));
+                int history = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_HISTORY));
+
+                restaurantList.add(new Restaurant(id, restaurantName, address, locationId, cateId, image, star, history));
+            }
+        } catch (Exception e) {
+            throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return restaurantList;
+    }
+
+
     // Cập nhật thông tin một quán ăn
     public void updateRestaurant(Restaurant restaurant) {
         ContentValues values = new ContentValues();
