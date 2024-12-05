@@ -9,12 +9,15 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -45,6 +48,7 @@ public class Home extends Fragment {
     private ViewPager2 viewPager;
     private RestaurantDatabase restaurantDatabase;
     private List<Restaurant> restaurantList;
+    EditText search_toolbar;
 
     private List<Integer> images = Arrays.asList(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4);
     private int currentPage = 0;
@@ -74,6 +78,9 @@ public class Home extends Fragment {
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
+        search_toolbar = view.findViewById(R.id.search_toolbar);
+
+
         restaurantDatabase = new RestaurantDatabase(getContext());
         restaurantDatabase.open();
         if (restaurantDatabase.getAllRestaurants().isEmpty()) {
@@ -86,9 +93,9 @@ public class Home extends Fragment {
         }
 
         // Lấy lại danh sách nhà hàng
-        restaurantList = restaurantDatabase.getAllRestaurants();
+        if(search_toolbar.getText().toString().isEmpty())
+            restaurantList = restaurantDatabase.getAllRestaurants();
 
-        restaurantDatabase.close();
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -144,6 +151,28 @@ public class Home extends Fragment {
                 showLocationAlertDialog();
             }
         });
+
+        search_toolbar.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                String query = search_toolbar.getText().toString().trim();
+
+                // Tìm kiếm trong cơ sở dữ liệu
+                restaurantList = restaurantDatabase.getRestaurantsByName(query); // Lấy danh sách kết quả tìm kiếm
+
+
+                // Cập nhật danh sách hiển thị trong Adapter
+                restaurantAdapter.updateData(restaurantList);
+
+                // Xử lý trường hợp không tìm thấy kết quả
+                if (restaurantList.isEmpty()) {
+                    Toast.makeText(getContext(), "Không tìm thấy nhà hàng nào!", Toast.LENGTH_SHORT).show();
+                }
+
+                return true;
+            }
+            return false;
+        });
+
 
 //        btnAddReview = view.findViewById(R.id.btnAddReview);
 //        btnAddReview.setOnClickListener(v -> replaceFragment(new AddReviewFragment()));
