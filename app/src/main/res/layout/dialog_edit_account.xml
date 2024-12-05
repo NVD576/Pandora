@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Container chứa nút đóng -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end">
+
+        <!-- Dấu X -->
+        <ImageView
+            android:id="@+id/close_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="end"
+            android:clickable="true"
+            android:contentDescription="Đóng"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_close"
+            tools:ignore="TouchTargetSizeCheck" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/titleAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="Chỉnh sửa tài khoản"
+        android:textColor="@color/darkPurple"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:id="@+id/toggle_container"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/toggle_background"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Thanh trượt -->
+        <View
+            android:id="@+id/toggle_slider"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/toggle_slider_background" />
+
+        <!-- Nhãn Admin -->
+        <TextView
+            android:id="@+id/admin_label"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:text="Admin"
+            android:textColor="@color/darkPurple"
+            android:textSize="16sp" />
+
+        <!-- Nhãn User -->
+        <TextView
+            android:id="@+id/user_label"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:text="User"
+            android:textColor="@color/darkPurple"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/deleteAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="Xóa tài khoản"
+        android:layout_marginTop="25dp"
+        android:textColor="@color/red"
+        android:textSize="20sp" />
+</LinearLayout>
