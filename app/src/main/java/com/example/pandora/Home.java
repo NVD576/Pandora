@@ -18,16 +18,13 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.User;
@@ -40,13 +37,10 @@ public class Home extends Fragment {
 
     ViewPager2 viewPager2;
     User user;
-    int userid;
     Button btnLocation;
     Button btnAddReview;
     Button btnReviewList;
     Button btnShare;
-    EditText search_toolbar;
-
     boolean isLogin = false;
     private RecyclerView recyclerView;
     private RestaurantAdapter restaurantAdapter;
@@ -71,7 +65,6 @@ public class Home extends Fragment {
 
     public Home() {
         // Required empty public constructor
-
     }
 
     @SuppressLint({"MissingInflatedId", "NotifyDataSetChanged"})
@@ -82,8 +75,6 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
-        userid = sharedPreferences.getInt("userid", -1);
-        search_toolbar= view.findViewById(R.id.search_toolbar);
 
         restaurantDatabase = new RestaurantDatabase(getContext());
         restaurantDatabase.open();
@@ -97,8 +88,7 @@ public class Home extends Fragment {
         }
 
         // Lấy lại danh sách nhà hàng
-        if(search_toolbar.getText().toString().isEmpty())
-            restaurantList = restaurantDatabase.getAllRestaurants();
+        restaurantList = restaurantDatabase.getAllRestaurants();
 
         restaurantDatabase.close();
         // Cấu hình RecyclerView
@@ -106,7 +96,7 @@ public class Home extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         restaurantAdapter = new RestaurantAdapter(restaurantList);
         recyclerView.setAdapter(restaurantAdapter);
-//        restaurantAdapter.notifyDataSetChanged();
+        restaurantAdapter.notifyDataSetChanged();
 
         // Xử lý sự kiện click
         restaurantAdapter.setOnItemClickListener(restaurant -> {
@@ -155,30 +145,6 @@ public class Home extends Fragment {
             public void onClick(View view) {
                 showLocationAlertDialog();
             }
-        });
-
-
-        search_toolbar.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                // Thực hiện hành động khi nhấn Enter (Done)
-                String query = search_toolbar.getText().toString().trim();
-                // Gửi query hoặc thực hiện tìm kiếm
-                RestaurantDatabase database= new RestaurantDatabase(getContext());
-                database.open();
-//                restaurantList.clear();
-                restaurantList = database.getRestaurantsByName(query);
-                database.close();
-                // Cập nhật danh sách hiển thị trong Adapter
-                restaurantAdapter.updateData(restaurantList);
-
-                // Xử lý trường hợp không tìm thấy kết quả
-                if (restaurantList.isEmpty()) {
-                    Toast.makeText(getContext(), "Không tìm thấy nhà hàng nào!", Toast.LENGTH_SHORT).show();
-                }
-//                performSearch(query);
-                return true;
-            }
-            return false;
         });
 
 //        btnAddReview = view.findViewById(R.id.btnAddReview);
