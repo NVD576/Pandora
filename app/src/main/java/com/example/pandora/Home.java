@@ -112,6 +112,7 @@ public class Home extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("restaurant_name", restaurant.getName());
             bundle.putInt("restaurant_rating", restaurant.getStar());
+            bundle.putInt("restaurant_id", restaurant.getId());
             nextFragment.setArguments(bundle);
 
             // Chuyển Fragment
@@ -184,11 +185,7 @@ public class Home extends Fragment {
 //        btnShare = view.findViewById(R.id.btnShare);
 //        btnShare.setOnClickListener(v -> replaceFragment(new ShareFragment()));
 
-        Bundle bundle = getArguments();
-//        if (bundle!=null)
-//        {
-//            isLogin = bundle.getBoolean("isLogin");
-//        }
+
         ImageView btnSave = view.findViewById(R.id.save);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
