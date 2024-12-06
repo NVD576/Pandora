@@ -160,6 +160,7 @@ public class Login extends AppCompatActivity {
                 UserDatabase db = new UserDatabase(Login.this); // Khởi tạo UserDatabase
                 db.open(); // Mở kết nối cơ sở dữ liệu
                 pw=hash(pw);
+
                 // Tìm người dùng theo tài khoản và mật khẩu
                 User user = db.getUserByUsernameAndPassword(userName, pw);
 
@@ -175,10 +176,7 @@ public class Login extends AppCompatActivity {
                     Log.e("Login", String.valueOf(user.isRole()));
                     // Đăng nhập thành công, chuyển sang màn hình tiếp theo
                     Intent myIntent = new Intent(Login.this, Lobby.class);
-                    myIntent.putExtra("isLogin", true);
-//                    Log.e("Login", "UserID before " +user.getId());
-                    myIntent.putExtra("userid", user.getId());
-//                    Log.e("Login", "UserID aft " +user.getId());
+
                     myIntent.putExtra("userName", user.getTaiKhoan());
                     myIntent.putExtra("user", user);
                     startActivity(myIntent);

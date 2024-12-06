@@ -92,7 +92,7 @@ public class RegisterInfomation extends AppCompatActivity {
                    Toast.makeText(getApplicationContext(),"Mật khẩu phải từ 6 kí tự trở lên",Toast.LENGTH_SHORT).show();
                    return;
                }
-               numberPhone= hash(numberPhone);
+               password= hash(password);
                User newUser = new User(userName, password, numberPhone);
                UserDatabase db = new UserDatabase(RegisterInfomation.this);
 
