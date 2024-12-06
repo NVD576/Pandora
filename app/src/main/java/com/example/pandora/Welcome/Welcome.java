@@ -53,6 +53,10 @@ public class Welcome extends AppCompatActivity {
             String pass= "123123";
             User admin= new User("duc", hash(pass),"1234567890", true);
             admin.setName("Admin");
+            admin.setRoleUser(true);
+            admin.setRoleCategory(true);
+            admin.setRoleRestaurant(true);
+            admin.setRoleReview(true);
 
             db.addUser(admin, getApplicationContext());
         }
