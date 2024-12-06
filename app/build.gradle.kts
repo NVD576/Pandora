@@ -75,6 +75,8 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.8")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+    implementation ("com.google.android.material:material:1.5.0")
+
 
 
 }

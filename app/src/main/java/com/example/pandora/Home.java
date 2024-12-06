@@ -80,6 +80,7 @@ public class Home extends Fragment {
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
         search_toolbar = view.findViewById(R.id.search_toolbar);
+        search_toolbar.requestFocus();
 
 
         restaurantDatabase = new RestaurantDatabase(getContext());
@@ -87,14 +88,14 @@ public class Home extends Fragment {
         if (restaurantDatabase.getAllRestaurants().isEmpty()) {
             // Thêm dữ liệu vào cơ sở dữ liệu
             restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", "", 4));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B",  "", 3));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C",  "", 5));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B", "", 3));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C", "", 5));
             restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", "", 1));
             restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", "", 2));
         }
 
         // Lấy lại danh sách nhà hàng
-        if(search_toolbar.getText().toString().isEmpty())
+        if (search_toolbar.getText().toString().isEmpty())
             restaurantList = restaurantDatabase.getAllRestaurants();
 
         // Cấu hình RecyclerView
@@ -118,8 +119,8 @@ public class Home extends Fragment {
             // Chuyển Fragment
             getParentFragmentManager().beginTransaction()
                     .setCustomAnimations(
-                            R.anim.fragment_enter,  // Khi fragment xuất hiện
-                            R.anim.fragment_exit    // Khi fragment rời đi
+                            R.anim.fade_in,  // Khi fragment xuất hiện
+                            R.anim.fade_out    // Khi fragment rời đi
                     )
                     .replace(R.id.fragment_container, nextFragment)
                     .addToBackStack(null)
@@ -151,6 +152,19 @@ public class Home extends Fragment {
             @Override
             public void onClick(View view) {
                 showLocationAlertDialog();
+            }
+        });
+
+        search_toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().beginTransaction()
+                        .setCustomAnimations(
+                                R.anim.fade_in,  // Khi fragment xuất hiện
+                                R.anim.fade_out   // Khi fragment biến mất
+                        )
+                        .replace(R.id.fragment_container, new Home())  // Replace current fragment with Home
+                        .commit();
             }
         });
 
@@ -190,12 +204,10 @@ public class Home extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isLogin)
-                {
+                if (isLogin) {
                     Intent myIntent = new Intent(requireContext(), SaveLocationReview.class);
                     startActivity(myIntent);
-                }
-                else {
+                } else {
                     showLoginAlertDialog();
                 }
             }
@@ -230,7 +242,7 @@ public class Home extends Fragment {
             dotsLayout.addView(dots[i], params);
         }
 
-        dots[0].setImageDrawable(ContextCompat.getDrawable( getContext(), R.drawable.dot_active)); // Chấm đầu tiên sáng
+        dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dot_active)); // Chấm đầu tiên sáng
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -285,6 +297,7 @@ public class Home extends Fragment {
         // Hiển thị hộp thoại
         alertDialog.show();
     }
+
     private void showLocationAlertDialog() {
         // Inflate custom layout
         LayoutInflater inflater = LayoutInflater.from(requireContext());

@@ -13,4 +13,8 @@
     <color name="yellow">#E9CE0A</color>
     <color name="gray">#B0B0B0</color>
     <color name="button_primary">#6200ea</color>
+    <color name="primaryDark">#37474F</color>
+    <color name="primaryText">#616161</color>
+    <color name="lightGray">#F5F5F5</color>
+
 </resources>

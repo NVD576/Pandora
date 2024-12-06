@@ -7,7 +7,7 @@
     android:background="@drawable/background_gradient"
     tools:context=".Home">
 
-    <!-- Thanh tìm kiếm -->
+    <!-- Thanh tìm kiếm (Search toolbar stays at the top) -->
     <LinearLayout
         android:id="@+id/search_toolbar_container"
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:background="@color/lavender_light"
         android:elevation="4dp"
         android:orientation="horizontal"
-        android:padding="8dp"> <!-- Tăng độ cao (z-index) để không bị đè -->
+        android:padding="8dp">
 
         <!-- Search bar -->
         <EditText
@@ -23,13 +23,13 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
             android:background="@drawable/search_background"
             android:drawableStart="@drawable/outline_search_24"
             android:gravity="center_vertical"
             android:hint="Tìm kiếm..."
+            android:imeOptions="actionDone"
             android:padding="8dp"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="@color/lavender_dark" />
 
@@ -44,7 +44,7 @@
             android:src="@drawable/outline_bookmark_add_24" />
     </LinearLayout>
 
-    <!-- Nội dung cuộn -->
+    <!-- Nội dung cuộn (Content Scroll) -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
