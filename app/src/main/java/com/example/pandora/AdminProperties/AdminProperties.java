@@ -43,10 +43,10 @@ public class AdminProperties extends AppCompatActivity {
         TextView btnListCategory = findViewById(R.id.listCategory);
 
         //Hiện quyền
-        if(user.isRoleUser()) btnListUser.setVisibility(View.GONE);
-        if(user.isRoleCategory()) btnListCategory.setVisibility(View.GONE);
-        if(user.isRoleRestaurant()) btnListRestaurant.setVisibility(View.GONE);
-        if(user.isRoleReview()) btnListReview.setVisibility(View.GONE);
+        if(user.isRoleUser()) btnListUser.setVisibility(View.VISIBLE);
+        if(user.isRoleCategory()) btnListCategory.setVisibility(View.VISIBLE);
+        if(user.isRoleRestaurant()) btnListRestaurant.setVisibility(View.VISIBLE);
+        if(user.isRoleReview()) btnListReview.setVisibility(View.VISIBLE);
 
         btnListUser.setOnClickListener(new View.OnClickListener() {
             @Override
