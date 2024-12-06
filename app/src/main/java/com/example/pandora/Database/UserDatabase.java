@@ -26,6 +26,7 @@ public class UserDatabase {
             DatabaseHelper.COLUMN_USER_ROLE_USER,
             DatabaseHelper.COLUMN_USER_ROLE_CATEGORY,
             DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT,
+            DatabaseHelper.COLUMN_USER_ROLE_REVIEW,
             DatabaseHelper.COLUMN_USER_IMAGE
     };
     public UserDatabase(Context context) {
@@ -79,6 +80,8 @@ public class UserDatabase {
         values.put(DatabaseHelper.COLUMN_USER_ROLE_USER, user.isRoleUser() ? 1 : 0);
         values.put(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY, user.isRoleCategory() ? 1 : 0);
         values.put(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT, user.isRoleRestaurant() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_REVIEW, user.isRoleReview() ? 1 : 0);
+
 
         // Thực hiện chèn và nhận lại ID tự động tăng
         long id = database.insert(DatabaseHelper.TABLE_USERS, null, values);
@@ -114,9 +117,10 @@ public class UserDatabase {
             boolean roleUser = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_USER)) == 1;
             boolean roleCategory = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY)) == 1;
             boolean roleRestaurant = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT)) == 1;
+            boolean roleReview = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_REVIEW)) == 1;
 
 
-            User user = new User(id, taiKhoan, pass, name, SDT, role, roleUser, roleCategory, roleRestaurant, image);
+            User user = new User(id, taiKhoan, pass, name, SDT, role, roleUser, roleCategory, roleRestaurant,roleReview, image);
             cursor.close();
             return user;
         }
@@ -184,6 +188,7 @@ public class UserDatabase {
         values.put(DatabaseHelper.COLUMN_USER_ROLE_USER, user.isRoleUser() ? 1 : 0);
         values.put(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY, user.isRoleCategory() ? 1 : 0);
         values.put(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT, user.isRoleRestaurant() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_REVIEW, user.isRoleReview() ? 1 : 0);
 
         // Điều kiện để xác định người dùng cần cập nhật (theo ID)
         String whereClause = DatabaseHelper.COLUMN_USER_ID + " = ?";
@@ -214,9 +219,11 @@ public class UserDatabase {
                 boolean roleUser = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_USER)) == 1;
                 boolean roleCategory = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY)) == 1;
                 boolean roleRestaurant = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT)) == 1;
+                boolean roleReview = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_REVIEW)) == 1;
 
 
-                User user = new User(id, taiKhoan, password, name, SDT, role, roleUser, roleCategory, roleRestaurant, image);
+
+                User user = new User(id, taiKhoan, password, name, SDT, role, roleUser, roleCategory, roleRestaurant,roleReview, image);
                 userList.add(user);
             }
             cursor.close();

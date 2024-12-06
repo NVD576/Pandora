@@ -32,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USER_ROLE_USER = "roleUser";
     public static final String COLUMN_USER_ROLE_CATEGORY = "roleCategory";
     public static final String COLUMN_USER_ROLE_RESTAURANT = "roleRestaurant";
+    public static final String COLUMN_USER_ROLE_REVIEW = "roleReview";
     public static final String COLUMN_USER_IMAGE = "image";
 
     // Cấu trúc bảng reviews
@@ -65,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_USER_ROLE_USER + " INTEGER, "  // Add roleUser column
             + COLUMN_USER_ROLE_CATEGORY + " INTEGER, " // Add roleCategory column
             + COLUMN_USER_ROLE_RESTAURANT + " INTEGER, "
+            + COLUMN_USER_ROLE_REVIEW + " INTEGER, "
             + COLUMN_USER_IMAGE + " TEXT)";
 
     // Câu lệnh tạo bảng reviews

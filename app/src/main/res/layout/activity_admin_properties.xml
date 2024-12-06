@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Xem danh sách User"
+            android:visibility="gone"
             android:drawableStart="@drawable/baseline_person_24"
             android:drawablePadding="12dp"
             android:padding="16dp"
@@ -32,10 +33,25 @@
             android:layout_marginBottom="12dp" />
 
         <TextView
+            android:id="@+id/listCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Xem danh sách loại quán ăn"
+            android:drawableStart="@drawable/baseline_restaurant_24"
+            android:drawablePadding="12dp"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@drawable/item_background"
+            android:layout_marginBottom="12dp" />
+        <TextView
             android:id="@+id/listRestaurant"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Xem danh sách quán ăn"
+            android:visibility="gone"
             android:drawableStart="@drawable/baseline_restaurant_24"
             android:drawablePadding="12dp"
             android:padding="16dp"
@@ -46,10 +62,11 @@
             android:layout_marginBottom="12dp" />
 
         <TextView
-            android:id="@+id/Decentralization"
+            android:id="@+id/listReview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Phân quyền User"
+            android:visibility="gone"
+            android:text="Xem danh sách đánh giá, bình luận"
             android:drawableStart="@drawable/baseline_admin_panel_settings_24"
             android:drawablePadding="12dp"
             android:padding="16dp"

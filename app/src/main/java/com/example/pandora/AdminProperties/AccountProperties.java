@@ -1,6 +1,7 @@
 package com.example.pandora.AdminProperties;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -37,6 +38,8 @@ public class AccountProperties extends AppCompatActivity {
     RelativeLayout toggle_container;
     int userid;
     UserDatabase db;
+    CheckBox cbQlUser, cbQlCategory, cbQlRestaurant, cbQlReview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,7 @@ public class AccountProperties extends AppCompatActivity {
 
     }
 
+    @SuppressLint("MissingInflatedId")
     private void showEditAccountDialog(User user) {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_edit_account, null);
@@ -81,6 +85,35 @@ public class AccountProperties extends AppCompatActivity {
         toggle_container = dialogView.findViewById(R.id.toggle_container);
         titleAlert =dialogView.findViewById(R.id.titleAlert);
         isAdmin=user.isRole();
+
+        cbQlUser= dialogView.findViewById(R.id.cbQlUser);
+        cbQlCategory= dialogView.findViewById(R.id.cbQlCategory);
+        cbQlRestaurant= dialogView.findViewById(R.id.cbQlRestaurant);
+        cbQlReview= dialogView.findViewById(R.id.cbQlReview);
+
+// Thiết lập trạng thái ban đầu của các CheckBox
+        cbQlUser.setChecked(user.isRoleUser());
+        cbQlCategory.setChecked(user.isRoleCategory());
+        cbQlRestaurant.setChecked(user.isRoleRestaurant());
+        cbQlReview.setChecked(user.isRoleReview());
+
+// Lắng nghe sự kiện thay đổi trạng thái của CheckBox
+        cbQlUser.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            user.setRoleUser(isChecked);
+        });
+
+        cbQlCategory.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            user.setRoleCategory(isChecked);
+        });
+
+        cbQlRestaurant.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            user.setRoleRestaurant(isChecked);
+        });
+
+        cbQlReview.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            user.setRoleReview(isChecked);
+        });
+
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
@@ -98,19 +131,26 @@ public class AccountProperties extends AppCompatActivity {
                 toggle_container.setVisibility(View.GONE);
                 titleAlert.setText("Không thể chỉnh sửa");
             }else {
+
                 deleteAccount.setVisibility(View.VISIBLE);
-                for (int i = 0; i < listCheckBox.getChildCount(); i++) {
-                    View child = listCheckBox.getChildAt(i);
-                    if (child instanceof CheckBox) { // Kiểm tra nếu là CheckBox
-                        child.setEnabled(true); // Vô hiệu hóa CheckBox
+                if(isAdmin){
+                    for (int i = 0; i < listCheckBox.getChildCount(); i++) {
+                        View child = listCheckBox.getChildAt(i);
+                        if (child instanceof CheckBox) { // Kiểm tra nếu là CheckBox
+                            child.setEnabled(true);
+                        }
                     }
                 }
+                else {
+                    listCheckBox.setVisibility(View.GONE);
+                }
+
                 toggle_container.setVisibility(View.VISIBLE);
                 titleAlert.setText("Chỉnh sửa tài khoản");
             }
         }else {
             if (isAdmin ) {
-                // Người dùng có role == true (Admin), không thể xóa hoặc sửa quyền của chính mình
+                // Người dùng có role == true (Admin), không thể xóa hoặc sửa quyền
                 deleteAccount.setVisibility(View.GONE); // Không thể xóa
                 for (int i = 0; i < listCheckBox.getChildCount(); i++) {
                     View child = listCheckBox.getChildAt(i);
@@ -129,17 +169,7 @@ public class AccountProperties extends AppCompatActivity {
             }
         }
 
-//        else{
-//            listCheckBox.setEnabled(true);
-//        }
 
-
-
-//        if (isAdmin) {
-//            deleteAccount.setVisibility(View.VISIBLE);
-//        } else {
-//
-//        }
         // Đặt sự kiện cho nút đóng
         ImageView btnClose = dialogView.findViewById(R.id.close_button);
         btnClose.setOnClickListener(v -> {
@@ -150,7 +180,8 @@ public class AccountProperties extends AppCompatActivity {
             db.updateUser(user);
             db.close();
             alertDialog.dismiss();
-            recreate();
+            recyclerView.getAdapter().notifyDataSetChanged();
+
         });
 
         // Thêm logic chuyển đổi toggle
@@ -172,7 +203,6 @@ public class AccountProperties extends AppCompatActivity {
             user.setRole(isAdmin);
             listCheckBox.setVisibility(View.VISIBLE);
 
-
         });
 
         userLabel.setOnClickListener(v -> {
@@ -181,6 +211,10 @@ public class AccountProperties extends AppCompatActivity {
             isAdmin = false;
             user.setRole(isAdmin);
             listCheckBox.setVisibility(View.GONE);
+            user.setRoleUser(false);
+            user.setRoleRestaurant(false);
+            user.setRoleCategory(false);
+            user.setRoleReview(false);
         });
 
         // Đặt sự kiện cho nút Xóa tài khoản

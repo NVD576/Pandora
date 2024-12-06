@@ -12,6 +12,29 @@ public class User implements Serializable {
     boolean roleUser= false;
     boolean roleCategory= false;
     boolean roleRestaurant= false;
+    boolean roleReview= false;
+
+    public boolean isRoleReview() {
+        return roleReview;
+    }
+
+    public User(int id, String taiKhoan, String password, String name, String SDT, boolean role, boolean roleUser, boolean roleCategory, boolean roleRestaurant, boolean roleReview, String image) {
+        this.id = id;
+        this.taiKhoan = taiKhoan;
+        this.password = password;
+        this.name = name;
+        this.SDT = SDT;
+        this.role = role;
+        this.roleUser = roleUser;
+        this.roleCategory = roleCategory;
+        this.roleRestaurant = roleRestaurant;
+        this.roleReview = roleReview;
+        this.image = image;
+    }
+
+    public void setRoleReview(boolean roleReview) {
+        this.roleReview = roleReview;
+    }
 
     private String image;
 

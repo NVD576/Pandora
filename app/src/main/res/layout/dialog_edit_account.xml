@@ -93,7 +93,7 @@
         android:orientation="vertical">
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/cbQlUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -103,7 +103,7 @@
             android:textColor="#E1BEE7" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/cbQlCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -111,9 +111,18 @@
             android:background="@color/button_primary"
             android:text="Quản lý danh mục quán ăn "
             android:textColor="#E1BEE7" />
+        <CheckBox
+            android:id="@+id/cbQlRestaurant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:checked="true"
+            android:background="@color/button_primary"
+            android:text="Quản lý quán ăn "
+            android:textColor="#E1BEE7" />
 
         <CheckBox
-            android:id="@+id/checkBox3"
+            android:id="@+id/cbQlReview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
