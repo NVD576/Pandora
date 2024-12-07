@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:openDrawer="start"
     tools:context=".Main.Lobby"
-    android:background="@color/black">
+    android:background="@color/white">
 
     <!-- ViewPager2 -->
     <androidx.viewpager2.widget.ViewPager2
@@ -25,12 +25,17 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/bottom_nav_gradient"
+        app:itemIconSize="28dp"
+        app:itemTextAppearanceActive="@style/ModernActiveTextStyle"
+        app:itemTextAppearanceInactive="@style/ModernInactiveTextStyle"
+        app:itemIconTint="@drawable/bottom_nav_icon_tint"
+        app:itemTextColor="@drawable/bottom_nav_text_color"
+        app:menu="@menu/bottom_nav_menu"
+        android:elevation="16dp"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/lavender_light"
-        app:itemIconTint="@color/lavender_dark"
-        app:itemTextColor="@color/lavender_dark"
-        app:menu="@menu/bottom_nav_menu"
-        android:elevation="8dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

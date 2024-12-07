@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="Thông báo"
         android:textSize="20sp"
-        android:textColor="@color/darkPurple"
+        android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:layout_marginTop="10dp"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:text="Bạn cần đăng nhập để sử dụng tính năng này."
         android:textSize="16sp"
-        android:textColor="@color/darkPurple"
+        android:textColor="@color/black"
         android:gravity="center"
         android:layout_marginVertical="15dp"/>
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/button_primary"
         android:text="OK"
-        android:textColor="@color/darkPurple"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="15dp"/>

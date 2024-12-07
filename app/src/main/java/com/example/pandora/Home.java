@@ -28,13 +28,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pandora.Adapter.RestaurantAdapter;
-import com.example.pandora.Class.Location;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.User;
-import com.example.pandora.Database.LocationDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -84,15 +81,16 @@ public class Home extends Fragment {
 
         search_toolbar = view.findViewById(R.id.search_toolbar);
 
+
         restaurantDatabase = new RestaurantDatabase(getContext());
         restaurantDatabase.open();
         if (restaurantDatabase.getAllRestaurants().isEmpty()) {
             // Thêm dữ liệu vào cơ sở dữ liệu
             restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", 1, 4));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B",  2, 3));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C",  1, 5));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", 2, 1));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", 1, 2));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B",  1, 3));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C",  2, 5));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", 1, 1));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", 2, 2));
         }
 
         // Lấy lại danh sách nhà hàng
@@ -118,8 +116,6 @@ public class Home extends Fragment {
             nextFragment.setArguments(bundle);
 
             // Chuyển Fragment
-            LinearLayout search_toolbar_container = view.findViewById(R.id.search_toolbar_container);
-            search_toolbar_container.setVisibility(View.GONE);
             getParentFragmentManager().beginTransaction()
                     .setCustomAnimations(
                             R.anim.fragment_enter,  // Khi fragment xuất hiện
@@ -269,7 +265,6 @@ public class Home extends Fragment {
         transaction.commit();
     }
 
-    //Thông báo cần đăng nhập
     private void showLoginAlertDialog() {
         // Inflate custom layout
         LayoutInflater inflater = LayoutInflater.from(requireContext());
@@ -290,7 +285,6 @@ public class Home extends Fragment {
         // Hiển thị hộp thoại
         alertDialog.show();
     }
-
     private void showLocationAlertDialog() {
         // Inflate custom layout
         LayoutInflater inflater = LayoutInflater.from(requireContext());
@@ -307,26 +301,11 @@ public class Home extends Fragment {
         Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
         Spinner spinnerLocation = dialogView.findViewById(R.id.spinnerLocation);
 
-        LocationDatabase db = new LocationDatabase(requireContext());
-        db.open();
-        if(db.isTableEmpty()){
-            db.addLocation(new Location("Hồ chí minh"));
-            db.addLocation(new Location("Hà Nội"));
-        }
-        List<Location> locations = db.getAllLocations();
-        db.close();
-
-        // Tạo danh sách tên địa điểm từ danh sách Location
-        List<String> locationNames = new ArrayList<>();
-        locationNames.add("Tất cả");
-        for (Location location : locations) {
-            locationNames.add(location.getName());
-        }
         // Use the custom spinner item layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
-                R.layout.spinner_item, // Layout tùy chỉnh cho spinner
-                locationNames // Danh sách tên địa điểm
+                R.array.location_array,
+                R.layout.spinner_item  // Set the custom layout here
         );
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);  // Default dropdown view
         spinnerLocation.setAdapter(adapter);
@@ -367,15 +346,6 @@ public class Home extends Fragment {
                         btnLocation.setText(selectedLocation[0]);  // Cập nhật text của nút
                     }
                 }
-
-                if(selectedLocation[0].equals("Tất cả")){
-                    restaurantList =restaurantDatabase.getAllRestaurants();
-                }
-                else{
-                    restaurantList=restaurantDatabase.getRestaurantsByLocationName(selectedLocation[0]);
-                }
-                restaurantAdapter.updateData(restaurantList);
-
                 alertDialog.dismiss();
             }
         });

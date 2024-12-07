@@ -9,18 +9,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.pandora.Class.User;
+import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.Login.Login;
 import com.example.pandora.Main.Lobby;
 import com.example.pandora.R;
-import com.example.pandora.Class.User;
-import com.example.pandora.Database.UserDatabase;
-import com.example.pandora.Trash.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -102,6 +100,7 @@ public class RegisterInfomation extends AppCompatActivity {
 
 
                if(db.addUser(newUser, RegisterInfomation.this)){
+                   Toast.makeText(getApplicationContext(),"Đăng kí thành công",Toast.LENGTH_SHORT).show();
                    Intent myIntent = new Intent(RegisterInfomation.this, Login.class);
                    startActivity(myIntent);
                }

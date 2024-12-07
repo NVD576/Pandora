@@ -16,7 +16,7 @@
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="Chọn địa điểm"
-        android:textColor="@color/darkPurple"
+        android:textColor="@color/black"
         android:textSize="20sp" />
 
     <!-- Spinner cho địa điểm -->
@@ -49,7 +49,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_primary"
             android:text="Lưu"
-            android:textColor="@color/darkPurple"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <Button
@@ -62,7 +62,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_primary"
             android:text="Hủy"
-            android:textColor="@color/darkPurple"
+            android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>
 

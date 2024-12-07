@@ -18,7 +18,7 @@
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="Ngôn ngữ"
-        android:textColor="@color/darkPurple"
+        android:textColor="@color/black"
         android:textSize="20sp" />
 
     <!-- Nội dung -->
@@ -28,7 +28,7 @@
         android:checked="true"
         android:minHeight="48dp"
         android:layout_gravity="left"
-        android:textColor="@color/darkPurple"
+        android:textColor="@color/black"
         android:text="Tiếng Việt" />
 
     <Button
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/button_primary"
         android:text="Đồng ý"
-        android:textColor="@color/darkPurple"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:layout_marginTop="10dp" />
 

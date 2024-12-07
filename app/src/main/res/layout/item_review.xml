@@ -16,7 +16,7 @@
         android:text="Tên nhà hàng"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/lavender_dark"
+        android:textColor="@color/black"
         android:layout_marginBottom="2dp" /> <!-- Khoảng cách dưới tên -->
 
     <!-- Bài đánh giá -->
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Bài đánh giá"
-        android:textColor="@color/lavender_dark"
+        android:textColor="@color/black"
         android:textSize="14sp"
         android:layout_marginBottom="8dp" /> <!-- Khoảng cách dưới bài đánh giá -->
     <RatingBar

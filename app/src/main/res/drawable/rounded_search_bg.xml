@@ -1,0 +1,7 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/white"/>
+    <corners android:radius="16dp"/> <!-- Bo góc lớn cho EditText -->
+    <stroke
+        android:color="@color/gray"
+        android:width="1dp"/> <!-- Viền xung quanh EditText -->
+</shape>
