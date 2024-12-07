@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -63,6 +64,7 @@ public class Lobby extends AppCompatActivity {
                     return true;
                 }
                 if (item.getItemId() == R.id.profile) {
+
                     viewPager2.setCurrentItem(1);
                     return true;
                 }

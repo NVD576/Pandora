@@ -9,6 +9,9 @@ public class Location {
         this.name = name;
     }
 
+    public Location(String name) {
+        this.name = name;
+    }
     // Getters và setters
 
     public int getId() {

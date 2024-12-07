@@ -23,31 +23,13 @@ public class Restaurant {
         this.history = history;
     }
 
-    public Restaurant(int id, String name, String image, int star) {
-        this.id = id;
+
+
+
+    public Restaurant(String name, int locationid, int star) {
         this.name = name;
-        this.image = image;
+        this.locationid = locationid;
         this.star = star;
-    }
-
-    public Restaurant(String name, String image, int star) {
-        this.name = name;
-        this.image = image;
-        this.star = star;
-    }
-
-
-    // Constructor đầy đủ (có id)
-    public Restaurant(int id, String name, String imageResId) {
-        this.id = id;
-        this.name = name;
-        this.image = imageResId;
-    }
-
-    // Constructor không có id
-    public Restaurant(String name, String imageResId) {
-        this.name = name;
-        this.image = imageResId;
     }
 
     public int getHistory() {

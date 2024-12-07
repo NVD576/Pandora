@@ -1,6 +1,7 @@
 package com.example.pandora.Welcome;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
@@ -48,7 +49,11 @@ public class Welcome extends AppCompatActivity {
 
         UserDatabase db = new UserDatabase(Welcome.this); // Khởi tạo UserDatabase
         db.open(); // Mở kết nối cơ sở dữ liệu
-
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if(db.isUserTableEmpty())
+            editor.putBoolean("isLogin", false);
+        editor.apply();
         if(db.isUserTableEmpty()){
             String pass= "123123";
             User admin= new User("duc", hash(pass),"1234567890", true);

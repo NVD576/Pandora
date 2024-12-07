@@ -44,6 +44,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_REVIEW_DATE = "date";
     public static final String COLUMN_REVIEW_RATING = "rating";
 
+    // Cấu trúc bảng locations
+    public static final String TABLE_LOCATIONS = "locations";
+    public static final String COLUMN_LOCATION_LOCATION_ID = "id";
+    public static final String COLUMN_LOCATION_LOCATION_NAME = "name";
+
+
     // Câu lệnh tạo bảng restaurants
     private static final String CREATE_TABLE_RESTAURANTS = "CREATE TABLE " + TABLE_RESTAURANTS + " ("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -80,6 +86,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "FOREIGN KEY(" + COLUMN_REVIEW_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + "), "
             + "FOREIGN KEY(" + COLUMN_REVIEW_RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + COLUMN_ID + "))";
 
+
+
+    // Câu lệnh tạo bảng locations
+    private static final String CREATE_TABLE_LOCATIONS = "CREATE TABLE " + TABLE_LOCATIONS + " ("
+            + COLUMN_LOCATION_LOCATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_LOCATION_LOCATION_NAME + " TEXT)";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -89,6 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_RESTAURANTS);
         db.execSQL(CREATE_TABLE_USERS);
         db.execSQL(CREATE_TABLE_REVIEWS); // Tạo bảng reviews
+        db.execSQL(CREATE_TABLE_LOCATIONS);
     }
 
     @Override

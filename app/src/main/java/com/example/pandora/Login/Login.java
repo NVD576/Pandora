@@ -173,7 +173,7 @@ public class Login extends AppCompatActivity {
                     editor.putInt("userid", user.getId());
                     editor.putBoolean("isLogin", true);
                     editor.apply();
-                    Log.e("Login", String.valueOf(user.isRole()));
+
                     // Đăng nhập thành công, chuyển sang màn hình tiếp theo
                     Intent myIntent = new Intent(Login.this, Lobby.class);
 

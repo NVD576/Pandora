@@ -7,33 +7,33 @@
     android:background="@drawable/background_gradient"
     tools:context=".Home">
 
-    <!-- Thanh tìm kiếm -->
     <LinearLayout
         android:id="@+id/search_toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lavender_light"
-        android:elevation="4dp"
         android:orientation="horizontal"
+
         android:padding="8dp"> <!-- Tăng độ cao (z-index) để không bị đè -->
 
         <!-- Search bar -->
+
+        <!-- Save icon -->
         <EditText
             android:id="@+id/search_toolbar"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
             android:background="@drawable/search_background"
             android:drawableStart="@drawable/outline_search_24"
             android:gravity="center_vertical"
             android:hint="Tìm kiếm..."
+            android:imeOptions="actionDone"
             android:padding="8dp"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="@color/lavender_dark" />
 
-        <!-- Save icon -->
         <ImageView
             android:id="@+id/save"
             android:layout_width="wrap_content"
@@ -44,7 +44,6 @@
             android:src="@drawable/outline_bookmark_add_24" />
     </LinearLayout>
 
-    <!-- Nội dung cuộn -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -56,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <!-- Thanh tìm kiếm -->
 
             <!-- ViewPager2 để hiển thị hình ảnh -->
             <androidx.viewpager2.widget.ViewPager2
@@ -133,6 +133,7 @@
                 android:background="@drawable/widget_background"
                 android:padding="10dp"
                 tools:listitem="@layout/item_review" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>
