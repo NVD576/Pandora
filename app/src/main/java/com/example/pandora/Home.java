@@ -28,10 +28,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pandora.Adapter.RestaurantAdapter;
+import com.example.pandora.Class.Location;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.User;
+import com.example.pandora.Database.LocationDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
+import com.example.pandora.Main.SearchInfo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -93,6 +97,16 @@ public class Home extends Fragment {
             restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", 2, 2));
         }
 
+        search_toolbar.requestFocus();
+
+        View searchClick = view.findViewById(R.id.searchClick);
+        searchClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(requireContext(), SearchInfo.class);
+                startActivity(myIntent);
+            }
+        });
         // Lấy lại danh sách nhà hàng
         if(search_toolbar.getText().toString().isEmpty())
             restaurantList = restaurantDatabase.getAllRestaurants();
@@ -118,8 +132,8 @@ public class Home extends Fragment {
             // Chuyển Fragment
             getParentFragmentManager().beginTransaction()
                     .setCustomAnimations(
-                            R.anim.fragment_enter,  // Khi fragment xuất hiện
-                            R.anim.fragment_exit    // Khi fragment rời đi
+                            R.anim.fade_in,  // Khi fragment xuất hiện
+                            R.anim.fade_out    // Khi fragment rời đi
                     )
                     .replace(R.id.fragment_container, nextFragment)
                     .addToBackStack(null)
@@ -154,26 +168,26 @@ public class Home extends Fragment {
             }
         });
 
-        search_toolbar.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                String query = search_toolbar.getText().toString().trim();
-
-                // Tìm kiếm trong cơ sở dữ liệu
-                restaurantList = restaurantDatabase.getRestaurantsByName(query); // Lấy danh sách kết quả tìm kiếm
-
-
-                // Cập nhật danh sách hiển thị trong Adapter
-                restaurantAdapter.updateData(restaurantList);
-
-                // Xử lý trường hợp không tìm thấy kết quả
-                if (restaurantList.isEmpty()) {
-                    Toast.makeText(getContext(), "Không tìm thấy nhà hàng nào!", Toast.LENGTH_SHORT).show();
-                }
-
-                return true;
-            }
-            return false;
-        });
+//        search_toolbar.setOnEditorActionListener((v, actionId, event) -> {
+//            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                String query = search_toolbar.getText().toString().trim();
+//
+//                // Tìm kiếm trong cơ sở dữ liệu
+//                restaurantList = restaurantDatabase.getRestaurantsByName(query); // Lấy danh sách kết quả tìm kiếm
+//
+//
+//                // Cập nhật danh sách hiển thị trong Adapter
+//                restaurantAdapter.updateData(restaurantList);
+//
+//                // Xử lý trường hợp không tìm thấy kết quả
+//                if (restaurantList.isEmpty()) {
+//                    Toast.makeText(getContext(), "Không tìm thấy nhà hàng nào!", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                return true;
+//            }
+//            return false;
+//        });
 
 
 //        btnAddReview = view.findViewById(R.id.btnAddReview);
@@ -186,20 +200,7 @@ public class Home extends Fragment {
 //        btnShare.setOnClickListener(v -> replaceFragment(new ShareFragment()));
 
 
-        ImageView btnSave = view.findViewById(R.id.save);
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isLogin)
-                {
-                    Intent myIntent = new Intent(requireContext(), SaveLocationReview.class);
-                    startActivity(myIntent);
-                }
-                else {
-                    showLoginAlertDialog();
-                }
-            }
-        });
+
 
         return view;
     }
@@ -301,11 +302,25 @@ public class Home extends Fragment {
         Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
         Spinner spinnerLocation = dialogView.findViewById(R.id.spinnerLocation);
 
+        LocationDatabase database= new LocationDatabase(getContext());
+        database.open();
+        if(database.isTableEmpty()){
+            database.addLocation(new Location("Hồ Chí Minh"));
+            database.addLocation(new Location("Hà Nội"));
+        }
+        List<Location> lc= database.getAllLocations();
+        database.close();
+
+        List<String> location= new ArrayList<>();
+        location.add("Tất cả");
+        for (Location a: lc){
+            location.add(a.getName());
+        }
         // Use the custom spinner item layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 requireContext(),
-                R.array.location_array,
-                R.layout.spinner_item  // Set the custom layout here
+                R.layout.spinner_item,// Set the custom layout here
+                location
         );
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);  // Default dropdown view
         spinnerLocation.setAdapter(adapter);
@@ -346,6 +361,12 @@ public class Home extends Fragment {
                         btnLocation.setText(selectedLocation[0]);  // Cập nhật text của nút
                     }
                 }
+                if(selectedLocation[0].equals("Tất cả")){
+                    restaurantList=restaurantDatabase.getAllRestaurants();
+                }else{
+                    restaurantList=restaurantDatabase.getRestaurantsByLocationName(selectedLocation[0]);
+                }
+                restaurantAdapter.updateData(restaurantList);
                 alertDialog.dismiss();
             }
         });

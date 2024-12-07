@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pandora.Adapter.RestaurantAdapter;
 import com.example.pandora.Class.Restaurant;
+import com.example.pandora.Database.RestaurantDatabase;
+import com.example.pandora.DetailRestaurantFragment;
 import com.example.pandora.R;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ public class SearchInfo extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<Restaurant> restaurantList;
-    private RestaurantAdapter adapter;
+    private RestaurantAdapter restaurantAdapter;
     private EditText searchTool;
 
     @Override
@@ -35,10 +37,10 @@ public class SearchInfo extends AppCompatActivity {
 
         // Initialize the restaurant list
         restaurantList = new ArrayList<>();
-        restaurantList.add(new Restaurant("A", 1, 4));
-        restaurantList.add(new Restaurant("B", 1, 1));
-        restaurantList.add(new Restaurant("C", 2, 4));
-        restaurantList.add(new Restaurant("D", 2, 2));
+        RestaurantDatabase restaurantDatabase= new RestaurantDatabase(this);
+        restaurantDatabase.open();
+        restaurantList=restaurantDatabase.getAllRestaurants();
+        restaurantDatabase.close();
 
         // Set up the EditText search tool
         searchTool = findViewById(R.id.search_toolbar);
@@ -65,8 +67,31 @@ public class SearchInfo extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new RestaurantAdapter(restaurantList);
-        recyclerView.setAdapter(adapter);
+        restaurantAdapter = new RestaurantAdapter(restaurantList);
+        recyclerView.setAdapter(restaurantAdapter);
+        restaurantAdapter.notifyDataSetChanged();
+
+        // Xử lý sự kiện click
+        restaurantAdapter.setOnItemClickListener(restaurant -> {
+            DetailRestaurantFragment nextFragment = new DetailRestaurantFragment();
+
+            // Truyền dữ liệu qua Bundle
+            Bundle bundle = new Bundle();
+            bundle.putString("restaurant_name", restaurant.getName());
+            bundle.putInt("restaurant_rating", restaurant.getStar());
+            bundle.putInt("restaurant_id", restaurant.getId());
+            nextFragment.setArguments(bundle);
+
+            // Chuyển Fragment
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(
+                            R.anim.fade_in,  // Khi fragment xuất hiện
+                            R.anim.fade_out    // Khi fragment rời đi
+                    )
+                    .replace(R.id.main, nextFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
     }
 
     private void filterList(String query) {
@@ -84,7 +109,7 @@ public class SearchInfo extends AppCompatActivity {
         if (filteredList.isEmpty()) {
             Toast.makeText(this, "Không tìm thấy dữ liệu", Toast.LENGTH_SHORT).show();
         } else {
-            adapter.setFilteredList(filteredList);
+            restaurantAdapter.setFilteredList(filteredList);
         }
     }
 
