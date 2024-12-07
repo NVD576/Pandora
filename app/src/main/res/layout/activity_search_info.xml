@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_search_bg"
+    tools:context=".Main.SearchInfo">
+
+    <!-- Search Toolbar -->
+    <LinearLayout
+        android:id="@+id/search_toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/search_bar_background"
+        android:elevation="10dp"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Search Bar -->
+        <LinearLayout
+            android:layout_marginTop="35dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
+
+            <!-- EditText for Search -->
+            <EditText
+                android:id="@+id/search_toolbar"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_search_bg"
+                android:drawableStart="@drawable/outline_search_24"
+                android:drawablePadding="15dp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center_vertical"
+                android:hint="Tìm kiếm..."
+                android:imeOptions="actionDone"
+                android:padding="12dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp"
+                android:transitionName="search_input" />
+
+        </LinearLayout>
+
+        <!-- Search Suggestions TextView -->
+        <TextView
+            android:id="@+id/search_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingEnd="16dp"
+            android:text="Gợi ý: Tìm các sản phẩm hoặc dịch vụ"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            android:transitionName="hint_text"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- RecyclerView to show search results -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_toolbar_container" />
+</androidx.constraintlayout.widget.ConstraintLayout>

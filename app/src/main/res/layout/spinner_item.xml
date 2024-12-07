@@ -5,7 +5,7 @@
     android:padding="10dp"
     android:gravity="center_vertical"
     android:textSize="16sp"
-    android:textColor="@color/darkPurple"
+    android:textColor="@color/black"
     android:ellipsize="end"
     android:singleLine="true"
     android:background="@android:color/transparent"/> <!-- Không có nền -->

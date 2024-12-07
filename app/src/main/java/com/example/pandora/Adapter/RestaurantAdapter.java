@@ -29,6 +29,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         void onItemClick(Restaurant restaurant);
     }
 
+    public void setFilteredList(List<Restaurant> filteredList){
+        this.restaurantList = filteredList;
+        notifyDataSetChanged();
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }

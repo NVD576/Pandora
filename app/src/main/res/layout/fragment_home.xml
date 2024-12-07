@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,41 +8,57 @@
     android:background="@drawable/background_gradient"
     tools:context=".Home">
 
-    <!-- Thanh tìm kiếm (Search toolbar stays at the top) -->
+
     <LinearLayout
         android:id="@+id/search_toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/lavender_light"
-        android:elevation="4dp"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_alignParentTop="true"
+        android:background="@drawable/search_bar_background"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:padding="5dp">
 
-        <!-- Search bar -->
-        <EditText
-            android:id="@+id/search_toolbar"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@drawable/search_background"
-            android:drawableStart="@drawable/outline_search_24"
+        <!-- Thanh tìm kiếm -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:hint="Tìm kiếm..."
-            android:imeOptions="actionDone"
-            android:padding="8dp"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textColorHint="@color/lavender_dark" />
+            android:orientation="horizontal">
 
-        <!-- Save icon -->
-        <ImageView
-            android:id="@+id/save"
+            <!-- EditText cho thanh tìm kiếm -->
+            <EditText
+                android:id="@+id/search_toolbar"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_search_bg"
+                android:drawableStart="@drawable/outline_search_24"
+                android:drawablePadding="15dp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center_vertical"
+                android:hint="Tìm kiếm..."
+                android:imeOptions="actionDone"
+                android:padding="12dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp"
+                android:transitionName="search_input" />
+
+        </LinearLayout>
+
+        <!-- Gợi ý tìm kiếm khi nhập -->
+        <TextView
+            android:id="@+id/search_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="8dp"
-            android:contentDescription="@string/bookmark_icon"
-            android:src="@drawable/outline_bookmark_add_24" />
+            android:layout_marginTop="5dp"
+            android:text="Gợi ý: Tìm các sản phẩm hoặc dịch vụ"
+            android:textColor="@color/softYellow"
+            android:textSize="14sp"
+            android:transitionName="hint_text"
+            android:visibility="gone" />
     </LinearLayout>
 
     <!-- Nội dung cuộn (Content Scroll) -->
@@ -62,6 +79,7 @@
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:layout_marginTop="7dp"
                 android:padding="10dp" />
 
             <!-- Layout cho các chấm dưới ViewPager -->
@@ -82,7 +100,6 @@
                 android:gravity="center"
                 android:rowCount="2">
 
-                <!-- Các nút khác nhau -->
                 <Button
                     android:id="@+id/btnAddReview"
                     android:layout_width="0dp"
@@ -91,7 +108,7 @@
                     android:layout_margin="8dp"
                     android:background="@drawable/rounded_button"
                     android:text="Thêm Đánh Giá"
-                    android:textColor="@color/darkPurple" />
+                    android:textColor="@color/white" /> <!-- Màu chữ sáng -->
 
                 <Button
                     android:id="@+id/btnReviewList"
@@ -101,7 +118,7 @@
                     android:layout_margin="8dp"
                     android:background="@drawable/rounded_button"
                     android:text="Danh Sách Đánh Giá"
-                    android:textColor="@color/darkPurple" />
+                    android:textColor="@color/white" />
 
                 <Button
                     android:id="@+id/btnLocation"
@@ -111,17 +128,17 @@
                     android:layout_margin="8dp"
                     android:background="@drawable/rounded_button"
                     android:text="Địa Điểm"
-                    android:textColor="@color/darkPurple" />
+                    android:textColor="@color/white" /> <!-- Màu chữ sáng -->
 
                 <Button
-                    android:id="@+id/btnShare"
+                    android:id="@+id/btnSaveLocation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
                     android:background="@drawable/rounded_button"
-                    android:text="Chia Sẻ"
-                    android:textColor="@color/darkPurple" />
+                    android:text="Địa điểm đã xem"
+                    android:textColor="@color/white" /> <!-- Màu chữ sáng -->
             </GridLayout>
 
             <!-- RecyclerView để hiển thị các bài đánh giá -->
@@ -135,4 +152,16 @@
                 tools:listitem="@layout/item_review" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+
+    <View
+        android:id="@+id/searchClick"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#00000000"
+        android:elevation="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"/>
+
 </FrameLayout>

@@ -16,5 +16,11 @@
     <color name="primaryDark">#37474F</color>
     <color name="primaryText">#616161</color>
     <color name="lightGray">#F5F5F5</color>
-
+    <color name="gradientStart">#FF7043</color>
+    <color name="gradientEnd">#FFD54F</color>
+    <color name="softYellow">#FA8527</color>
+    <color name="modernStartColor">#FF9800</color>
+    <color name="modernEndColor">#F44336</color>
+    <color name="modernAccentColor">#3F51B5</color>
+    <color name="darkGray">#757575 </color>
 </resources>

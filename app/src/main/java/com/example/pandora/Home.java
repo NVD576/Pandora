@@ -31,6 +31,7 @@ import com.example.pandora.Adapter.RestaurantAdapter;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.RestaurantDatabase;
+import com.example.pandora.Main.SearchInfo;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +43,7 @@ public class Home extends Fragment {
     Button btnLocation;
     Button btnAddReview;
     Button btnReviewList;
-    Button btnShare;
+    Button btnSaveLocation;
     boolean isLogin = false;
     private RecyclerView recyclerView;
     private RestaurantAdapter restaurantAdapter;
@@ -50,6 +51,7 @@ public class Home extends Fragment {
     private RestaurantDatabase restaurantDatabase;
     private List<Restaurant> restaurantList;
     EditText search_toolbar;
+    LinearLayout searchToolbarCotainer;
 
     private List<Integer> images = Arrays.asList(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4);
     private int currentPage = 0;
@@ -80,8 +82,8 @@ public class Home extends Fragment {
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
         search_toolbar = view.findViewById(R.id.search_toolbar);
-        search_toolbar.requestFocus();
 
+        LinearLayout searchToolbarCotainer = view.findViewById(R.id.search_toolbar_container);
 
         restaurantDatabase = new RestaurantDatabase(getContext());
         restaurantDatabase.open();
@@ -94,6 +96,16 @@ public class Home extends Fragment {
             restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", "", 2));
         }
 
+        search_toolbar.requestFocus();
+
+        View searchClick = view.findViewById(R.id.searchClick);
+        searchClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(requireContext(), SearchInfo.class);
+                startActivity(myIntent);
+            }
+        });
         // Lấy lại danh sách nhà hàng
         if (search_toolbar.getText().toString().isEmpty())
             restaurantList = restaurantDatabase.getAllRestaurants();
@@ -107,7 +119,7 @@ public class Home extends Fragment {
 
         // Xử lý sự kiện click
         restaurantAdapter.setOnItemClickListener(restaurant -> {
-            DetailRestaurantFragment nextFragment = new DetailRestaurantFragment();
+            Fragment nextFragment = new DetailRestaurantFragment();
 
             // Truyền dữ liệu qua Bundle
             Bundle bundle = new Bundle();
@@ -155,19 +167,6 @@ public class Home extends Fragment {
             }
         });
 
-        search_toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getParentFragmentManager().beginTransaction()
-                        .setCustomAnimations(
-                                R.anim.fade_in,  // Khi fragment xuất hiện
-                                R.anim.fade_out   // Khi fragment biến mất
-                        )
-                        .replace(R.id.fragment_container, new Home())  // Replace current fragment with Home
-                        .commit();
-            }
-        });
-
         search_toolbar.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 String query = search_toolbar.getText().toString().trim();
@@ -200,16 +199,12 @@ public class Home extends Fragment {
 //        btnShare.setOnClickListener(v -> replaceFragment(new ShareFragment()));
 
 
-        ImageView btnSave = view.findViewById(R.id.save);
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        btnSaveLocation = view.findViewById(R.id.btnSaveLocation);
+        btnSaveLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isLogin) {
-                    Intent myIntent = new Intent(requireContext(), SaveLocationReview.class);
-                    startActivity(myIntent);
-                } else {
-                    showLoginAlertDialog();
-                }
+                Intent myIntent = new Intent(requireContext(), SaveLocationReview.class);
+                startActivity(myIntent);
             }
         });
 
@@ -381,5 +376,6 @@ public class Home extends Fragment {
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         return sharedPreferences.getString("selected_location", null);  // Return null if no location is saved
     }
+
 
 }
