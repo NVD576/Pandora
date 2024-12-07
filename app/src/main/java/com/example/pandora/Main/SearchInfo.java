@@ -35,10 +35,10 @@ public class SearchInfo extends AppCompatActivity {
 
         // Initialize the restaurant list
         restaurantList = new ArrayList<>();
-        restaurantList.add(new Restaurant("A", "", 4));
-        restaurantList.add(new Restaurant("B", "", 1));
-        restaurantList.add(new Restaurant("C", "", 4));
-        restaurantList.add(new Restaurant("D", "", 2));
+        restaurantList.add(new Restaurant("A", 1, 4));
+        restaurantList.add(new Restaurant("B", 1, 1));
+        restaurantList.add(new Restaurant("C", 2, 4));
+        restaurantList.add(new Restaurant("D", 2, 2));
 
         // Set up the EditText search tool
         searchTool = findViewById(R.id.search_toolbar);
