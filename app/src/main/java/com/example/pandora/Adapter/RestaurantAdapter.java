@@ -52,7 +52,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     public void onBindViewHolder(RestaurantViewHolder holder, int position) {
         Restaurant restaurant = restaurantList.get(position);
         holder.nameTextView.setText(restaurant.getName());
-//        holder.addressTextView.setText(restaurant.getAddress()); // Hiển thị địa chỉ
+        holder.addressTextView.setText(restaurant.getAddress()); // Hiển thị địa chỉ
 //        holder.imageView.setImageResource(restaurant.getImage()); // Hiển thị ảnh
         Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
         if (bitmap != null) {
@@ -93,12 +93,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
         public RestaurantViewHolder(View itemView) {
             super(itemView);
-            nameTextView = itemView.findViewById(R.id.reviewName);
-//            addressTextView = itemView.findViewById(R.id.reviewAddress); // Kết nối với TextView địa chỉ
-            imageView = itemView.findViewById(R.id.reviewImage);
-            ratingBar = itemView.findViewById(R.id.reviewRating);
+            nameTextView = itemView.findViewById(R.id.restaurantName);
+            addressTextView = itemView.findViewById(R.id.restaurantAddress); // Kết nối với TextView địa chỉ
+            imageView = itemView.findViewById(R.id.restaurantImage);
+            ratingBar = itemView.findViewById(R.id.restaurantRating);
         }
     }
+
     public void updateData(List<Restaurant> newRestaurantList) {
         this.restaurantList.clear(); // Xóa dữ liệu cũ
         this.restaurantList.addAll(newRestaurantList); // Thêm dữ liệu mới

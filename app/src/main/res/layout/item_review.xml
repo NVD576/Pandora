@@ -10,7 +10,7 @@
 
     <!-- Tên nhà hàng -->
     <TextView
-        android:id="@+id/reviewName"
+        android:id="@+id/restaurantName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tên nhà hàng"
@@ -21,7 +21,7 @@
 
     <!-- Bài đánh giá -->
     <TextView
-        android:id="@+id/reviewText"
+        android:id="@+id/restaurantAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Bài đánh giá"
@@ -29,7 +29,7 @@
         android:textSize="14sp"
         android:layout_marginBottom="8dp" /> <!-- Khoảng cách dưới bài đánh giá -->
     <RatingBar
-        android:id="@+id/reviewRating"
+        android:id="@+id/restaurantRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -39,7 +39,7 @@
         android:stepSize="0.5" />
     <!-- Hình ảnh của nhà hàng -->
     <ImageView
-        android:id="@+id/reviewImage"
+        android:id="@+id/restaurantImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:src="@drawable/background"

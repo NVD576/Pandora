@@ -99,7 +99,34 @@ public class LocationDatabase {
         }
     }
 
+    public Location getLocationById(int locationID) {
+        Cursor cursor = null;
+        try {
+            String[] columns = {
+                    DatabaseHelper.COLUMN_LOCATION_LOCATION_ID,
+                    DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME
+            };
+            String selection = DatabaseHelper.COLUMN_LOCATION_LOCATION_ID + " =?";
+            String[] selectionArgs = {String.valueOf(locationID)}; // Tìm kiếm các chuỗi có chứa `name`
 
+            cursor = database.query(DatabaseHelper.TABLE_LOCATIONS, columns, selection, selectionArgs, null, null, null);
+
+            // Duyệt qua kết quả và thêm vào danh sách
+            if (cursor != null && cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_LOCATION_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME));
+                return(new Location(id, name));
+            }
+        } catch (Exception e) {
+            throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return null;
+    }
     // Lấy danh sách tất cả các địa điểm
     public List<Location> getAllLocations() {
         List<Location> locationList = new ArrayList<>();

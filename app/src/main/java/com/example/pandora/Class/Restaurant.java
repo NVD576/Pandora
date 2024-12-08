@@ -10,6 +10,7 @@ public class Restaurant {
     int cateid;
     private String image;
     private int star;
+    String description;
     int history =0;
 
     public Restaurant(int id,String name, String address, int locationid, int cateid, String image, int star, int history) {
@@ -23,13 +24,30 @@ public class Restaurant {
         this.history = history;
     }
 
-
-
+    public Restaurant(int id, String name, String address, int locationid, int cateid, String image, int star, String description, int history) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.locationid = locationid;
+        this.cateid = cateid;
+        this.image = image;
+        this.star = star;
+        this.description = description;
+        this.history = history;
+    }
 
     public Restaurant(String name, int locationid, int star) {
         this.name = name;
         this.locationid = locationid;
         this.star = star;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getHistory() {
