@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/dialog_background"
+    android:gravity="center_horizontal">
+
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/titleAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thêm tài khoản"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Nội dung -->
+    <EditText
+        android:id="@+id/addUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:background="@drawable/rounded_edit"
+        android:hint="Nhập tên đăng nhập"
+        android:layout_marginBottom="10dp"
+        android:minHeight="48dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/material_dynamic_neutral40" />
+
+    <EditText
+        android:id="@+id/addPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập mật khẩu"
+        android:inputType="textPassword"
+        android:layout_marginBottom="10dp"
+        android:textColorHint="@color/material_dynamic_neutral40"
+        android:minHeight="48dp"
+        android:background="@drawable/rounded_edit"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/reAddPassword"
+        android:layout_width="match_parent"
+        android:background="@drawable/rounded_edit"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:layout_marginBottom="10dp"
+        android:hint="Nhập lại mật khẩu"
+        android:minHeight="48dp"
+        android:textColorHint="@color/material_dynamic_neutral40"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/addNumberPhone"
+        android:layout_width="match_parent"
+        android:inputType="number"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="Nhập số điện thoại"
+        android:background="@drawable/rounded_edit"
+        android:textColorHint="@color/material_dynamic_neutral40"
+        android:minHeight="48dp"
+        android:textColor="@color/black" />
+
+    <!-- Nút hành động -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_primary"
+            android:text="Lưu"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnDismiss"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_primary"
+            android:text="Hủy"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

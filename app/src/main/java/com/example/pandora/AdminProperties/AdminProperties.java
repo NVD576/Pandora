@@ -16,10 +16,9 @@ import com.example.pandora.Class.User;
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.R;
 
-import org.w3c.dom.Text;
-
 public class AdminProperties extends AppCompatActivity {
     int userid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +29,7 @@ public class AdminProperties extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs",MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
         UserDatabase db = new UserDatabase(this);
         db.open();
@@ -43,10 +42,10 @@ public class AdminProperties extends AppCompatActivity {
         TextView btnListCategory = findViewById(R.id.listCategory);
 
         //Hiện quyền
-        if(user.isRoleUser()) btnListUser.setVisibility(View.VISIBLE);
-        if(user.isRoleCategory()) btnListCategory.setVisibility(View.VISIBLE);
-        if(user.isRoleRestaurant()) btnListRestaurant.setVisibility(View.VISIBLE);
-        if(user.isRoleReview()) btnListReview.setVisibility(View.VISIBLE);
+        if (user.isRoleUser()) btnListUser.setVisibility(View.VISIBLE);
+        if (user.isRoleCategory()) btnListCategory.setVisibility(View.VISIBLE);
+        if (user.isRoleRestaurant()) btnListRestaurant.setVisibility(View.VISIBLE);
+        if (user.isRoleReview()) btnListReview.setVisibility(View.VISIBLE);
 
         btnListUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,5 +75,6 @@ public class AdminProperties extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+
     }
 }

@@ -6,11 +6,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -25,7 +28,10 @@ import com.example.pandora.Adapter.UserAdapter;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class AccountProperties extends AppCompatActivity {
@@ -71,6 +77,16 @@ public class AccountProperties extends AppCompatActivity {
             @Override
             public void onItemClick(User user) {
                 showEditAccountDialog(user);
+            }
+        });
+
+
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        FloatingActionButton fabAdd = findViewById(R.id.fab_add);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddAccountAlertDialog();
             }
         });
 
@@ -246,6 +262,90 @@ public class AccountProperties extends AppCompatActivity {
         // Đảm bảo đóng database khi Activity bị hủy
         if (db != null) {
             db.close();
+        }
+    }
+
+    private void showAddAccountAlertDialog() {
+        // Inflate custom layout
+        LayoutInflater inflater = LayoutInflater.from(this); // Dùng `this` thay cho `getApplicationContext()`
+        View dialogView = inflater.inflate(R.layout.dialog_add_account_admin, null);
+
+        // Tạo AlertDialog
+        AlertDialog alertDialog = new AlertDialog.Builder(this) // Dùng `this` thay cho `getApplicationContext()`
+                .setView(dialogView)
+                .setCancelable(true)
+                .create();
+
+        // Tìm các thành phần trong layout dialog
+        EditText edUserName = dialogView.findViewById(R.id.addUser);
+        EditText edPassword = dialogView.findViewById(R.id.addPassword);
+        EditText edRePassword = dialogView.findViewById(R.id.reAddPassword);
+        EditText edNumberPhone = dialogView.findViewById(R.id.addNumberPhone);
+        Button btnSave = dialogView.findViewById(R.id.btnSave);
+        Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
+
+        // Xử lý sự kiện nút "Lưu"
+        btnSave.setOnClickListener(view -> {
+            String userName = edUserName.getText().toString().trim();
+            String password = edPassword.getText().toString().trim();
+            String rePassword = edRePassword.getText().toString().trim();
+            String numberPhone = edNumberPhone.getText().toString().trim();
+
+            // Kiểm tra dữ liệu đầu vào
+            if (userName.isEmpty() || password.isEmpty() || rePassword.isEmpty() || numberPhone.isEmpty()) {
+                Toast.makeText(this, "Yêu cầu nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (!password.equals(rePassword)) {
+                Toast.makeText(this, "Mật khẩu không trùng khớp", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (numberPhone.length() < 10) {
+                Toast.makeText(this, "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (password.length() < 6) {
+                Toast.makeText(this, "Mật khẩu phải từ 6 kí tự trở lên", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Mã hóa mật khẩu
+            String hashedPassword = hash(password);
+
+            // Thêm người dùng vào cơ sở dữ liệu
+            User newUser = new User(userName, hashedPassword, numberPhone);
+            UserDatabase db = new UserDatabase(this);
+            db.open();
+            if (db.addUser(newUser, this)) {
+                Toast.makeText(this, "Thêm tài khoản thành công", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Thêm tài khoản thất bại", Toast.LENGTH_SHORT).show();
+            }
+            db.close();
+
+            // Đóng dialog sau khi lưu
+            recreate();
+            alertDialog.dismiss();
+        });
+
+        // Xử lý sự kiện nút "Đóng"
+        btnDismiss.setOnClickListener(v -> alertDialog.dismiss());
+
+        // Hiển thị hộp thoại
+        alertDialog.show();
+    }
+
+    public static String hash(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(input.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                hexString.append(String.format("%02x", b));
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
     }
 }

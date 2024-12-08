@@ -9,7 +9,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -46,7 +44,7 @@ public class Home extends Fragment {
     Button btnLocation;
     Button btnAddReview;
     Button btnReviewList;
-    Button btnShare;
+    Button btnSaveLocation;
     boolean isLogin = false;
     private RecyclerView recyclerView;
     private RestaurantAdapter restaurantAdapter;
@@ -165,6 +163,15 @@ public class Home extends Fragment {
             @Override
             public void onClick(View view) {
                 showLocationAlertDialog();
+            }
+        });
+
+        btnSaveLocation = view.findViewById(R.id.btnSaveLocation);
+        btnSaveLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(requireContext(), SaveLocationReview.class);
+                startActivity(myIntent);
             }
         });
 
