@@ -5,6 +5,9 @@
         android:startColor="@color/modernStartColor"
         android:endColor="@color/modernEndColor"
         android:type="linear" />
-    <corners android:radius="24dp" />
+    <corners android:topLeftRadius="24dp"
+        android:topRightRadius="24dp"
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp" />
     <shadowColor android:color="#33000000" android:radius="16dp" />
 </shape>

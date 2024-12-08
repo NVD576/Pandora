@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pandora</string>
+    <string name="username">Add Account</string>
+    <string name="password">Password</string>
+    <string name="forget">Forget Password</string>
+    <string name="show_password">Show Password</string>
+    <string name="numberphone">Input Number Phone</string>
+    <string name="joinPandora">Join Pandora</string>
+    <string name="description">Create an account to learn more about diverse dining and culinary places</string>
+    <string name="acp">Enter the verification code we just sent you</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_setting">Setting</string>
+</resources>

@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
-                    android:background="@drawable/rounded_button"
+                    android:background="@drawable/button_primary"
                     android:text="Thêm Đánh Giá"
                     android:textColor="@color/white" /> <!-- Màu chữ sáng -->
 
@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
-                    android:background="@drawable/rounded_button"
+                    android:background="@drawable/button_primary"
                     android:text="Danh Sách Đánh Giá"
                     android:textColor="@color/white" />
 
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
-                    android:background="@drawable/rounded_button"
+                    android:background="@drawable/button_primary"
                     android:text="Địa Điểm"
                     android:textColor="@color/white" /> <!-- Màu chữ sáng -->
 
@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
-                    android:background="@drawable/rounded_button"
+                    android:background="@drawable/button_primary"
                     android:text="Địa điểm đã xem"
                     android:textColor="@color/white" /> <!-- Màu chữ sáng -->
             </GridLayout>
