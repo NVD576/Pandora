@@ -56,6 +56,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_RATING_RESTAURANT_ID = "restaurant_id";
     public static final String COLUMN_RATING_STAR = "rating";
 
+    // Cấu trúc bảng category
+    public static final String TABLE_CATEGORIES = "categories";
+    public static final String COLUMN_CATEGORY_ID = "id";
+    public static final String COLUMN_CATEGORY_NAME = "name";
+
 
     // Câu lệnh tạo bảng restaurants
     private static final String CREATE_TABLE_RESTAURANTS = "CREATE TABLE " + TABLE_RESTAURANTS + " ("
@@ -100,6 +105,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_LOCATION_LOCATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_LOCATION_LOCATION_NAME + " TEXT)";
 
+    // Câu lệnh tạo bảng categories
+    private static final String CREATE_TABLE_CATEGORIES = "CREATE TABLE " + TABLE_CATEGORIES + " ("
+            + COLUMN_CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_CATEGORY_NAME + " TEXT)";
 
 
     // Câu lệnh tạo bảng ratings
@@ -123,6 +132,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_REVIEWS); // Tạo bảng reviews
         db.execSQL(CREATE_TABLE_LOCATIONS);
         db.execSQL(CREATE_TABLE_RATINGS);
+        db.execSQL(CREATE_TABLE_CATEGORIES);
     }
 
     @Override
