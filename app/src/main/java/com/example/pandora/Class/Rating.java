@@ -4,7 +4,7 @@ public class Rating {
     int id;
     int userid;
     int restaurantid;
-    int star=3;
+    int star=0;
 
     public Rating(int id, int userid, int restaurantid, int star) {
         this.id = id;

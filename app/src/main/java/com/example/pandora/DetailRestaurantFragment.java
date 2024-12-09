@@ -4,11 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -82,67 +80,69 @@ public class DetailRestaurantFragment extends Fragment {
 
         // Nhận dữ liệu từ Bundle
         Bundle bundle = getArguments();
-        if (bundle != null) {
-            restaurant_id = bundle.getInt("restaurant_id");
 
-            // Lấy thông tin nhà hàng
-            restaurantDatabase.open();
-            Restaurant restaurant = restaurantDatabase.getRestaurantsByID(restaurant_id);
+        restaurant_id = bundle.getInt("restaurant_id");
 
-            // Lấy thông tin vị trí
-            LocationDatabase lD = new LocationDatabase(getContext());
-            lD.open();
-            Location l = lD.getLocationById(restaurant.getLocationid());
-            lD.close();
+        // Lấy thông tin nhà hàng
+        restaurantDatabase.open();
+        Restaurant restaurant = restaurantDatabase.getRestaurantsByID(restaurant_id);
 
-            // Lấy và xử lý thông tin đánh giá
+        // Lấy thông tin vị trí
+        LocationDatabase lD = new LocationDatabase(getContext());
+        lD.open();
+        Location l = lD.getLocationById(restaurant.getLocationid());
+        lD.close();
 
-            ratingDatabase.open();
-            rating = ratingDatabase.getRatingById(userid, restaurant_id);
-            if (rating == null) {
-                rating = new Rating(userid, restaurant_id, 0);
-            }
+        // Lấy và xử lý thông tin đánh giá
 
-            // Cập nhật điểm trung bình của nhà hàng
-            restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
-            restaurantDatabase.updateRestaurant(restaurant);
-
-            txtLocation.setText(l.getName() + ", " + restaurant.getAddress());
-            detailRatingRes.setText(String.valueOf(restaurant.getStar()));
-
-            // Lắng nghe sự thay đổi điểm đánh giá
-            Rating finalRating = rating;
-            ratingBar.setOnRatingBarChangeListener((ratingBar1, r, fromUser) -> {
-                if (fromUser && isLogin) {
-                    // Lưu giá trị rating vào cơ sở dữ liệu
-                    finalRating.setStar((int) r);
-                    if (finalRating.getId() > 0) {
-                        ratingDatabase.updateRating(userid, restaurant_id, (int) r);
-                    } else {
-                        ratingDatabase.addRating(finalRating);
-                    }
-
-                    // Cập nhật lại điểm trung bình của nhà hàng
-                    restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
-                    restaurantDatabase.updateRestaurant(restaurant);
-
-                    // Cập nhật giao diện
-                    detailRatingRes.setText(String.valueOf(restaurant.getStar()));
-                    ratingBar.setRating(r);
-                }
-            });
-
-            ratingBar.setRating(rating.getStar());
-            nameTextView.setText(bundle.getString("restaurant_name", "N/A"));
-
-
+        ratingDatabase.open();
+        rating = ratingDatabase.getRatingById(userid, restaurant_id);
+        if (rating == null) {
+            rating = new Rating(userid, restaurant_id, 0);
         }
+
+        // Cập nhật điểm trung bình của nhà hàng
+        restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
+        restaurantDatabase.updateRestaurant(restaurant);
+
+        txtLocation.setText(l.getName() + ", " + restaurant.getAddress());
+        detailRatingRes.setText(String.valueOf(restaurant.getStar()));
+
+        // Lắng nghe sự thay đổi điểm đánh giá
+        Rating finalRating = rating;
+        ratingBar.setOnRatingBarChangeListener((ratingBar1, r, fromUser) -> {
+            if (fromUser && isLogin) {
+                // Lưu giá trị rating vào cơ sở dữ liệu
+                finalRating.setStar((int) r);
+                if (finalRating.getId() > 0) {
+                    ratingDatabase.updateRating(userid, restaurant_id, (int) r);
+                } else {
+                    ratingDatabase.addRating(finalRating);
+                }
+
+                // Cập nhật lại điểm trung bình của nhà hàng
+                restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
+                restaurant.setHistory(1);
+                restaurantDatabase.updateRestaurant(restaurant);
+
+
+                // Cập nhật giao diện
+                detailRatingRes.setText(String.valueOf(restaurant.getStar()));
+                ratingBar.setRating(r);
+            }
+        });
+
+        ratingBar.setRating(rating.getStar());
+        nameTextView.setText(bundle.getString("restaurant_name", "N/A"));
+
+
+
 
         // Lấy danh sách bình luận
 
         reviewDatabase.open();
         commentsList = reviewDatabase.getReviewsByRestaurantId(restaurant_id);
-        reviewDatabase.close();
+
 
         // Nếu không có bình luận, khởi tạo một danh sách rỗng
         if (commentsList.isEmpty()) {

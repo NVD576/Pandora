@@ -77,6 +77,7 @@ public class Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
@@ -106,8 +107,9 @@ public class Home extends Fragment {
             }
         });
         // Lấy lại danh sách nhà hàng
-        if(search_toolbar.getText().toString().isEmpty())
-            restaurantList = restaurantDatabase.getAllRestaurants();
+
+        restaurantList = restaurantDatabase.getAllRestaurants();
+
 
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
@@ -175,26 +177,6 @@ public class Home extends Fragment {
             }
         });
 
-//        search_toolbar.setOnEditorActionListener((v, actionId, event) -> {
-//            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                String query = search_toolbar.getText().toString().trim();
-//
-//                // Tìm kiếm trong cơ sở dữ liệu
-//                restaurantList = restaurantDatabase.getRestaurantsByName(query); // Lấy danh sách kết quả tìm kiếm
-//
-//
-//                // Cập nhật danh sách hiển thị trong Adapter
-//                restaurantAdapter.updateData(restaurantList);
-//
-//                // Xử lý trường hợp không tìm thấy kết quả
-//                if (restaurantList.isEmpty()) {
-//                    Toast.makeText(getContext(), "Không tìm thấy nhà hàng nào!", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                return true;
-//            }
-//            return false;
-//        });
 
 
 //        btnAddReview = view.findViewById(R.id.btnAddReview);
@@ -396,5 +378,17 @@ public class Home extends Fragment {
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         return sharedPreferences.getString("selected_location", null);  // Return null if no location is saved
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("Khong quay lai dc");
+        RestaurantDatabase re= new RestaurantDatabase(getContext());
+        re.open();
+        restaurantList=re.getAllRestaurants();
+        re.close();
+        restaurantAdapter.updateData(restaurantList); // Hàm tải lại dữ liệu từ cơ sở dữ liệu
+    }
+
 
 }
