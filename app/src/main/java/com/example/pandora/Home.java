@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -41,10 +42,8 @@ public class Home extends Fragment {
 
     ViewPager2 viewPager2;
     User user;
-    Button btnLocation;
-    Button btnAddReview;
-    Button btnReviewList;
-    Button btnSaveLocation;
+    ImageView btnLocation;
+    ImageView btnSaveLocation;
     boolean isLogin = false;
     private RecyclerView recyclerView;
     private RestaurantAdapter restaurantAdapter;
@@ -346,9 +345,9 @@ public class Home extends Fragment {
                     saveLocation(selectedLocation[0]);
 
                     // Truy cập btnLocation từ root view của fragment
-                    Button btnLocation = getView().findViewById(R.id.btnLocation);  // Dùng getView() để lấy view từ fragment
-                    if (btnLocation != null) {
-                        btnLocation.setText(selectedLocation[0]);  // Cập nhật text của nút
+                    TextView txtLocation = getView().findViewById(R.id.txtLocation);
+                    if (txtLocation != null) {
+                        txtLocation.setText(selectedLocation[0]);  // Cập nhật text của nút
                     }
                 }
                 if(selectedLocation[0].equals("Tất cả")){
