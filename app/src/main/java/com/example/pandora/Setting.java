@@ -20,6 +20,7 @@ import com.example.pandora.Login.Login;
 
 public class Setting extends Fragment {
 
+    private boolean isLogin = false;
     private int userid;
     private SharedPreferences sharedPreferences;
 
@@ -29,6 +30,8 @@ public class Setting extends Fragment {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", -1); // -1 is default if not found
+        isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
+
 
         TextView edtPolicy = view.findViewById(R.id.policy);
         edtPolicy.setOnClickListener(v -> showEditPolicyDialog());
@@ -37,6 +40,17 @@ public class Setting extends Fragment {
         edtLanguage.setOnClickListener(v -> showEditLanguageDialog());
 
         TextView deleteAccount = view.findViewById(R.id.deleteAccount);
+
+        if (!isLogin)
+        {
+            deleteAccount.setAlpha(0f);
+            deleteAccount.setEnabled(false);
+        }
+        else {
+            deleteAccount.setAlpha(1f);
+            deleteAccount.setEnabled(true);
+        }
+
         deleteAccount.setOnClickListener(v -> showEditDeleteAccountDialog());
 
         return view;
@@ -108,21 +122,22 @@ public class Setting extends Fragment {
             Toast.makeText(getContext(), "User not found, cannot delete", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (isLogin)
+        {
+            UserDatabase db = new UserDatabase(getContext());
+            db.open();
+            db.deleteUser(userid);
+            db.close();
 
-        // Perform deletion from the database
-        UserDatabase db = new UserDatabase(getContext());
-        db.open();
-        db.deleteUser(userid);
-        db.close();
+            Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isLogin", false);
+            editor.remove("userid");
+            editor.apply();
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isLogin", false);
-        editor.remove("userid");
-        editor.apply();
-
-        Intent myIntent = new Intent(getActivity(), Login.class);
-        startActivity(myIntent);
+            Intent myIntent = new Intent(getActivity(), Login.class);
+            startActivity(myIntent);
+        }
     }
 }
