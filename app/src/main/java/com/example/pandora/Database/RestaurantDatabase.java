@@ -285,7 +285,7 @@ public class RestaurantDatabase {
 
 
             // Sử dụng từ khóa LIKE để tìm kiếm tên gần đúng
-            String selection = DatabaseHelper.COLUMN_NAME + " LIKE ?";
+            String selection = DatabaseHelper.COLUMN_HISTORY + " = ?";;
             String[] selectionArgs = {"1"}; // Tìm kiếm các nhà hàng có history = 1
 
             cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, columns, selection, selectionArgs, null, null, null);
@@ -327,7 +327,7 @@ public class RestaurantDatabase {
         values.put(DatabaseHelper.COLUMN_IMAGE, restaurant.getImage());
         values.put(DatabaseHelper.COLUMN_DESCRIPTION, restaurant.getDescription());
         values.put(DatabaseHelper.COLUMN_STAR, restaurant.getStar());  // Cập nhật đánh giá
-        values.put(DatabaseHelper.COLUMN_HISTORY, restaurant.getStar());
+        values.put(DatabaseHelper.COLUMN_HISTORY, restaurant.getHistory());
 
         // Cập nhật quán ăn theo ID
         int rowsUpdated = database.update(DatabaseHelper.TABLE_RESTAURANTS, values,

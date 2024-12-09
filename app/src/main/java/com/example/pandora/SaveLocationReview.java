@@ -33,7 +33,7 @@ public class SaveLocationReview extends AppCompatActivity {
         setContentView(R.layout.activity_save_location_review);
         RestaurantDatabase restaurantDatabase= new RestaurantDatabase(getApplicationContext());
         restaurantDatabase.open();
-        restaurantList=restaurantDatabase.getAllRestaurants();
+        restaurantList=restaurantDatabase.getRestaurantsByHistory();
         restaurantDatabase.close();
 
         recyclerView = findViewById(R.id.recyclerView);
@@ -58,7 +58,7 @@ public class SaveLocationReview extends AppCompatActivity {
                             R.anim.fade_in,  // Khi fragment xuất hiện
                             R.anim.fade_out    // Khi fragment rời đi
                     )
-                    .replace(R.id.main, nextFragment)
+                    .replace(R.id.fragment_container, nextFragment)
                     .addToBackStack(null)
                     .commit();
         });
