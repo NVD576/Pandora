@@ -52,7 +52,7 @@ public class Home extends Fragment {
     private RestaurantDatabase restaurantDatabase;
     private List<Restaurant> restaurantList;
     EditText search_toolbar;
-
+    List<Location> lc;
     private List<Integer> images = Arrays.asList(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4);
     private int currentPage = 0;
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -83,17 +83,24 @@ public class Home extends Fragment {
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
         search_toolbar = view.findViewById(R.id.search_toolbar);
-
+        LocationDatabase database= new LocationDatabase(getContext());
+        database.open();
+        if(database.isTableEmpty()){
+            database.addLocation(new Location("Hồ Chí Minh"));
+            database.addLocation(new Location("Hà Nội"));
+        }
+         lc= database.getAllLocations();
+        database.close();
 
         restaurantDatabase = new RestaurantDatabase(getContext());
         restaurantDatabase.open();
         if (restaurantDatabase.getAllRestaurants().isEmpty()) {
             // Thêm dữ liệu vào cơ sở dữ liệu
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", 1, 4));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B",  1, 3));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C",  2, 5));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", 1, 1));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", 2, 2));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", 1, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B",  1, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C",  2, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", 1, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", 2, 0));
         }
 
         search_toolbar.requestFocus();
@@ -292,14 +299,7 @@ public class Home extends Fragment {
         Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
         Spinner spinnerLocation = dialogView.findViewById(R.id.spinnerLocation);
 
-        LocationDatabase database= new LocationDatabase(getContext());
-        database.open();
-        if(database.isTableEmpty()){
-            database.addLocation(new Location("Hồ Chí Minh"));
-            database.addLocation(new Location("Hà Nội"));
-        }
-        List<Location> lc= database.getAllLocations();
-        database.close();
+
 
         List<String> location= new ArrayList<>();
         location.add("Tất cả");
