@@ -277,6 +277,45 @@ public class RestaurantDatabase {
         return restaurantList;
     }
 
+    public List<Restaurant> getRestaurantsByHistory() {
+        List<Restaurant> restaurantList = new ArrayList<>();
+        Cursor cursor = null;
+
+        try {
+
+
+            // Sử dụng từ khóa LIKE để tìm kiếm tên gần đúng
+            String selection = DatabaseHelper.COLUMN_NAME + " LIKE ?";
+            String[] selectionArgs = {"1"}; // Tìm kiếm các nhà hàng có history = 1
+
+            cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, columns, selection, selectionArgs, null, null, null);
+
+            // Duyệt qua kết quả và thêm vào danh sách
+            while (cursor != null && cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
+                String restaurantName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME));
+                String address = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ADDRESS));
+                int locationId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_ID));
+                int cateId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATE_ID));
+                String image = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IMAGE));
+                int star = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STAR));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DESCRIPTION));
+                int history = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_HISTORY));
+
+                // Thêm nhà hàng vào danh sách
+                restaurantList.add(new Restaurant(id, restaurantName, address, locationId, cateId, image, star, description, history));
+            }
+        } catch (Exception e) {
+            throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return restaurantList;
+    }
+
 
     // Cập nhật thông tin một quán ăn
     public void updateRestaurant(Restaurant restaurant) {

@@ -172,6 +172,7 @@ public class Home extends Fragment {
         btnSaveLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent myIntent = new Intent(requireContext(), SaveLocationReview.class);
                 startActivity(myIntent);
             }
