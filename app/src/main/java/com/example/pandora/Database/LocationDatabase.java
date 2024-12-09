@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.example.pandora.Class.Location;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +18,14 @@ public class LocationDatabase {
     private final DatabaseHelper dbHelper;
     private SQLiteDatabase database;
 
+    DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("locations");
     public LocationDatabase(Context context) {
         dbHelper = new DatabaseHelper(context);
     }
-
+    String[] columns = {
+            DatabaseHelper.COLUMN_LOCATION_LOCATION_ID,
+            DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME
+    };
     // Mở kết nối đến cơ sở dữ liệu
     public void open() throws SQLException {
         try {
@@ -63,7 +69,6 @@ public class LocationDatabase {
     public boolean isLocationExists(String locationName) {
         Cursor cursor = null;
         try {
-            String[] columns = {DatabaseHelper.COLUMN_LOCATION_LOCATION_ID};
             String selection = "LOWER(" + DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME + ") = ?";
             String[] selectionArgs = {locationName.toLowerCase()}; // Chuẩn hóa tên người dùng nhập về chữ thường
 
@@ -87,11 +92,13 @@ public class LocationDatabase {
             return;
         }
 
+        firebaseDatabase.child(String.valueOf(location.getId())).setValue(location);
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME, location.getName().trim()); // Chuẩn hóa tên (bỏ khoảng trắng thừa)
 
         // Thêm địa điểm vào cơ sở dữ liệu và gán ID từ bản ghi đã chèn
         long id = database.insert(DatabaseHelper.TABLE_LOCATIONS, null, values);
+
         if (id != -1) {
             location.setId((int) id);
         } else {
@@ -102,10 +109,7 @@ public class LocationDatabase {
     public Location getLocationById(int locationID) {
         Cursor cursor = null;
         try {
-            String[] columns = {
-                    DatabaseHelper.COLUMN_LOCATION_LOCATION_ID,
-                    DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME
-            };
+
             String selection = DatabaseHelper.COLUMN_LOCATION_LOCATION_ID + " =?";
             String[] selectionArgs = {String.valueOf(locationID)}; // Tìm kiếm các chuỗi có chứa `name`
 
@@ -199,6 +203,7 @@ public class LocationDatabase {
         // Cập nhật địa điểm theo ID
         int rowsUpdated = database.update(DatabaseHelper.TABLE_LOCATIONS, values,
                 DatabaseHelper.COLUMN_LOCATION_LOCATION_ID + " = ?", new String[]{String.valueOf(location.getId())});
+        firebaseDatabase.child(String.valueOf(location.getId())).setValue(location);
 
         if (rowsUpdated == 0) {
             throw new SQLException("Không thể cập nhật địa điểm có ID: " + location.getId());
@@ -210,6 +215,7 @@ public class LocationDatabase {
         int rowsDeleted = database.delete(DatabaseHelper.TABLE_LOCATIONS,
                 DatabaseHelper.COLUMN_LOCATION_LOCATION_ID + " = ?", new String[]{String.valueOf(locationId)});
 
+        firebaseDatabase.child(String.valueOf(locationId)).removeValue();
         if (rowsDeleted == 0) {
             throw new SQLException("Không thể xóa địa điểm có ID: " + locationId);
         }
@@ -218,7 +224,10 @@ public class LocationDatabase {
     // Xóa tất cả các địa điểm
     public void deleteAllLocations() {
         int rowsDeleted = database.delete(DatabaseHelper.TABLE_LOCATIONS, null, null);
+        firebaseDatabase.removeValue();
         if (rowsDeleted == 0) {
+
+
             throw new SQLException("Không thể xóa tất cả các địa điểm.");
         }
     }

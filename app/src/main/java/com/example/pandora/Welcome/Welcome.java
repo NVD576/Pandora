@@ -14,7 +14,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.pandora.Class.Location;
 import com.example.pandora.Class.User;
+import com.example.pandora.Database.LocationDatabase;
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.Login.Login;
 import com.example.pandora.Main.Lobby;
@@ -51,6 +53,7 @@ public class Welcome extends AppCompatActivity {
         db.open(); // Mở kết nối cơ sở dữ liệu
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+
         if(db.isUserTableEmpty())
             editor.putBoolean("isLogin", false);
         editor.apply();
