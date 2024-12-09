@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.example.pandora.Class.User;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.List;
 public class UserDatabase {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
-
+    DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("users");
     String[] columns = {
             DatabaseHelper.COLUMN_USER_ID,
             DatabaseHelper.COLUMN_USER_TAIKHOAN,
@@ -33,6 +35,22 @@ public class UserDatabase {
         dbHelper = new DatabaseHelper(context);
     }
 
+    ContentValues values(User user){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_USER_TAIKHOAN, user.getTaiKhoan());
+        values.put(DatabaseHelper.COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(DatabaseHelper.COLUMN_USER_NAME, user.getName());
+        values.put(DatabaseHelper.COLUMN_USER_SDT, user.getSDT());
+        values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_IMAGE, user.getImage() != null ? user.getImage() : "");
+
+        // Insert additional role fields
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_USER, user.isRoleUser() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY, user.isRoleCategory() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT, user.isRoleRestaurant() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_ROLE_REVIEW, user.isRoleReview() ? 1 : 0);
+        return values;
+    }
 
     // Mở kết nối đến cơ sở dữ liệu
     public void open() {
@@ -68,24 +86,16 @@ public class UserDatabase {
             Toast.makeText(context, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
             return false;
         }
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_USER_TAIKHOAN, user.getTaiKhoan());
-        values.put(DatabaseHelper.COLUMN_USER_PASSWORD, user.getPassword());
-        values.put(DatabaseHelper.COLUMN_USER_NAME, user.getName());
-        values.put(DatabaseHelper.COLUMN_USER_SDT, user.getSDT());
-        values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole() ? 1 : 0);
-        values.put(DatabaseHelper.COLUMN_USER_IMAGE, user.getImage() != null ? user.getImage() : "");
-
-        // Insert additional role fields
-        values.put(DatabaseHelper.COLUMN_USER_ROLE_USER, user.isRoleUser() ? 1 : 0);
-        values.put(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY, user.isRoleCategory() ? 1 : 0);
-        values.put(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT, user.isRoleRestaurant() ? 1 : 0);
-        values.put(DatabaseHelper.COLUMN_USER_ROLE_REVIEW, user.isRoleReview() ? 1 : 0);
 
 
         // Thực hiện chèn và nhận lại ID tự động tăng
-        long id = database.insert(DatabaseHelper.TABLE_USERS, null, values);
+        long id = database.insert(DatabaseHelper.TABLE_USERS, null, values(user));
         user.setId((int) id); // Gán ID tự động tăng vào đối tượng user
+        // Lưu vào Firebase
+
+        // Dữ liệu được lưu dưới dạng một Map hoặc đối tượng
+        firebaseDatabase.child(String.valueOf(user.getId())).setValue(user);
+
         return true;
     }
 
@@ -174,28 +184,15 @@ public class UserDatabase {
     }
 
     public void updateUser(User user) {
-        ContentValues values = new ContentValues();
-
-        // Cập nhật các trường cần thiết
-        values.put(DatabaseHelper.COLUMN_USER_TAIKHOAN, user.getTaiKhoan());
-        values.put(DatabaseHelper.COLUMN_USER_PASSWORD, user.getPassword());
-        values.put(DatabaseHelper.COLUMN_USER_NAME, user.getName());
-        values.put(DatabaseHelper.COLUMN_USER_SDT, user.getSDT());
-        values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole() ? 1 : 0);
-        values.put(DatabaseHelper.COLUMN_USER_IMAGE, user.getImage() != null ? user.getImage() : "");
-
-        // Update additional role fields
-        values.put(DatabaseHelper.COLUMN_USER_ROLE_USER, user.isRoleUser() ? 1 : 0);
-        values.put(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY, user.isRoleCategory() ? 1 : 0);
-        values.put(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT, user.isRoleRestaurant() ? 1 : 0);
-        values.put(DatabaseHelper.COLUMN_USER_ROLE_REVIEW, user.isRoleReview() ? 1 : 0);
 
         // Điều kiện để xác định người dùng cần cập nhật (theo ID)
         String whereClause = DatabaseHelper.COLUMN_USER_ID + " = ?";
         String[] whereArgs = {String.valueOf(user.getId())};
 
+        // Dữ liệu được lưu dưới dạng một Map hoặc đối tượng
+        firebaseDatabase.child(String.valueOf(user.getId())).setValue(user);
         // Cập nhật dữ liệu trong cơ sở dữ liệu
-        database.update(DatabaseHelper.TABLE_USERS, values, whereClause, whereArgs);
+        database.update(DatabaseHelper.TABLE_USERS, values(user), whereClause, whereArgs);
     }
 
 
@@ -239,6 +236,7 @@ public class UserDatabase {
     public void deleteUser(int userId) {
         String whereClause = DatabaseHelper.COLUMN_USER_ID + " = ?";
         String[] whereArgs = {String.valueOf(userId)};
+        firebaseDatabase.child(String.valueOf(userId)).removeValue();
         database.delete(DatabaseHelper.TABLE_USERS, whereClause, whereArgs);
     }
 }

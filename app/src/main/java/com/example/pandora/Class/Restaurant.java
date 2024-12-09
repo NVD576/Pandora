@@ -13,7 +13,10 @@ public class Restaurant {
     String description;
     int history =0;
 
-    public Restaurant(int id,String name, String address, int locationid, int cateid, String image, int star, int history) {
+    public Restaurant() {
+    }
+
+    public Restaurant(int id, String name, String address, int locationid, int cateid, String image, int star, int history) {
         this.id = id;
         this.name = name;
         this.address = address;

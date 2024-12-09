@@ -13,6 +13,7 @@ public class User implements Serializable {
     boolean roleCategory= false;
     boolean roleRestaurant= false;
     boolean roleReview= false;
+    private String image;
 
     public boolean isRoleReview() {
         return roleReview;
@@ -36,7 +37,7 @@ public class User implements Serializable {
         this.roleReview = roleReview;
     }
 
-    private String image;
+
 
     public User(String taiKhoan, String name) {
         this.taiKhoan = taiKhoan;

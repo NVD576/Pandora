@@ -15,7 +15,7 @@ import java.util.List;
 public class RestaurantDatabase {
     private final DatabaseHelper dbHelper;
     private SQLiteDatabase database;
-
+    Cursor  cursor=null;
     public RestaurantDatabase(Context context) {
         dbHelper = new DatabaseHelper(context);
     }
@@ -30,7 +30,31 @@ public class RestaurantDatabase {
             DatabaseHelper.COLUMN_DESCRIPTION,
             DatabaseHelper.COLUMN_HISTORY
     };
+    ContentValues values(Restaurant restaurant){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_NAME, restaurant.getName());
+        values.put(DatabaseHelper.COLUMN_ADDRESS, restaurant.getAddress());  // Thêm địa chỉ
+        values.put(DatabaseHelper.COLUMN_LOCATION_ID, restaurant.getLocationid());  // Thêm locationid
+        values.put(DatabaseHelper.COLUMN_CATE_ID, restaurant.getCateid());  // Thêm cateid
+        values.put(DatabaseHelper.COLUMN_IMAGE, restaurant.getImage());
+        values.put(DatabaseHelper.COLUMN_DESCRIPTION, restaurant.getDescription());
+        values.put(DatabaseHelper.COLUMN_STAR, restaurant.getStar());
+        values.put(DatabaseHelper.COLUMN_HISTORY, restaurant.getHistory());
+        return values;
+    }
 
+    Restaurant restaurant(){
+        int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME));
+        String address = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ADDRESS));
+        int locationid = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_ID));
+        int cateid = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATE_ID));
+        String image = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IMAGE));
+        String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DESCRIPTION));
+        int star = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STAR));
+        int history = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_HISTORY));
+        return new Restaurant(id, name,address,locationid,cateid, image, star,description, history);
+    }
     // Mở kết nối đến cơ sở dữ liệu
     public void open() throws SQLException {
         try {
@@ -49,18 +73,9 @@ public class RestaurantDatabase {
 
     // Thêm một quán ăn vào cơ sở dữ liệu
     public void addRestaurant(Restaurant restaurant) {
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_NAME, restaurant.getName());
-        values.put(DatabaseHelper.COLUMN_ADDRESS, restaurant.getAddress());  // Thêm địa chỉ
-        values.put(DatabaseHelper.COLUMN_LOCATION_ID, restaurant.getLocationid());  // Thêm locationid
-        values.put(DatabaseHelper.COLUMN_CATE_ID, restaurant.getCateid());  // Thêm cateid
-        values.put(DatabaseHelper.COLUMN_IMAGE, restaurant.getImage());
-        values.put(DatabaseHelper.COLUMN_DESCRIPTION, restaurant.getDescription());
-        values.put(DatabaseHelper.COLUMN_STAR, restaurant.getStar());
-        values.put(DatabaseHelper.COLUMN_HISTORY, restaurant.getHistory());
 
         // Thêm quán ăn vào cơ sở dữ liệu và gán ID từ bản ghi đã chèn
-        long id = database.insert(DatabaseHelper.TABLE_RESTAURANTS, null, values);
+        long id = database.insert(DatabaseHelper.TABLE_RESTAURANTS, null, values(restaurant));
         if (id != -1) {
             restaurant.setId((int) id);
         } else {
@@ -71,25 +86,12 @@ public class RestaurantDatabase {
     // Lấy danh sách các quán ăn từ cơ sở dữ liệu
     public List<Restaurant> getAllRestaurants() {
         List<Restaurant> restaurantList = new ArrayList<>();
-        Cursor cursor = null;
-
         try {
             cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, columns, null, null, null, null, null);
-
             // Kiểm tra nếu cursor không null và di chuyển đến bản ghi đầu tiên
             while (cursor != null && cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
-                String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME));
-                String address = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ADDRESS));
-                int locationid = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_ID));
-                int cateid = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATE_ID));
-                String image = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IMAGE));
-                String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DESCRIPTION));
-                int star = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STAR));
-                int history = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_HISTORY));
-
                 // Thêm quán ăn vào danh sách
-                restaurantList.add(new Restaurant(id, name,address,locationid,cateid, image, star,description, history)); // Chưa dùng address, locationid, cateid trong constructor
+                restaurantList.add(restaurant()); // Chưa dùng address, locationid, cateid trong constructor
 
             }
         } catch (Exception e) {
@@ -103,27 +105,15 @@ public class RestaurantDatabase {
     }
     // Lấy danh sách theo id
     public Restaurant getRestaurantsByID(int restaurantId) {
-        Cursor cursor = null;
         try {
             // Sử dụng từ khóa LIKE để tìm kiếm tên gần đúng
             String selection = DatabaseHelper.COLUMN_ID + " =?";
             String[] selectionArgs = {String.valueOf(restaurantId)}; // Tìm kiếm các chuỗi có chứa `name`
 
             cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, columns, selection, selectionArgs, null, null, null);
-
             // Duyệt qua kết quả và thêm vào danh sách
             if (cursor != null && cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
-                String restaurantName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME));
-                String address = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ADDRESS));
-                int locationId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_ID));
-                int cateId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATE_ID));
-                String image = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IMAGE));
-                int star = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STAR));
-                String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DESCRIPTION));
-                int history = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_HISTORY));
-
-                return new Restaurant(id, restaurantName, address, locationId, cateId, image, star,description, history);
+                return restaurant();
             }
         } catch (Exception e) {
             throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
@@ -132,18 +122,14 @@ public class RestaurantDatabase {
                 cursor.close();
             }
         }
-
         return null;
     }
 
     //Lấy danh sách các quán ăn theo tên
     public List<Restaurant> getRestaurantsByName(String name) {
         List<Restaurant> restaurantList = new ArrayList<>();
-        Cursor cursor = null;
 
         try {
-
-
             // Sử dụng từ khóa LIKE để tìm kiếm tên gần đúng
             String selection = DatabaseHelper.COLUMN_NAME + " LIKE ?";
             String[] selectionArgs = {"%" + name + "%"}; // Tìm kiếm các chuỗi có chứa `name`
@@ -152,17 +138,8 @@ public class RestaurantDatabase {
 
             // Duyệt qua kết quả và thêm vào danh sách
             while (cursor != null && cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
-                String restaurantName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME));
-                String address = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ADDRESS));
-                int locationId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_ID));
-                int cateId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATE_ID));
-                String image = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IMAGE));
-                int star = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STAR));
-                String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DESCRIPTION));
-                int history = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_HISTORY));
 
-                restaurantList.add(new Restaurant(id, restaurantName, address, locationId, cateId, image, star,description, history));
+                restaurantList.add(restaurant());
             }
         } catch (Exception e) {
             throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
@@ -178,7 +155,6 @@ public class RestaurantDatabase {
     //Lấy danh sách theo location
     public List<Restaurant> getRestaurantsByLocation(int locationid) {
         List<Restaurant> restaurantList = new ArrayList<>();
-        Cursor cursor = null;
         try {
             // Sử dụng câu truy vấn WHERE để lọc theo locationid
             String selection = DatabaseHelper.COLUMN_LOCATION_ID + " = ?";
@@ -190,18 +166,8 @@ public class RestaurantDatabase {
             // Duyệt qua các kết quả và thêm vào danh sách restaurantList
             if (cursor != null && cursor.moveToFirst()) {
                 do {
-                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
-                    String restaurantName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME));
-                    String address = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ADDRESS));
-                    int locationId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_ID));
-                    int cateId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATE_ID));
-                    String image = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IMAGE));
-                    int star = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STAR));
-                    String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DESCRIPTION));
-                    int history = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_HISTORY));
-
                     // Tạo đối tượng Restaurant và thêm vào danh sách
-                    restaurantList.add(new Restaurant(id, restaurantName, address, locationId, cateId, image, star,description, history));
+                    restaurantList.add(restaurant());
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
@@ -217,7 +183,6 @@ public class RestaurantDatabase {
 
     public List<Restaurant> getRestaurantsByLocationName(String name) {
         List<Restaurant> restaurantList = new ArrayList<>();
-        Cursor cursor = null;
 
         try {
             // Truy vấn địa điểm theo tên
@@ -250,18 +215,9 @@ public class RestaurantDatabase {
                 // Duyệt qua kết quả và thêm vào danh sách restaurantList
                 if (cursor != null && cursor.moveToFirst()) {
                     do {
-                        int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
-                        String restaurantName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME));
-                        String address = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ADDRESS));
-                        int locationIdValue = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_ID));
-                        int cateId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATE_ID));
-                        String image = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IMAGE));
-                        int star = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STAR));
-                        String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DESCRIPTION));
-                        int history = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_HISTORY));
 
                         // Tạo đối tượng Restaurant và thêm vào danh sách
-                        restaurantList.add(new Restaurant(id, restaurantName, address, locationIdValue, cateId, image, star,description, history));
+                        restaurantList.add(restaurant());
                     } while (cursor.moveToNext());
                 }
             }
@@ -292,18 +248,8 @@ public class RestaurantDatabase {
 
             // Duyệt qua kết quả và thêm vào danh sách
             while (cursor != null && cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
-                String restaurantName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME));
-                String address = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ADDRESS));
-                int locationId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_ID));
-                int cateId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATE_ID));
-                String image = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IMAGE));
-                int star = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_STAR));
-                String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DESCRIPTION));
-                int history = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_HISTORY));
-
                 // Thêm nhà hàng vào danh sách
-                restaurantList.add(new Restaurant(id, restaurantName, address, locationId, cateId, image, star, description, history));
+                restaurantList.add(restaurant());
             }
         } catch (Exception e) {
             throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
@@ -319,18 +265,9 @@ public class RestaurantDatabase {
 
     // Cập nhật thông tin một quán ăn
     public void updateRestaurant(Restaurant restaurant) {
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_NAME, restaurant.getName());
-        values.put(DatabaseHelper.COLUMN_ADDRESS, restaurant.getAddress());  // Cập nhật địa chỉ
-        values.put(DatabaseHelper.COLUMN_LOCATION_ID, restaurant.getLocationid());  // Cập nhật locationid
-        values.put(DatabaseHelper.COLUMN_CATE_ID, restaurant.getCateid());  // Cập nhật cateid
-        values.put(DatabaseHelper.COLUMN_IMAGE, restaurant.getImage());
-        values.put(DatabaseHelper.COLUMN_DESCRIPTION, restaurant.getDescription());
-        values.put(DatabaseHelper.COLUMN_STAR, restaurant.getStar());  // Cập nhật đánh giá
-        values.put(DatabaseHelper.COLUMN_HISTORY, restaurant.getHistory());
 
         // Cập nhật quán ăn theo ID
-        int rowsUpdated = database.update(DatabaseHelper.TABLE_RESTAURANTS, values,
+        int rowsUpdated = database.update(DatabaseHelper.TABLE_RESTAURANTS, values(restaurant),
                 DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(restaurant.getId())});
 
         if (rowsUpdated == 0) {
