@@ -19,7 +19,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -30,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pandora.Adapter.RestaurantAdapter;
+import com.example.pandora.Adapter.RestaurantHighRatingAdapter;
 import com.example.pandora.Class.Location;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.User;
@@ -50,6 +50,7 @@ public class Home extends Fragment {
     boolean isLogin = false;
     private RecyclerView recyclerView;
     private RestaurantAdapter restaurantAdapter;
+    private RestaurantHighRatingAdapter restaurantHighRatingAdapter;
     private ViewPager2 viewPager;
     private RestaurantDatabase restaurantDatabase;
     private List<Restaurant> restaurantList;
@@ -120,12 +121,46 @@ public class Home extends Fragment {
 
         restaurantList = restaurantDatabase.getAllRestaurants();
 
-
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
         restaurantAdapter = new RestaurantAdapter(restaurantList);
+        restaurantHighRatingAdapter = new RestaurantHighRatingAdapter(restaurantList);
+
         recyclerView.setAdapter(restaurantAdapter);
+
+        Button btnLocationCheck = view.findViewById(R.id.btnLocationCheck);
+        Button btnHighRatingCheck = view.findViewById(R.id.btnHighRatingCheck);
+        btnLocationCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Change button backgrounds
+                btnLocationCheck.setBackgroundResource(R.drawable.button_selected_home_background);
+                btnHighRatingCheck.setBackgroundResource(R.drawable.button_unselected_home_background);
+
+                // Update the adapter with restaurants based on location
+                restaurantAdapter.updateData(restaurantList);
+                recyclerView.setAdapter(restaurantAdapter);  // Update the RecyclerView's adapter
+            }
+        });
+
+        btnHighRatingCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Change button backgrounds
+                btnHighRatingCheck.setBackgroundResource(R.drawable.button_selected_home_background);
+                btnLocationCheck.setBackgroundResource(R.drawable.button_unselected_home_background);
+
+                // Update the adapter with high-rated restaurants
+                restaurantHighRatingAdapter.updateData(restaurantList);
+                recyclerView.setAdapter(restaurantHighRatingAdapter);  // Update the RecyclerView's adapter
+            }
+        });
+
+
+
         NestedScrollView scrollView = view.findViewById(R.id.scrollView); // ID của NestedScrollView
 
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {

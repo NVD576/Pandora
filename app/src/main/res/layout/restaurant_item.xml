@@ -5,14 +5,14 @@
     android:orientation="horizontal"
     android:padding="8dp"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/item_admin_background">
+    android:background="@drawable/item_restaurant_background">
 
     <!-- Ảnh đại diện người dùng -->
     <ImageView
         android:id="@+id/restaurantImage"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/person_icon"
+        android:src="@drawable/restaurant_image_background"
         android:layout_marginEnd="16dp"
         android:background="#00000000"
         android:scaleType="centerCrop" />
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
+                
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"

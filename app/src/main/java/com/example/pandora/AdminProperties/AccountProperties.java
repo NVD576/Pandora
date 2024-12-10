@@ -90,6 +90,10 @@ public class AccountProperties extends AppCompatActivity {
             }
         });
 
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        EditText search = findViewById(R.id.search_input);
+
+
     }
 
     @SuppressLint("MissingInflatedId")
