@@ -8,7 +8,6 @@
     android:background="@drawable/background_gradient"
     tools:context=".Home">
 
-
     <LinearLayout
         android:id="@+id/search_toolbar_container"
         android:layout_width="match_parent"
@@ -45,6 +44,8 @@
                 android:textColorHint="@color/gray"
                 android:textSize="16sp"
                 android:transitionName="search_input" />
+
+
 
         </LinearLayout>
 
@@ -170,6 +171,48 @@
 
             </GridLayout>
 
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:orientation="horizontal"
+                android:background="@drawable/item_restaurant_background"
+                android:padding="8dp">
+
+                <!-- Button 1 -->
+                <Button
+                    android:id="@+id/btnLocationCheck"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_selected_home_background"
+                    android:text="Địa điểm"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/black"
+                    android:elevation="8dp"
+                    android:gravity="center"
+                    android:layout_marginBottom="2dp"
+                    android:textSize="12sp" />
+
+                <!-- Button 2 -->
+                <Button
+                    android:id="@+id/btnHighRatingCheck"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="2dp"
+
+                    android:background="@drawable/button_unselected_home_background"
+                    android:text="Đánh giá cao"
+                    android:textColor="@color/black"
+                    android:elevation="8dp"
+                    android:gravity="center"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <!-- RecyclerView để hiển thị các bài đánh giá -->
             <androidx.recyclerview.widget.RecyclerView
@@ -177,14 +220,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
-                android:background="@drawable/widget_background"
+                android:background="@drawable/background_gradient"
                 android:padding="10dp"
-                tools:listitem="@layout/item_review" />
+                tools:listitem="@layout/restaurant_item" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
 
     <View
         android:id="@+id/searchClick"

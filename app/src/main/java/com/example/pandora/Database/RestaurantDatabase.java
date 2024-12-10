@@ -6,10 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.pandora.Class.Location;
 import com.example.pandora.Class.Restaurant;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +15,6 @@ public class RestaurantDatabase {
     private final DatabaseHelper dbHelper;
     private SQLiteDatabase database;
     Cursor  cursor=null;
-    DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
     public RestaurantDatabase(Context context) {
         dbHelper = new DatabaseHelper(context);
     }
@@ -80,7 +76,6 @@ public class RestaurantDatabase {
         // Thêm quán ăn vào cơ sở dữ liệu và gán ID từ bản ghi đã chèn
         long id = database.insert(DatabaseHelper.TABLE_RESTAURANTS, null, values(restaurant));
         // Dữ liệu được lưu dưới dạng một Map hoặc đối tượng
-        firebaseDatabase.child(String.valueOf(restaurant.getId())).setValue(restaurant);
         if (id != -1) {
             restaurant.setId((int) id);
         } else {
@@ -108,6 +103,10 @@ public class RestaurantDatabase {
         }
         return restaurantList;
     }
+
+
+
+
     // Lấy danh sách theo id
     public Restaurant getRestaurantsByID(int restaurantId) {
         try {
@@ -273,7 +272,6 @@ public class RestaurantDatabase {
         int rowsUpdated = database.update(DatabaseHelper.TABLE_RESTAURANTS, values(restaurant),
                 DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(restaurant.getId())});
 
-        firebaseDatabase.child(String.valueOf(restaurant.getId())).setValue(restaurant);
         if (rowsUpdated == 0) {
             throw new SQLException("Không thể cập nhật quán ăn có ID: " + restaurant.getId());
         }
@@ -284,7 +282,6 @@ public class RestaurantDatabase {
         int rowsDeleted = database.delete(DatabaseHelper.TABLE_RESTAURANTS,
                 DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(restaurantId)});
 
-        firebaseDatabase.child(String.valueOf(restaurantId)).removeValue();
 
         if (rowsDeleted == 0) {
             throw new SQLException("Không thể xóa quán ăn có ID: " + restaurantId);
@@ -294,7 +291,6 @@ public class RestaurantDatabase {
     // Xóa tất cả các quán ăn
     public void deleteAllRestaurants() {
         int rowsDeleted = database.delete(DatabaseHelper.TABLE_RESTAURANTS, null, null);
-        firebaseDatabase.removeValue();
         if (rowsDeleted == 0) {
             throw new SQLException("Không thể xóa tất cả các quán ăn.");
         }

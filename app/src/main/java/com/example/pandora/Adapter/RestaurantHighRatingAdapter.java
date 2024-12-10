@@ -15,11 +15,12 @@ import com.example.pandora.Class.Restaurant;
 import com.example.pandora.R;
 
 import java.io.FileInputStream;
+import java.util.Comparator;
 import java.util.List;
 
-public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
+public class RestaurantHighRatingAdapter extends RecyclerView.Adapter<RestaurantHighRatingAdapter.RestaurantViewHolder> {
 
-    private List<Restaurant> restaurantList;
+    private List<Restaurant> highRatingRestaurantList;
     private OnItemClickListener listener;
     private Context context;
 
@@ -28,17 +29,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         void onItemClick(Restaurant restaurant);
     }
 
-    public void setFilteredList(List<Restaurant> filteredList){
-        this.restaurantList = filteredList;
-        notifyDataSetChanged();
-    }
-
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
-    public RestaurantAdapter(List<Restaurant> restaurants) {
-        this.restaurantList = restaurants;
+    public RestaurantHighRatingAdapter(List<Restaurant> highRatingRestaurants) {
+        this.highRatingRestaurantList = highRatingRestaurants;
     }
 
     @Override
@@ -49,18 +45,17 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     @Override
     public void onBindViewHolder(RestaurantViewHolder holder, int position) {
-        Restaurant restaurant = restaurantList.get(position);
+        Restaurant restaurant = highRatingRestaurantList.get(position);
         holder.nameTextView.setText(restaurant.getName());
         holder.addressTextView.setText(restaurant.getAddress());
         holder.ratingTextView.setText(String.valueOf(restaurant.getStar()));
-//        holder.imageView.setImageResource(restaurant.getImage()); // Hiển thị ảnh
+
+        // Load image từ bộ nhớ trong
         Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
         if (bitmap != null) {
             holder.imageView.setImageBitmap(bitmap);
         }
 
-//        holder.ratingBar.setRating(restaurant.getStar()); // Hiển thị đánh giá sao
-        
         // Xử lý sự kiện click
         holder.itemView.setOnClickListener(v -> {
             if (listener != null && position != RecyclerView.NO_POSITION) {
@@ -81,7 +76,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     @Override
     public int getItemCount() {
-        return restaurantList.size();
+        return highRatingRestaurantList.size();
     }
 
     public static class RestaurantViewHolder extends RecyclerView.ViewHolder {
@@ -90,7 +85,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         TextView addressTextView; // TextView mới để hiển thị địa chỉ
         ImageView imageView;
         TextView ratingTextView;
-//        RatingBar ratingBar;
 
         public RestaurantViewHolder(View itemView) {
             super(itemView);
@@ -98,13 +92,23 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             addressTextView = itemView.findViewById(R.id.restaurantAddress); // Kết nối với TextView địa chỉ
             imageView = itemView.findViewById(R.id.restaurantImage);
             ratingTextView = itemView.findViewById(R.id.restaurantRating);
-//            ratingBar = itemView.findViewById(R.id.restaurantRating);
         }
     }
 
-    public void updateData(List<Restaurant> newRestaurantList) {
-        this.restaurantList.clear(); // Xóa dữ liệu cũ
-        this.restaurantList.addAll(newRestaurantList); // Thêm dữ liệu mới
+    // Cập nhật dữ liệu và sắp xếp danh sách theo đánh giá từ cao xuống thấp
+    public void updateData(List<Restaurant> newHighRatingRestaurantList) {
+        this.highRatingRestaurantList.clear(); // Xóa dữ liệu cũ
+        this.highRatingRestaurantList.addAll(newHighRatingRestaurantList); // Thêm dữ liệu mới
+
+        // Sắp xếp danh sách nhà hàng theo đánh giá từ cao xuống thấp
+        this.highRatingRestaurantList.sort(new Comparator<Restaurant>() {
+            @Override
+            public int compare(Restaurant r1, Restaurant r2) {
+                // So sánh đánh giá sao của nhà hàng
+                return Float.compare(r2.getStar(), r1.getStar()); // Đánh giá cao hơn sẽ ở trên
+            }
+        });
+
         notifyDataSetChanged(); // Thông báo dữ liệu thay đổi
     }
 }
