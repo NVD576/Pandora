@@ -18,8 +18,7 @@ public class LocationDatabase {
     private final DatabaseHelper dbHelper;
     private SQLiteDatabase database;
 
-    DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("locations");
-    public LocationDatabase(Context context) {
+   public LocationDatabase(Context context) {
         dbHelper = new DatabaseHelper(context);
     }
     String[] columns = {
@@ -92,7 +91,6 @@ public class LocationDatabase {
             return;
         }
 
-        firebaseDatabase.child(String.valueOf(location.getId())).setValue(location);
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME, location.getName().trim()); // Chuẩn hóa tên (bỏ khoảng trắng thừa)
 
@@ -203,7 +201,6 @@ public class LocationDatabase {
         // Cập nhật địa điểm theo ID
         int rowsUpdated = database.update(DatabaseHelper.TABLE_LOCATIONS, values,
                 DatabaseHelper.COLUMN_LOCATION_LOCATION_ID + " = ?", new String[]{String.valueOf(location.getId())});
-        firebaseDatabase.child(String.valueOf(location.getId())).setValue(location);
 
         if (rowsUpdated == 0) {
             throw new SQLException("Không thể cập nhật địa điểm có ID: " + location.getId());
@@ -215,7 +212,6 @@ public class LocationDatabase {
         int rowsDeleted = database.delete(DatabaseHelper.TABLE_LOCATIONS,
                 DatabaseHelper.COLUMN_LOCATION_LOCATION_ID + " = ?", new String[]{String.valueOf(locationId)});
 
-        firebaseDatabase.child(String.valueOf(locationId)).removeValue();
         if (rowsDeleted == 0) {
             throw new SQLException("Không thể xóa địa điểm có ID: " + locationId);
         }
@@ -224,7 +220,6 @@ public class LocationDatabase {
     // Xóa tất cả các địa điểm
     public void deleteAllLocations() {
         int rowsDeleted = database.delete(DatabaseHelper.TABLE_LOCATIONS, null, null);
-        firebaseDatabase.removeValue();
         if (rowsDeleted == 0) {
 
 

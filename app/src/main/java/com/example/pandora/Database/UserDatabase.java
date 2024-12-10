@@ -17,7 +17,6 @@ import java.util.List;
 public class UserDatabase {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
-    DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("users");
     String[] columns = {
             DatabaseHelper.COLUMN_USER_ID,
             DatabaseHelper.COLUMN_USER_TAIKHOAN,
@@ -91,10 +90,7 @@ public class UserDatabase {
         // Thực hiện chèn và nhận lại ID tự động tăng
         long id = database.insert(DatabaseHelper.TABLE_USERS, null, values(user));
         user.setId((int) id); // Gán ID tự động tăng vào đối tượng user
-        // Lưu vào Firebase
 
-        // Dữ liệu được lưu dưới dạng một Map hoặc đối tượng
-        firebaseDatabase.child(String.valueOf(user.getId())).setValue(user);
 
         return true;
     }
@@ -189,8 +185,6 @@ public class UserDatabase {
         String whereClause = DatabaseHelper.COLUMN_USER_ID + " = ?";
         String[] whereArgs = {String.valueOf(user.getId())};
 
-        // Dữ liệu được lưu dưới dạng một Map hoặc đối tượng
-        firebaseDatabase.child(String.valueOf(user.getId())).setValue(user);
         // Cập nhật dữ liệu trong cơ sở dữ liệu
         database.update(DatabaseHelper.TABLE_USERS, values(user), whereClause, whereArgs);
     }
@@ -236,7 +230,6 @@ public class UserDatabase {
     public void deleteUser(int userId) {
         String whereClause = DatabaseHelper.COLUMN_USER_ID + " = ?";
         String[] whereArgs = {String.valueOf(userId)};
-        firebaseDatabase.child(String.valueOf(userId)).removeValue();
         database.delete(DatabaseHelper.TABLE_USERS, whereClause, whereArgs);
     }
 }

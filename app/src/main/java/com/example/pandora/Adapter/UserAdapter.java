@@ -50,20 +50,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.userRole.setText(user.isRole() ? "Admin" : "User");
         Log.d("Image Path", "Image path: " + user.getImage());
 
-        // Hiển thị ảnh đại diện
-//        Glide.with(context)
-//                .load(user.getImage()) // Đường dẫn hoặc URL
-//                .placeholder(R.drawable.person_icon) // Hình mặc định
-//                .error(R.drawable.baseline_admin_panel_settings_24) // Hình lỗi
-//                .into(holder.userAvatar);
-
         if (user.getImage() != null && !user.getImage().isEmpty()) {
             Bitmap bitmap = loadImageFromInternalStorage(user.getImage());
             holder.userAvatar.setImageBitmap(bitmap);
         } else {
             holder.userAvatar.setImageResource(R.drawable.person_icon); // Đặt ảnh mặc định nếu không tải được ảnh
         }
-        // Gắn tag để truyền dữ liệu vào sự kiện nhấn
         holder.itemView.setTag(user);
     }
 

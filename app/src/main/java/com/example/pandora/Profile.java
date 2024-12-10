@@ -82,97 +82,62 @@ public class Profile extends Fragment {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         login = view.findViewById(R.id.loginProfile);
-
+        userImage = view.findViewById(R.id.userImage);
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
+
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
-
-        Bundle bundle = getArguments();
-
-        if (bundle != null) {
-
-//            isLogin = bundle.getBoolean("isLogin", false);
-            if (isLogin) {
-//                userid = bundle.getInt("userid");  // Sử dụng giá trị mặc định nếu không tìm thấy
-                Log.e("Login", "UserID " + userid);
-//                userName = bundle.getString("userName");
-                UserDatabase db= new UserDatabase(getContext());
-                db.open();
-                user = db.getUserById(userid);
-                db.close();
-                userName=user.getName();
-                Log.e("Login", "name " + userName);
-
-            }
-        }
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        //xem quyền truy cập
         TextView adminMode = view.findViewById(R.id.adminMode);
         adminMode.setAlpha(0f);
         adminMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isLogin) {
-                    if (user.isRole()) {
-                        Intent myIntent = new Intent(requireContext(), AdminProperties.class);
-                        startActivity(myIntent);
-                    }
+                if (user.isRole()) {
+                    Intent myIntent = new Intent(requireContext(), AdminProperties.class);
+                    startActivity(myIntent);
+
                 }
             }
         });
-        userImage = view.findViewById(R.id.userImage);
+
         if (isLogin) {
+            UserDatabase db= new UserDatabase(getContext());
+            db.open();
+            user = db.getUserById(userid);
+            db.close();
+            userName=user.getName();
+            login.setText(user.getName());
+
             if (user.isRole()){
                 adminMode.setAlpha(1f);
             } else adminMode.setAlpha(0f);
-            if (user.getName() == null) {
-                login.setText(userName);
-//                Drawable[] drawables = login.getCompoundDrawablesRelative();
-//                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
-//                        drawables[0], // drawableStart
-//                        drawables[1], // drawableTop
-//                        null,         // drawableEnd
-//                        drawables[3]  // drawableBottom
-//                );
-            } else {
-                login.setText(user.getName());
-//                Drawable[] drawables = login.getCompoundDrawablesRelative();
-//                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
-//                        drawables[0], // drawableStart
-//                        drawables[1], // drawableTop
-//                        null,         // drawableEnd
-//                        drawables[3]  // drawableBottom
-//                );
-            }
+
+
 
             // Lấy đường dẫn ảnh từ cơ sở dữ liệu
             String userImagePath = getUserImageFromDatabase(userid);
 
             // Nếu có đường dẫn ảnh, cập nhật ImageView
             if (userImagePath != null && !userImagePath.isEmpty()) {
-
-//                Uri imageUri = Uri.parse(userImagePath);
-//                userImage.setImageURI(imageUri);
-
                 Bitmap bitmap = loadImageFromInternalStorage(userImagePath);
                 if (bitmap != null) {
                     userImage.setImageBitmap(bitmap);
                 }
             }
         }
+
+        //nút đăng nhập
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isLogin) {
-                    Intent myIntent = new Intent(getActivity(), Login.class);
-                    startActivity(myIntent);
-                } else {
-
-                }
+                Intent myIntent = new Intent(getActivity(), Login.class);
+                startActivity(myIntent);
             }
         });
-
+        // thay đổi avartar
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,7 +151,7 @@ public class Profile extends Fragment {
             }
         });
 
-
+        // nút thay đổi thông tin
         TextView changeInfo = view.findViewById(R.id.changeInfo);
         changeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,7 +163,7 @@ public class Profile extends Fragment {
                 }
             }
         });
-
+        // nút đăng xuất
         TextView logout = view.findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,7 +196,7 @@ public class Profile extends Fragment {
         return view;
     }
 
-
+    //hộp thoại thay đổi thông tin
     private void showEditProfileDialog() {
         // Tạo view cho hộp thoại
         LayoutInflater inflater = getLayoutInflater();
@@ -241,11 +206,7 @@ public class Profile extends Fragment {
         EditText edtName = dialogView.findViewById(R.id.edtName);
         EditText edtNumberPhone = dialogView.findViewById(R.id.edtNumberPhone);
 
-        if (user.getName() == null) {
-            edtName.setText("");
-        } else {
-            edtName.setText(user.getName());
-        }
+        edtName.setText(user.getName());
         edtNumberPhone.setText(user.getSDT());
 
         // Tạo hộp thoại
@@ -256,19 +217,19 @@ public class Profile extends Fragment {
 
         Button btnSave = dialogView.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // Lấy dữ liệu từ các EditText
-                        String newName = edtName.getText().toString();
-                        String newNumberPhone = edtNumberPhone.getText().toString();
+            @Override
+            public void onClick(View view) {
+                // Lấy dữ liệu từ các EditText
+                String newName = edtName.getText().toString();
+                String newNumberPhone = edtNumberPhone.getText().toString();
 
-                        // Cập nhật thông tin (Ví dụ: bạn có thể lưu vào cơ sở dữ liệu)
-                        updateProfile(newName, newNumberPhone);
+                // Cập nhật thông tin (Ví dụ: bạn có thể lưu vào cơ sở dữ liệu)
+                updateProfile(newName, newNumberPhone);
 
-                        login.setText(newName);
-                        alertDialog.dismiss();
-                    }
-                });
+                login.setText(newName);
+                alertDialog.dismiss();
+            }
+        });
 
         Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
         btnDismiss.setOnClickListener(v -> alertDialog.dismiss());
@@ -287,7 +248,7 @@ public class Profile extends Fragment {
 
     }
 
-
+    //lưu ảnh
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -297,34 +258,27 @@ public class Profile extends Fragment {
             Uri selectedImageUri = data.getData();
 
             // Lấy đường dẫn thực tế từ URI
-            String imagePath = getRealPathFromURI(selectedImageUri);
+            try {
+                // Chuyển đổi URI sang Bitmap
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
 
-            if (imagePath != null) {
+                // Tạo tên file duy nhất
+                String fileName = "user_image_" + userid + ".png";
 
-                try {
-                    // Chuyển đổi URI sang Bitmap
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                // Cập nhật vào database
+                updateUserImage(fileName);
+                // Lưu Bitmap vào bộ nhớ trong
+                saveImageToInternalStorage(bitmap, fileName);
 
-                    // Tạo tên file duy nhất
-                    String fileName = "user_image_" + userid + ".png";
-
-                    // Cập nhật vào database
-                    updateUserImage(fileName);
-                    // Lưu Bitmap vào bộ nhớ trong
-                    saveImageToInternalStorage(bitmap, fileName);
-
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                // Cập nhật ngay trong ImageView
-                ImageView userImage = requireView().findViewById(R.id.userImage);
-                userImage.setImageURI(selectedImageUri);
-
-                // Thông báo thành công
-                Toast.makeText(getActivity(), "Cập nhật ảnh thành công!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getActivity(), "Không thể lấy ảnh", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+            // Cập nhật ngay trong ImageView
+            ImageView userImage = requireView().findViewById(R.id.userImage);
+            userImage.setImageURI(selectedImageUri);
+
+            // Thông báo thành công
+            Toast.makeText(getActivity(), "Cập nhật ảnh thành công!", Toast.LENGTH_SHORT).show();
         }
     }
 
