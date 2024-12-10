@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -61,7 +58,7 @@ public class Home extends Fragment {
     private int currentPage = 0;
     private boolean hasShownToast = false;
     private Handler handler = new Handler(Looper.getMainLooper());
-    SharedPreferences sharedPreferences;
+
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -84,7 +81,7 @@ public class Home extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
         search_toolbar = view.findViewById(R.id.search_toolbar);
@@ -102,11 +99,10 @@ public class Home extends Fragment {
         if (restaurantDatabase.getAllRestaurants().isEmpty()) {
             // Thêm dữ liệu vào cơ sở dữ liệu
             restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", 1, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B",  2, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B",  1, 0));
             restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C",  2, 0));
             restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", 1, 0));
             restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", 2, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn F", 1, 0));
         }
 
         search_toolbar.requestFocus();
@@ -126,30 +122,57 @@ public class Home extends Fragment {
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
         restaurantAdapter = new RestaurantAdapter(restaurantList);
-        restaurantHighRatingAdapter = new RestaurantHighRatingAdapter(restaurantList);
-
         recyclerView.setAdapter(restaurantAdapter);
 
-        NestedScrollView scrollView = view.findViewById(R.id.scrollView); // ID của NestedScrollView
-
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+        Button btnLocationCheck = view.findViewById(R.id.btnLocationCheck);
+        Button btnHighRatingCheck = view.findViewById(R.id.btnHighRatingCheck);
+        btnLocationCheck.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                // Kiểm tra nếu cuộn lên đầu
-                // Gọi hàm load lại dữ liệu
-                if (scrollY == 0 && !hasShownToast) {
-                    loading();
-                    Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
-                    hasShownToast = true;
-                } else if (scrollY > 0) {
-                    hasShownToast = false; // Reset trạng thái nếu không ở đầu
-                }
+            public void onClick(View view) {
+                // Change button backgrounds
+                btnLocationCheck.setBackgroundResource(R.drawable.button_selected_home_background);
+                btnHighRatingCheck.setBackgroundResource(R.drawable.button_unselected_home_background);
+
+                // Update the adapter with restaurants based on location
+                restaurantList = restaurantDatabase.getAllRestaurants();
+                restaurantAdapter.updateData(restaurantList);
+                recyclerView.setAdapter(restaurantAdapter);  // Update the RecyclerView's adapter
             }
         });
-        restaurantAdapter.notifyDataSetChanged();
+
+        btnHighRatingCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Change button backgrounds
+                btnHighRatingCheck.setBackgroundResource(R.drawable.button_selected_home_background);
+                btnLocationCheck.setBackgroundResource(R.drawable.button_unselected_home_background);
+
+                // Update the adapter with high-rated restaurants
+                restaurantList = restaurantDatabase.getHighRatedRestaurants();
+                restaurantAdapter.updateData(restaurantList);
+                recyclerView.setAdapter(restaurantAdapter);  // Update the RecyclerView's adapter
+            }
+        });
+
+
+//        NestedScrollView scrollView = view.findViewById(R.id.scrollView); // ID của NestedScrollView
+//
+//        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+//            @Override
+//            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//                // Kiểm tra nếu cuộn lên đầu
+//                // Gọi hàm load lại dữ liệu
+//                if (scrollY == 0 && !hasShownToast) {
+//                    onResume();
+//                    Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
+//                    hasShownToast = true;
+//                } else if (scrollY > 0) {
+//                    hasShownToast = false; // Reset trạng thái nếu không ở đầu
+//                }
+//            }
+//        });
+//        restaurantAdapter.notifyDataSetChanged();
 
         // Xử lý sự kiện click
         restaurantAdapter.setOnItemClickListener(restaurant -> {
@@ -210,11 +233,6 @@ public class Home extends Fragment {
                 startActivity(myIntent);
             }
         });
-
-
-
-
-
 
         return view;
     }
@@ -347,7 +365,7 @@ public class Home extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedLocation[0] = adapterView.getItemAtPosition(i).toString();  // Get the selected location
-             }
+            }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -370,8 +388,7 @@ public class Home extends Fragment {
                 }
                 if(selectedLocation[0].equals("Tất cả")){
                     restaurantList=restaurantDatabase.getAllRestaurants();
-                }
-                else{
+                }else{
                     restaurantList=restaurantDatabase.getRestaurantsByLocationName(selectedLocation[0]);
                 }
                 restaurantAdapter.updateData(restaurantList);
@@ -386,6 +403,7 @@ public class Home extends Fragment {
 
     // Method to save the selected location in SharedPreferences
     private void saveLocation(String location) {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("selected_location", location);
         editor.apply();
@@ -393,10 +411,18 @@ public class Home extends Fragment {
 
     // Method to retrieve the saved location from SharedPreferences
     private String getSavedLocation() {
-       return sharedPreferences.getString("selected_location", null);  // Return null if no location is saved
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
+        return sharedPreferences.getString("selected_location", null);  // Return null if no location is saved
     }
 
-    public void loading() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("Khong quay lai dc");
+        RestaurantDatabase re= new RestaurantDatabase(getContext());
+        re.open();
+        restaurantList=re.getAllRestaurants();
+        re.close();
         restaurantAdapter.updateData(restaurantList); // Hàm tải lại dữ liệu từ cơ sở dữ liệu
     }
 
