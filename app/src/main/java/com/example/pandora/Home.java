@@ -17,9 +17,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -156,23 +158,23 @@ public class Home extends Fragment {
         });
 
 
-//        NestedScrollView scrollView = view.findViewById(R.id.scrollView); // ID của NestedScrollView
-//
-//        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-//            @Override
-//            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//                // Kiểm tra nếu cuộn lên đầu
-//                // Gọi hàm load lại dữ liệu
-//                if (scrollY == 0 && !hasShownToast) {
-//                    onResume();
-//                    Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
-//                    hasShownToast = true;
-//                } else if (scrollY > 0) {
-//                    hasShownToast = false; // Reset trạng thái nếu không ở đầu
-//                }
-//            }
-//        });
-//        restaurantAdapter.notifyDataSetChanged();
+        NestedScrollView scrollView = view.findViewById(R.id.scrollView); // ID của NestedScrollView
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                // Kiểm tra nếu cuộn lên đầu
+                // Gọi hàm load lại dữ liệu
+                if (scrollY == 0 && !hasShownToast) {
+                    loading();
+                    Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
+                    hasShownToast = true;
+                } else if (scrollY > 0) {
+                    hasShownToast = false; // Reset trạng thái nếu không ở đầu
+                }
+            }
+        });
+        restaurantAdapter.notifyDataSetChanged();
 
         // Xử lý sự kiện click
         restaurantAdapter.setOnItemClickListener(restaurant -> {
@@ -415,14 +417,8 @@ public class Home extends Fragment {
         return sharedPreferences.getString("selected_location", null);  // Return null if no location is saved
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        System.out.println("Khong quay lai dc");
-        RestaurantDatabase re= new RestaurantDatabase(getContext());
-        re.open();
-        restaurantList=re.getAllRestaurants();
-        re.close();
+    public void loading() {
+
         restaurantAdapter.updateData(restaurantList); // Hàm tải lại dữ liệu từ cơ sở dữ liệu
     }
 
