@@ -189,8 +189,6 @@ public class UserDatabase {
         database.update(DatabaseHelper.TABLE_USERS, values(user), whereClause, whereArgs);
     }
 
-
-
     // Lấy danh sách tất cả người dùng
     @SuppressLint("Range")
     public List<User> getAllUsers() {
@@ -212,8 +210,6 @@ public class UserDatabase {
                 boolean roleRestaurant = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT)) == 1;
                 boolean roleReview = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_REVIEW)) == 1;
 
-
-
                 User user = new User(id, taiKhoan, password, name, SDT, role, roleUser, roleCategory, roleRestaurant,roleReview, image);
                 userList.add(user);
             }
@@ -222,6 +218,36 @@ public class UserDatabase {
         return userList;
     }
 
+    @SuppressLint("Range")
+    public List<User> getUsersByName(String name) {
+        List<User> userList = new ArrayList<>();
+        String selection = DatabaseHelper.COLUMN_USER_NAME + " LIKE ?";
+        String[] selectionArgs = {"%" + name + "%"};
+
+        Cursor cursor = database.query(DatabaseHelper.TABLE_USERS, columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ID));
+                String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_TAIKHOAN));
+                String password = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
+                String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
+                String userName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
+                boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
+                String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
+
+                boolean roleUser = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_USER)) == 1;
+                boolean roleCategory = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_CATEGORY)) == 1;
+                boolean roleRestaurant = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_RESTAURANT)) == 1;
+                boolean roleReview = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_REVIEW)) == 1;
+
+                User user = new User(id, taiKhoan, password, userName, SDT, role, roleUser, roleCategory, roleRestaurant, roleReview, image);
+                userList.add(user);
+            }
+            cursor.close();
+        }
+        return userList;
+    }
 
 
 

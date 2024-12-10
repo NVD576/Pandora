@@ -186,13 +186,13 @@ public class RestaurantDatabase {
 
     public List<Restaurant> getRestaurantsByLocationName(String name) {
         List<Restaurant> restaurantList = new ArrayList<>();
-
+        Cursor locationCursor = null;
         try {
             // Truy vấn địa điểm theo tên
             String locationSelection = DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME + " LIKE ?";
             String[] locationSelectionArgs = {"%" + name + "%"}; // Tìm kiếm tên địa điểm gần đúng
 
-            Cursor locationCursor = database.query(
+            locationCursor = database.query(
                     DatabaseHelper.TABLE_LOCATIONS,
                     new String[]{DatabaseHelper.COLUMN_LOCATION_LOCATION_ID},
                     locationSelection,
@@ -216,13 +216,12 @@ public class RestaurantDatabase {
                         null, null, null);
 
                 // Duyệt qua kết quả và thêm vào danh sách restaurantList
-                if (cursor != null && cursor.moveToFirst()) {
-                    do {
+                while (cursor != null && cursor.moveToNext()) {
 
-                        // Tạo đối tượng Restaurant và thêm vào danh sách
-                        restaurantList.add(restaurant());
-                    } while (cursor.moveToNext());
-                }
+                    // Tạo đối tượng Restaurant và thêm vào danh sách
+                    restaurantList.add(restaurant());
+                };
+
             }
 
         } catch (Exception e) {
@@ -230,6 +229,9 @@ public class RestaurantDatabase {
         } finally {
             if (cursor != null) {
                 cursor.close();
+            }
+            if (locationCursor != null) {
+                locationCursor.close();
             }
         }
 

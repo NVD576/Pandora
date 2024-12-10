@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide; // Thư viện để tải ảnh
+import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.User;
 import com.example.pandora.R;
 
@@ -40,6 +41,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         return new UserViewHolder(view,listener);
     }
 
+    public void setFilteredList(List<User> filteredList){
+        this.userList = filteredList;
+        notifyDataSetChanged();
+    }
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = userList.get(position);
@@ -111,4 +116,5 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             return null; // Trả về null nếu không tìm thấy ảnh
         }
     }
+
 }

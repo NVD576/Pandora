@@ -4,8 +4,12 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -25,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pandora.Adapter.UserAdapter;
+import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.R;
@@ -32,19 +37,22 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountProperties extends AppCompatActivity {
 
-    User u;
+    List<User> userList;
     private boolean isAdmin = true;
     RecyclerView recyclerView;
     LinearLayout listCheckBox;
     TextView deleteAccount,titleAlert;
     RelativeLayout toggle_container;
     int userid;
+    UserAdapter adapter;
     UserDatabase db;
     CheckBox cbQlUser, cbQlCategory, cbQlRestaurant, cbQlReview;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +61,7 @@ public class AccountProperties extends AppCompatActivity {
         userid = sharedPreferences.getInt("userid", -1); // false là giá trị mặc định
         db= new UserDatabase(getApplicationContext());
         db.open();
-        u= db.getUserById(userid);
+
 
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_account_properties);
@@ -63,15 +71,16 @@ public class AccountProperties extends AppCompatActivity {
             return insets;
         });
 
-        List<User> userList;
-        userList = db.getAllUsers();
-        db.close();
 
-        UserAdapter adapter = new UserAdapter(this, userList);
+        userList = db.getAllUsers();
+
+
+        adapter = new UserAdapter(this, userList);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         adapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
@@ -80,7 +89,26 @@ public class AccountProperties extends AppCompatActivity {
             }
         });
 
+        EditText searchInput = findViewById(R.id.search_input);
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Filter the list as the text changes
+                filterList(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        //dấu cộng
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         FloatingActionButton fabAdd = findViewById(R.id.fab_add);
         fabAdd.setOnClickListener(new View.OnClickListener() {
@@ -89,10 +117,6 @@ public class AccountProperties extends AppCompatActivity {
                 showAddAccountAlertDialog();
             }
         });
-
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
-        EditText search = findViewById(R.id.search_input);
-
 
     }
 
@@ -352,4 +376,24 @@ public class AccountProperties extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
+    private void filterList(String query) {
+        if (userList == null || userList.isEmpty()) {
+            return;
+        }
+
+        List<User> filteredList = new ArrayList<>();
+        for (User user : userList) {
+            if (user.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(user);
+            }
+        }
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this, "Không tìm thấy dữ liệu", Toast.LENGTH_SHORT).show();
+        } else {
+            adapter.setFilteredList(filteredList);
+
+        }
+    }
+
 }

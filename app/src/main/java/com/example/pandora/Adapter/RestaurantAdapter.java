@@ -53,11 +53,16 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         holder.nameTextView.setText(restaurant.getName());
         holder.addressTextView.setText(restaurant.getAddress());
         holder.ratingTextView.setText(String.valueOf(restaurant.getStar()));
-//        holder.imageView.setImageResource(restaurant.getImage()); // Hiển thị ảnh
-        Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
-        if (bitmap != null) {
-            holder.imageView.setImageBitmap(bitmap);
+//        holder.imageView.setImageResource(restaurant.getImage()); // Hiển thị ảnhi
+        if(restaurant.getImage()!=null){
+            Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
+            if (bitmap != null) {
+                holder.imageView.setImageBitmap(bitmap);
+            }
+        }else{
+            holder.imageView.setImageResource(0);
         }
+
 
 //        holder.ratingBar.setRating(restaurant.getStar()); // Hiển thị đánh giá sao
         
@@ -103,8 +108,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
     public void updateData(List<Restaurant> newRestaurantList) {
-        this.restaurantList.clear(); // Xóa dữ liệu cũ
-        this.restaurantList.addAll(newRestaurantList); // Thêm dữ liệu mới
+//        this.restaurantList.clear(); // Xóa dữ liệu cũ
+        this.restaurantList=newRestaurantList; // Thêm dữ liệu mới
         notifyDataSetChanged(); // Thông báo dữ liệu thay đổi
     }
 }
