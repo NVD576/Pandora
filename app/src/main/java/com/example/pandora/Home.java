@@ -17,9 +17,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,6 +57,7 @@ public class Home extends Fragment {
     List<Location> lc;
     private List<Integer> images = Arrays.asList(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4);
     private int currentPage = 0;
+    private boolean hasShownToast = false;
     private Handler handler = new Handler(Looper.getMainLooper());
 
     private Runnable runnable = new Runnable() {
@@ -76,8 +80,8 @@ public class Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
@@ -88,7 +92,7 @@ public class Home extends Fragment {
             database.addLocation(new Location("Hồ Chí Minh"));
             database.addLocation(new Location("Hà Nội"));
         }
-         lc= database.getAllLocations();
+        lc= database.getAllLocations();
         database.close();
 
         restaurantDatabase = new RestaurantDatabase(getContext());
@@ -122,6 +126,22 @@ public class Home extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         restaurantAdapter = new RestaurantAdapter(restaurantList);
         recyclerView.setAdapter(restaurantAdapter);
+        NestedScrollView scrollView = view.findViewById(R.id.scrollView); // ID của NestedScrollView
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                // Kiểm tra nếu cuộn lên đầu
+                // Gọi hàm load lại dữ liệu
+                if (scrollY == 0 && !hasShownToast) {
+                    onResume();
+                    Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
+                    hasShownToast = true;
+                } else if (scrollY > 0) {
+                    hasShownToast = false; // Reset trạng thái nếu không ở đầu
+                }
+            }
+        });
         restaurantAdapter.notifyDataSetChanged();
 
         // Xử lý sự kiện click
