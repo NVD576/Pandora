@@ -205,7 +205,6 @@
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:layout_marginBottom="2dp"
-
                     android:background="@drawable/button_unselected_home_background"
                     android:text="Đánh giá cao"
                     android:textColor="@color/black"
@@ -223,8 +222,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/background_gradient"
-                android:padding="10dp"
-                tools:listitem="@layout/restaurant_item" />
+                android:padding="10dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

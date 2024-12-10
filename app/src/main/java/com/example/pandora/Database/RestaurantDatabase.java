@@ -104,6 +104,29 @@ public class RestaurantDatabase {
         return restaurantList;
     }
 
+    // Lấy danh sách các quán ăn theo số sao giảm dần
+    public List<Restaurant> getHighRatedRestaurants() {
+        List<Restaurant> restaurantList = new ArrayList<>();
+        try {
+            // Truy vấn cơ sở dữ liệu và sắp xếp theo số sao giảm dần
+            String orderBy = DatabaseHelper.COLUMN_STAR + " DESC"; // Sắp xếp theo số sao giảm dần
+
+            cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, columns, null, null, null, null, orderBy);
+
+            // Duyệt qua kết quả và thêm vào danh sách
+            while (cursor != null && cursor.moveToNext()) {
+                restaurantList.add(restaurant());
+            }
+        } catch (Exception e) {
+            throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return restaurantList;
+    }
 
 
 

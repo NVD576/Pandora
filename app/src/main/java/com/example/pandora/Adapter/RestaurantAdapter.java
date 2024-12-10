@@ -103,8 +103,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
     public void updateData(List<Restaurant> newRestaurantList) {
-        this.restaurantList.clear(); // Xóa dữ liệu cũ
-        this.restaurantList.addAll(newRestaurantList); // Thêm dữ liệu mới
-        notifyDataSetChanged(); // Thông báo dữ liệu thay đổi
+        this.restaurantList.clear();
+        this.restaurantList.addAll(newRestaurantList);
+        notifyDataSetChanged();
     }
+
 }

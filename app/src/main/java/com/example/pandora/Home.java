@@ -17,11 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -124,11 +122,7 @@ public class Home extends Fragment {
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
         restaurantAdapter = new RestaurantAdapter(restaurantList);
-        restaurantHighRatingAdapter = new RestaurantHighRatingAdapter(restaurantList);
-
         recyclerView.setAdapter(restaurantAdapter);
 
         Button btnLocationCheck = view.findViewById(R.id.btnLocationCheck);
@@ -141,6 +135,7 @@ public class Home extends Fragment {
                 btnHighRatingCheck.setBackgroundResource(R.drawable.button_unselected_home_background);
 
                 // Update the adapter with restaurants based on location
+                restaurantList = restaurantDatabase.getAllRestaurants();
                 restaurantAdapter.updateData(restaurantList);
                 recyclerView.setAdapter(restaurantAdapter);  // Update the RecyclerView's adapter
             }
@@ -154,30 +149,30 @@ public class Home extends Fragment {
                 btnLocationCheck.setBackgroundResource(R.drawable.button_unselected_home_background);
 
                 // Update the adapter with high-rated restaurants
-                restaurantHighRatingAdapter.updateData(restaurantList);
-                recyclerView.setAdapter(restaurantHighRatingAdapter);  // Update the RecyclerView's adapter
+                restaurantList = restaurantDatabase.getHighRatedRestaurants();
+                restaurantAdapter.updateData(restaurantList);
+                recyclerView.setAdapter(restaurantAdapter);  // Update the RecyclerView's adapter
             }
         });
 
 
-
-        NestedScrollView scrollView = view.findViewById(R.id.scrollView); // ID của NestedScrollView
-
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                // Kiểm tra nếu cuộn lên đầu
-                // Gọi hàm load lại dữ liệu
-                if (scrollY == 0 && !hasShownToast) {
-                    onResume();
-                    Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
-                    hasShownToast = true;
-                } else if (scrollY > 0) {
-                    hasShownToast = false; // Reset trạng thái nếu không ở đầu
-                }
-            }
-        });
-        restaurantAdapter.notifyDataSetChanged();
+//        NestedScrollView scrollView = view.findViewById(R.id.scrollView); // ID của NestedScrollView
+//
+//        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+//            @Override
+//            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//                // Kiểm tra nếu cuộn lên đầu
+//                // Gọi hàm load lại dữ liệu
+//                if (scrollY == 0 && !hasShownToast) {
+//                    onResume();
+//                    Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
+//                    hasShownToast = true;
+//                } else if (scrollY > 0) {
+//                    hasShownToast = false; // Reset trạng thái nếu không ở đầu
+//                }
+//            }
+//        });
+//        restaurantAdapter.notifyDataSetChanged();
 
         // Xử lý sự kiện click
         restaurantAdapter.setOnItemClickListener(restaurant -> {
@@ -238,20 +233,6 @@ public class Home extends Fragment {
                 startActivity(myIntent);
             }
         });
-
-
-
-//        btnAddReview = view.findViewById(R.id.btnAddReview);
-//        btnAddReview.setOnClickListener(v -> replaceFragment(new AddReviewFragment()));
-//
-//        btnReviewList = view.findViewById(R.id.btnReviewList);
-//        btnReviewList.setOnClickListener(v -> replaceFragment(new ReviewListFragment()));
-//
-//        btnShare = view.findViewById(R.id.btnShare);
-//        btnShare.setOnClickListener(v -> replaceFragment(new ShareFragment()));
-
-
-
 
         return view;
     }
