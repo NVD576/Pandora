@@ -61,6 +61,7 @@ public class Home extends Fragment {
     private List<Integer> images = Arrays.asList(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4);
     private int currentPage = 0;
     private boolean hasShownToast = false;
+    int locationid=0;
     private Handler handler = new Handler(Looper.getMainLooper());
 
     private Runnable runnable = new Runnable() {
@@ -140,9 +141,12 @@ public class Home extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         restaurantAdapter = new RestaurantAdapter(getContext(),restaurantList);
         recyclerView.setAdapter(restaurantAdapter);
+        restaurantAdapter.notifyDataSetChanged();
 
         Button btnLocationCheck = view.findViewById(R.id.btnLocationCheck);
         Button btnHighRatingCheck = view.findViewById(R.id.btnHighRatingCheck);
+
+
         btnLocationCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,9 +155,12 @@ public class Home extends Fragment {
                 btnHighRatingCheck.setBackgroundResource(R.drawable.button_unselected_home_background);
 
                 // Update the adapter with restaurants based on location
-                restaurantList = restaurantDatabase.getAllRestaurants();
+                if(locationid==0){
+                    restaurantList= restaurantDatabase.getAllRestaurants();
+                }else
+                    restaurantList = restaurantDatabase.getRestaurantsByLocation(locationid);
                 restaurantAdapter.updateData(restaurantList);
-                recyclerView.setAdapter(restaurantAdapter);  // Update the RecyclerView's adapter
+//                recyclerView.setAdapter(restaurantAdapter);  // Update the RecyclerView's adapter
             }
         });
 
@@ -165,9 +172,16 @@ public class Home extends Fragment {
                 btnLocationCheck.setBackgroundResource(R.drawable.button_unselected_home_background);
 
                 // Update the adapter with high-rated restaurants
-                restaurantList = restaurantDatabase.getHighRatedRestaurants();
+                if(locationid==0){
+                    restaurantList= restaurantDatabase.getHighRatedRestaurants();
+                }else{
+                    restaurantList = restaurantDatabase.getRestaurantsByLocation(locationid);
+                    restaurantList.sort(((restaurant, t1) -> t1.getStar()-restaurant.getStar()));
+                }
+
+
                 restaurantAdapter.updateData(restaurantList);
-                recyclerView.setAdapter(restaurantAdapter);  // Update the RecyclerView's adapter
+//                recyclerView.setAdapter(restaurantAdapter);  // Update the RecyclerView's adapter
             }
         });
 
@@ -188,7 +202,6 @@ public class Home extends Fragment {
                 }
             }
         });
-        restaurantAdapter.notifyDataSetChanged();
 
         // Xử lý sự kiện click
         restaurantAdapter.setOnItemClickListener(restaurant -> {
@@ -240,7 +253,7 @@ public class Home extends Fragment {
                 showLocationAlertDialog();
             }
         });
-
+        //button lich su
         btnSaveLocation = view.findViewById(R.id.btnSaveLocation);
         btnSaveLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -294,26 +307,7 @@ public class Home extends Fragment {
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
 
-        // Thêm hiệu ứng chuyển đổi
-        transaction.setCustomAnimations(
-                R.anim.slide_in_bottom, // Hiện từ dưới lên
-                R.anim.fade_out,        // Mất đi khi chuyển tiếp
-                R.anim.fade_in,         // Hiện lại khi quay lại
-                R.anim.slide_out_top    // Mất từ trên xuống khi quay lại
-        );
-
-        // Thay thế fragment hiện tại bằng fragment mới
-        transaction.replace(R.id.fragment_container, fragment);
-
-        // Thêm vào back stack nếu muốn có khả năng quay lại fragment trước đó
-        transaction.addToBackStack(null);
-
-        // Commit transaction
-        transaction.commit();
-    }
 
     private void showLoginAlertDialog() {
         // Inflate custom layout
@@ -382,6 +376,7 @@ public class Home extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedLocation[0] = adapterView.getItemAtPosition(i).toString();  // Get the selected location
+                locationid=i;
             }
 
             @Override

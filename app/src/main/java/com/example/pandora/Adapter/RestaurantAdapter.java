@@ -28,7 +28,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         void onItemClick(Restaurant restaurant);
     }
 
-    public void setFilteredList(List<Restaurant> filteredList){
+    public void setFilteredList(List<Restaurant> filteredList) {
         this.restaurantList = filteredList;
         notifyDataSetChanged();
     }
@@ -37,9 +37,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         this.listener = listener;
     }
 
-    public RestaurantAdapter(Context context,List<Restaurant> restaurants) {
+    public RestaurantAdapter(Context context, List<Restaurant> restaurants) {
         this.restaurantList = restaurants;
-        this.context= context;
+        this.context = context;
     }
 
     @Override
@@ -54,14 +54,19 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         holder.nameTextView.setText(restaurant.getName());
         holder.addressTextView.setText(restaurant.getAddress());
         holder.ratingTextView.setText(String.valueOf(restaurant.getStar()));
-//        holder.imageView.setImageResource(restaurant.getImage()); // Hiển thị ảnh
-        Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
-        if (bitmap != null) {
-            holder.imageView.setImageBitmap(bitmap);
+//        holder.imageView.setImageResource(restaurant.getImage()); // Hiển thị ảnhf
+        if (restaurant.getImage() != null) {
+            Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
+            if (bitmap != null) {
+                holder.imageView.setImageBitmap(bitmap);
+            }
+        } else {
+            holder.imageView.setImageResource(R.drawable.pandora_background); // Hiển thị ảnh mặc định
         }
 
+
 //        holder.ratingBar.setRating(restaurant.getStar()); // Hiển thị đánh giá sao
-        
+
         // Xử lý sự kiện click
         holder.itemView.setOnClickListener(v -> {
             if (listener != null && position != RecyclerView.NO_POSITION) {
@@ -104,8 +109,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
     public void updateData(List<Restaurant> newRestaurantList) {
-        this.restaurantList.clear();
-        this.restaurantList.addAll(newRestaurantList);
+//        this.restaurantList.clear();
+        this.restaurantList=newRestaurantList;
         notifyDataSetChanged();
     }
 
