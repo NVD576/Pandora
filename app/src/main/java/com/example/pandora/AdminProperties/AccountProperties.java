@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -52,7 +53,8 @@ public class AccountProperties extends AppCompatActivity {
     UserAdapter adapter;
     UserDatabase db;
     CheckBox cbQlUser, cbQlCategory, cbQlRestaurant, cbQlReview;
-
+    private Handler handler = new Handler();
+    private Runnable searchRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +101,13 @@ public class AccountProperties extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 // Filter the list as the text changes
-                filterList(charSequence.toString());
+                if (searchRunnable != null) {
+                    handler.removeCallbacks(searchRunnable);
+                }
+
+                // Đặt Runnable mới với độ trễ 2 giây
+                searchRunnable = () -> filterList(charSequence.toString());
+                handler.postDelayed(searchRunnable, 500);
             }
 
             @Override

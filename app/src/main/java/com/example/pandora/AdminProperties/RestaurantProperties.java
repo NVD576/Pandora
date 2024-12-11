@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -60,6 +61,10 @@ public class RestaurantProperties extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     Restaurant restaurant;
     View dialogView;
+    private Handler handler = new Handler();
+    private Runnable searchRunnable;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +105,13 @@ public class RestaurantProperties extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 // Filter the list as the text changes
-                filterList(charSequence.toString());
+                if (searchRunnable != null) {
+                    handler.removeCallbacks(searchRunnable);
+                }
+
+                // Đặt Runnable mới với độ trễ 2 giây
+                searchRunnable = () -> filterList(charSequence.toString());
+                handler.postDelayed(searchRunnable, 500);
             }
 
             @Override

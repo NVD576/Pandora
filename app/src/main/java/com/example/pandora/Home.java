@@ -62,6 +62,9 @@ public class Home extends Fragment {
     private int currentPage = 0;
     private boolean hasShownToast = false;
     int locationid=0;
+    private Handler handler1 = new Handler();
+    private Runnable searchRunnable;
+
     private Handler handler = new Handler(Looper.getMainLooper());
 
     private Runnable runnable = new Runnable() {
@@ -194,9 +197,15 @@ public class Home extends Fragment {
                 // Kiểm tra nếu cuộn lên đầu
                 // Gọi hàm load lại dữ liệu
                 if (scrollY == 0 && !hasShownToast) {
-                    loading();
-                    Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
                     hasShownToast = true;
+                    if (searchRunnable != null) {
+                        handler1.removeCallbacks(searchRunnable);
+                    }
+
+                    // Đặt Runnable mới với độ trễ 2 giây
+                    searchRunnable = () -> loading();
+                    handler1.postDelayed(searchRunnable, 1000);
+
                 } else if (scrollY > 0) {
                     hasShownToast = false; // Reset trạng thái nếu không ở đầu
                 }
@@ -363,13 +372,6 @@ public class Home extends Fragment {
 
         final String[] selectedLocation = new String[1];  // Store the selected location
 
-        // If there is a previously saved location, set it in the Spinner
-        String savedLocation = getSavedLocation();  // Fetch the saved location from SharedPreferences
-        if (savedLocation != null) {
-            // Find the index of the saved location and set it in the Spinner
-            int position = adapter.getPosition(savedLocation);
-            spinnerLocation.setSelection(position);
-        }
 
         // Set OnItemSelectedListener for the Spinner
         spinnerLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -390,7 +392,6 @@ public class Home extends Fragment {
             @Override
             public void onClick(View view) {
                 if (selectedLocation[0] != null) {
-                    saveLocation(selectedLocation[0]);
 
                     // Truy cập btnLocation từ root view của fragment
                     TextView txtLocation = getView().findViewById(R.id.txtLocation);
@@ -413,21 +414,10 @@ public class Home extends Fragment {
         alertDialog.show();
     }
 
-    // Method to save the selected location in SharedPreferences
-    private void saveLocation(String location) {
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("selected_location", location);
-        editor.apply();
-    }
 
-    // Method to retrieve the saved location from SharedPreferences
-    private String getSavedLocation() {
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
-        return sharedPreferences.getString("selected_location", null);  // Return null if no location is saved
-    }
 
     public void loading() {
+        Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
 
         restaurantAdapter.updateData(restaurantList); // Hàm tải lại dữ liệu từ cơ sở dữ liệu
     }

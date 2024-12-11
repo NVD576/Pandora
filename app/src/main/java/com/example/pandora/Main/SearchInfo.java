@@ -3,6 +3,7 @@ package com.example.pandora.Main;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
@@ -31,7 +32,8 @@ public class SearchInfo extends AppCompatActivity {
     private List<Restaurant> restaurantList;
     private RestaurantAdapter restaurantAdapter;
     private EditText searchTool;
-
+    private Handler handler = new Handler();
+    private Runnable searchRunnable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +58,13 @@ public class SearchInfo extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 // Filter the list as the text changes
-                filterList(charSequence.toString());
+                if (searchRunnable != null) {
+                    handler.removeCallbacks(searchRunnable);
+                }
+
+                // Đặt Runnable mới với độ trễ 2 giây
+                searchRunnable = () -> filterList(charSequence.toString());
+                handler.postDelayed(searchRunnable, 500);
             }
 
             @Override
