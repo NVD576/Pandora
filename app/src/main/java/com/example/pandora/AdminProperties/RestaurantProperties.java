@@ -77,7 +77,7 @@ public class RestaurantProperties extends AppCompatActivity {
         restaurantList = db.getAllRestaurants();
 
 
-        adapter = new RestaurantAdapter(restaurantList);
+        adapter = new RestaurantAdapter(this,restaurantList);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

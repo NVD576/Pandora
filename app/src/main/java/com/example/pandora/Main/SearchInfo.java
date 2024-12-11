@@ -70,7 +70,7 @@ public class SearchInfo extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        restaurantAdapter = new RestaurantAdapter(restaurantList);
+        restaurantAdapter = new RestaurantAdapter(this,restaurantList);
         recyclerView.setAdapter(restaurantAdapter);
         restaurantAdapter.notifyDataSetChanged();
 

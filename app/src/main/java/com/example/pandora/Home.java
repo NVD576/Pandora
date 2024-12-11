@@ -138,7 +138,7 @@ public class Home extends Fragment {
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        restaurantAdapter = new RestaurantAdapter(restaurantList);
+        restaurantAdapter = new RestaurantAdapter(getContext(),restaurantList);
         recyclerView.setAdapter(restaurantAdapter);
 
         Button btnLocationCheck = view.findViewById(R.id.btnLocationCheck);

@@ -37,8 +37,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         this.listener = listener;
     }
 
-    public RestaurantAdapter(List<Restaurant> restaurants) {
+    public RestaurantAdapter(Context context,List<Restaurant> restaurants) {
         this.restaurantList = restaurants;
+        this.context= context;
     }
 
     @Override
