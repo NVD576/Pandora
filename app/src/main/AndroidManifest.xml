@@ -23,10 +23,22 @@
         android:theme="@style/Theme.Pandora"
         tools:targetApi="31">
         <activity
+            android:name=".AdminProperties.HotPotAndGrill"
+            android:exported="false" />
+        <activity
+            android:name=".AdminProperties.FamilyFood"
+            android:exported="false" />
+        <activity
+            android:name=".AdminProperties.FastFood"
+            android:exported="false" />
+        <activity
+            android:name=".AdminProperties.ListReviewProperties"
+            android:exported="false" />
+        <activity
             android:name=".Main.SearchInfo"
             android:exported="false" />
         <activity
-            android:name=".AdminProperties.RoleProperties"
+            android:name=".AdminProperties.TypeRestaurantProperties"
             android:exported="false" />
         <activity
             android:name=".AdminProperties.AccountProperties"

@@ -64,14 +64,14 @@ public class AdminProperties extends AppCompatActivity {
         btnListReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(AdminProperties.this, RoleProperties.class);
+                Intent myIntent = new Intent(AdminProperties.this, ListReviewProperties.class);
                 startActivity(myIntent);
             }
         });
         btnListCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(AdminProperties.this, RoleProperties.class);
+                Intent myIntent = new Intent(AdminProperties.this, TypeRestaurantProperties.class);
                 startActivity(myIntent);
             }
         });
