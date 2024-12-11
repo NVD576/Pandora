@@ -1,6 +1,7 @@
 package com.example.pandora.AdminProperties;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +26,9 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,21 +36,17 @@ import com.example.pandora.Adapter.RestaurantAdapter;
 import com.example.pandora.Class.Category;
 import com.example.pandora.Class.Location;
 import com.example.pandora.Class.Restaurant;
-import com.example.pandora.Class.User;
 import com.example.pandora.Database.CatetgoryDatabase;
 import com.example.pandora.Database.LocationDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
 import com.example.pandora.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.checkerframework.checker.units.qual.C;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 public class RestaurantProperties extends AppCompatActivity {
@@ -66,6 +65,11 @@ public class RestaurantProperties extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_restaurant_properties);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
 
         db = new RestaurantDatabase(this); // Khởi tạo với context
@@ -142,11 +146,10 @@ public class RestaurantProperties extends AppCompatActivity {
 
         Spinner addLocation = dialogView.findViewById(R.id.addLocation);
         ArrayAdapter<String> aa = new
-                ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,
+                ArrayAdapter<String>(this, R.layout.spinner_item,
                 items);
 
-//        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item
-//        );
+        aa.setDropDownViewResource(R.layout.spinner_dropdown_item);
         addLocation.setAdapter(aa);
         addLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -177,17 +180,17 @@ public class RestaurantProperties extends AppCompatActivity {
 
 
         List<String> item1 = new ArrayList<>();
+        item1.add("Loại quán ăn");
         for (Category l : categoryList) {
             item1.add(l.getName());
         }
 
         Spinner addRoleRestaurant = dialogView.findViewById(R.id.addRoleRestaurant);
-        ArrayAdapter<String> bb = new
-                ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,
+        @SuppressLint("ResourceType") ArrayAdapter<String> bb = new
+                ArrayAdapter<String>(this, R.layout.spinner_item,
                 item1);
 
-//        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item
-//        );
+        bb.setDropDownViewResource(R.layout.spinner_dropdown_item);
         addRoleRestaurant.setAdapter(bb);
         addRoleRestaurant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
