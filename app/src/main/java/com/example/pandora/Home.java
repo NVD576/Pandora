@@ -30,9 +30,11 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pandora.Adapter.RestaurantAdapter;
 import com.example.pandora.Adapter.RestaurantHighRatingAdapter;
+import com.example.pandora.Class.Category;
 import com.example.pandora.Class.Location;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.User;
+import com.example.pandora.Database.CatetgoryDatabase;
 import com.example.pandora.Database.LocationDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
 import com.example.pandora.Main.SearchInfo;
@@ -87,6 +89,8 @@ public class Home extends Fragment {
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
         search_toolbar = view.findViewById(R.id.search_toolbar);
+
+        //them dữ liệu location
         LocationDatabase database= new LocationDatabase(getContext());
         database.open();
         if(database.isTableEmpty()){
@@ -95,6 +99,16 @@ public class Home extends Fragment {
         }
         lc= database.getAllLocations();
         database.close();
+
+        //them dữ liệu categories
+        CatetgoryDatabase C= new CatetgoryDatabase(getContext());
+        C.open();
+        if(C.isTableEmpty()){
+            C.addCategory(new Category("Quán ăn nhanh"));
+            C.addCategory(new Category("Quán ăn gia đình"));
+            C.addCategory(new Category("Quán lẩu/nướng"));
+        }
+        C.close();
 
         restaurantDatabase = new RestaurantDatabase(getContext());
         restaurantDatabase.open();
@@ -219,6 +233,7 @@ public class Home extends Fragment {
 
         // Xử lý sự kiện click cho các button
         btnLocation = view.findViewById(R.id.btnLocation);
+        //button địa điểm
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

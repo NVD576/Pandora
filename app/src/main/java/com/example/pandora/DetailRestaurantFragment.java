@@ -86,7 +86,7 @@ public class DetailRestaurantFragment extends Fragment {
         // Lấy thông tin nhà hàng
         restaurantDatabase.open();
         Restaurant restaurant = restaurantDatabase.getRestaurantsByID(restaurant_id);
-
+        restaurant.setHistory(1);
         // Lấy thông tin vị trí
         LocationDatabase lD = new LocationDatabase(getContext());
         lD.open();
@@ -122,7 +122,7 @@ public class DetailRestaurantFragment extends Fragment {
 
                 // Cập nhật lại điểm trung bình của nhà hàng
                 restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
-                restaurant.setHistory(1);
+
                 restaurantDatabase.updateRestaurant(restaurant);
 
 
