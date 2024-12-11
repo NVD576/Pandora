@@ -75,14 +75,41 @@
         android:id="@+id/updateDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_edit"
-        android:textColor="@color/black"
         android:layout_marginBottom="10dp"
-        android:minHeight="48dp"
-        android:hint="Mô tả"
-        android:textColorHint="@color/material_dynamic_neutral40"
+        android:background="@drawable/rounded_edit"
         android:ems="10"
-        android:inputType="textMultiLine" />
+        android:hint="Mô tả"
+        android:inputType="textMultiLine"
+        android:minHeight="48dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/material_dynamic_neutral40" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="start"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/btnChooseImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/item_admin_background"
+            android:text="Chọn ảnh"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/textImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:hint="Nothing there"
+            android:textColorHint="@color/gray"
+            android:background="@color/white"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/deleteType"
@@ -92,6 +119,8 @@
         android:textColor="@color/red"
         android:textSize="18sp"
         android:layout_marginTop="10dp"/>
+
+
 
 
     <LinearLayout
