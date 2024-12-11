@@ -82,6 +82,13 @@ public class RestaurantProperties extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(new RestaurantAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Restaurant restaurant) {
+                showUpdateRestaurantAlertDialog();
+            }
+        });
+
 
         EditText searchInput = findViewById(R.id.search_input);
         searchInput.addTextChangedListener(new TextWatcher() {
@@ -110,6 +117,34 @@ public class RestaurantProperties extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void showUpdateRestaurantAlertDialog() {
+        // Inflate custom layout
+        LayoutInflater inflater = LayoutInflater.from(this); // Dùng `this` thay cho `getApplicationContext()`
+        dialogView = inflater.inflate(R.layout.dialog_update_restaurant_admin, null);
+
+        // Tạo AlertDialog
+        AlertDialog alertDialog = new AlertDialog.Builder(this) // Dùng `this` thay cho `getApplicationContext()`
+                .setView(dialogView)
+                .setCancelable(true)
+                .create();
+
+        Button btnSave = dialogView.findViewById(R.id.btnSave);
+        Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
+        TextView deleteType = dialogView.findViewById(R.id.deleteType);
+
+        // Xử lý sự kiện nút "Lưu"
+        btnSave.setOnClickListener(view -> {
+            recreate();
+            alertDialog.dismiss();
+        });
+
+        // Xử lý sự kiện nút "Đóng"
+        btnDismiss.setOnClickListener(v -> alertDialog.dismiss());
+
+        // Hiển thị hộp thoại
+        alertDialog.show();
     }
 
     private void showAddRestaurantAlertDialog() {

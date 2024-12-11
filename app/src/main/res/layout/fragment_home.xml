@@ -156,13 +156,13 @@
                         android:clipToOutline="true"
                         android:padding="10dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/recommend_icon" />
+                        android:src="@drawable/history_ic" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Đã đánh giá"
+                        android:text="Đã xem"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
@@ -206,7 +206,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginBottom="2dp"
                     android:background="@drawable/button_unselected_home_background"
-                    android:text="Đánh giá cao"
+                    android:text="Đánh giá cao đến thấp"
                     android:textColor="@color/black"
                     android:elevation="8dp"
                     android:gravity="center"

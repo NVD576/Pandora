@@ -104,6 +104,36 @@ public class RestaurantDatabase {
         return restaurantList;
     }
 
+    // Lấy danh sách các quán ăn có số sao trên 4
+    public List<Restaurant> getRestaurantsAbove4Stars() {
+        List<Restaurant> restaurantList = new ArrayList<>();
+
+        try {
+            // Sử dụng câu truy vấn WHERE để lọc các nhà hàng có số sao > 4
+            String selection = DatabaseHelper.COLUMN_STAR + " >= ?";
+            String[] selectionArgs = {"4"}; // Điều kiện sao lớn hơn 4
+
+            // Thực hiện truy vấn cơ sở dữ liệu
+            cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, columns, selection, selectionArgs, null, null, null);
+
+            // Duyệt qua các kết quả và thêm vào danh sách restaurantList
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    restaurantList.add(restaurant()); // Tạo đối tượng Restaurant từ cursor
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
+        } finally {
+            if (cursor != null) {
+                cursor.close(); // Đóng cursor
+            }
+        }
+
+        return restaurantList; // Trả về danh sách các nhà hàng
+    }
+
+
     // Lấy danh sách các quán ăn theo số sao giảm dần
     public List<Restaurant> getHighRatedRestaurants() {
         List<Restaurant> restaurantList = new ArrayList<>();
