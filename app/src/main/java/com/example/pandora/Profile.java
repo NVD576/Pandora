@@ -95,7 +95,7 @@ public class Profile extends Fragment {
         adminMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (user.isRole()) {
+                if (user.isRole()>0) {
                     Intent myIntent = new Intent(requireContext(), AdminProperties.class);
                     startActivity(myIntent);
 
@@ -111,7 +111,7 @@ public class Profile extends Fragment {
             userName=user.getName();
             login.setText(user.getName());
 
-            if (user.isRole()){
+            if (user.isRole()>0){
                 adminMode.setAlpha(1f);
             } else adminMode.setAlpha(0f);
 

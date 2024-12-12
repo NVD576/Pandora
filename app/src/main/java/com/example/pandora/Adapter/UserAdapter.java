@@ -52,7 +52,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         // Set dữ liệu cho các view
         holder.userName.setText(user.getName() != null ? user.getName() : user.getTaiKhoan());
         holder.userPhone.setText(user.getSDT());
-        holder.userRole.setText(user.isRole() ? "Admin" : "User");
+        holder.userRole.setText(user.isRole()>0 ? "Admin" : "User");
         Log.d("Image Path", "Image path: " + user.getImage());
 
         if (user.getImage() != null && !user.getImage().isEmpty()) {

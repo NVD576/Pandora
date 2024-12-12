@@ -44,7 +44,8 @@ import java.util.List;
 public class AccountProperties extends AppCompatActivity {
 
     List<User> userList;
-    private boolean isAdmin = true;
+    private int isAdmin;
+    User u;
     RecyclerView recyclerView;
     LinearLayout listCheckBox;
     TextView deleteAccount,titleAlert;
@@ -75,6 +76,9 @@ public class AccountProperties extends AppCompatActivity {
 
 
         userList = db.getAllUsers();
+        u= db.getUserById(userid);
+
+
 
 
         adapter = new UserAdapter(this, userList);
@@ -136,6 +140,7 @@ public class AccountProperties extends AppCompatActivity {
         deleteAccount= dialogView.findViewById(R.id.deleteAccount);
         toggle_container = dialogView.findViewById(R.id.toggle_container);
         titleAlert =dialogView.findViewById(R.id.titleAlert);
+
         isAdmin=user.isRole();
 
         cbQlUser= dialogView.findViewById(R.id.cbQlUser);
@@ -185,7 +190,7 @@ public class AccountProperties extends AppCompatActivity {
             }else {
 
                 deleteAccount.setVisibility(View.VISIBLE);
-                if(isAdmin){
+                if(isAdmin>0){
                     for (int i = 0; i < listCheckBox.getChildCount(); i++) {
                         View child = listCheckBox.getChildAt(i);
                         if (child instanceof CheckBox) { // Kiểm tra nếu là CheckBox
@@ -201,7 +206,7 @@ public class AccountProperties extends AppCompatActivity {
                 titleAlert.setText("Chỉnh sửa tài khoản");
             }
         }else {
-            if (isAdmin ) {
+            if (isAdmin>0&&isAdmin<=u.isRole()) {
                 // Người dùng có role == true (Admin), không thể xóa hoặc sửa quyền
                 deleteAccount.setVisibility(View.GONE); // Không thể xóa
                 for (int i = 0; i < listCheckBox.getChildCount(); i++) {
@@ -213,9 +218,9 @@ public class AccountProperties extends AppCompatActivity {
                 toggle_container.setVisibility(View.GONE);
                 titleAlert.setText("Bạn không thể thay đổi quyền");
             } else {
-                // Người dùng ko có role == true (Admin), không thể xóa hoặc sửa quyền của chính mình
+                //  co thể xóa hoặc sửa quyền của chính mình và người duoi
                 deleteAccount.setVisibility(View.VISIBLE); // có thể xóa
-                listCheckBox.setVisibility(View.GONE);
+                listCheckBox.setVisibility(View.VISIBLE);
                 toggle_container.setVisibility(View.VISIBLE);
                 titleAlert.setText("Chỉnh sửa tài khoản");
             }
@@ -226,7 +231,7 @@ public class AccountProperties extends AppCompatActivity {
         ImageView btnClose = dialogView.findViewById(R.id.close_button);
         btnClose.setOnClickListener(v -> {
             // Lưu lại giá trị role đã chọn trước khi đóng
-            user.setRole(isAdmin); // currentRole lưu trạng thái role đã chọn
+            // currentRole lưu trạng thái role đã chọn
             UserDatabase db = new UserDatabase(getApplicationContext());
             db.open();
             db.updateUser(user);
@@ -242,7 +247,7 @@ public class AccountProperties extends AppCompatActivity {
         TextView userLabel = dialogView.findViewById(R.id.user_label);
 
         // Thiết lập giá trị role hiện tại và vị trí toggle
-        boolean currentRole = user.isRole(); // Biến lưu trạng thái hiện tại
+        boolean currentRole = user.isRole()>0; // Biến lưu trạng thái hiện tại
         toggleSlider.post(() -> { // Đảm bảo slider đã tính toán kích thước
             float initialPosition = currentRole ? 0 : toggleSlider.getWidth() + 20;
             toggleSlider.setTranslationX(initialPosition);
@@ -251,7 +256,7 @@ public class AccountProperties extends AppCompatActivity {
         adminLabel.setOnClickListener(v -> {
             // Chuyển toggle về Admin
             animateSlider(toggleSlider, 0);
-            isAdmin = true;
+            isAdmin = u.isRole()+1;
             user.setRole(isAdmin);
             listCheckBox.setVisibility(View.VISIBLE);
 
@@ -260,7 +265,7 @@ public class AccountProperties extends AppCompatActivity {
         userLabel.setOnClickListener(v -> {
             // Chuyển toggle về User
             animateSlider(toggleSlider, 1);
-            isAdmin = false;
+            isAdmin = 0;
             user.setRole(isAdmin);
             listCheckBox.setVisibility(View.GONE);
             user.setRoleUser(false);

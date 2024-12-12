@@ -40,7 +40,7 @@ public class UserDatabase {
         values.put(DatabaseHelper.COLUMN_USER_PASSWORD, user.getPassword());
         values.put(DatabaseHelper.COLUMN_USER_NAME, user.getName());
         values.put(DatabaseHelper.COLUMN_USER_SDT, user.getSDT());
-        values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole() ? 1 : 0);
+        values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole());
         values.put(DatabaseHelper.COLUMN_USER_IMAGE, user.getImage() != null ? user.getImage() : "");
 
         // Insert additional role fields
@@ -107,6 +107,7 @@ public class UserDatabase {
         return true; // Trường hợp lỗi hoặc không thể truy vấn
     }
 
+
     @SuppressLint("Range")
     User Search(String selection,String[] selectionArgs){
         Cursor cursor = database.query(DatabaseHelper.TABLE_USERS, columns, selection, selectionArgs, null, null, null);
@@ -117,7 +118,7 @@ public class UserDatabase {
             String pass = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
             String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
             String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
-            boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
+            int role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE));
             String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
 
             boolean roleUser = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_USER)) == 1;
@@ -202,7 +203,7 @@ public class UserDatabase {
                 String password = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
                 String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
                 String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
-                boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
+                int role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE));
                 String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
 
                 boolean roleUser = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_USER)) == 1;
@@ -233,7 +234,7 @@ public class UserDatabase {
                 String password = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
                 String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
                 String userName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
-                boolean role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE)) == 1;
+                int role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE));
                 String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
 
                 boolean roleUser = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE_USER)) == 1;

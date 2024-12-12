@@ -8,7 +8,7 @@ public class User implements Serializable {
     private String password;
     private String name= "User" ;
     private String SDT;
-    private boolean role= false;
+    private int role= 0;
     boolean roleUser= false;
     boolean roleCategory= false;
     boolean roleRestaurant= false;
@@ -19,7 +19,7 @@ public class User implements Serializable {
         return roleReview;
     }
 
-    public User(int id, String taiKhoan, String password, String name, String SDT, boolean role, boolean roleUser, boolean roleCategory, boolean roleRestaurant, boolean roleReview, String image) {
+    public User(int id, String taiKhoan, String password, String name, String SDT, int role, boolean roleUser, boolean roleCategory, boolean roleRestaurant, boolean roleReview, String image) {
         this.id = id;
         this.taiKhoan = taiKhoan;
         this.password = password;
@@ -44,14 +44,14 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public User(String taiKhoan, String password, String SDT, boolean role) {
+    public User(String taiKhoan, String password, String SDT, int role) {
         this.taiKhoan = taiKhoan;
         this.password = password;
         this.SDT = SDT;
         this.role = role;
     }
 
-    public User(String taiKhoan, String password, String name, String SDT, boolean role, String image) {
+    public User(String taiKhoan, String password, String name, String SDT, int role, String image) {
         this.taiKhoan = taiKhoan;
         this.password = password;
         this.name = name;
@@ -60,7 +60,7 @@ public class User implements Serializable {
         this.image = image;
     }
 
-    public User(int id, String taiKhoan, String password, String name, String SDT, boolean role, boolean roleUser, boolean roleCategory, boolean roleRestaurant, String image) {
+    public User(int id, String taiKhoan, String password, String name, String SDT, int role, boolean roleUser, boolean roleCategory, boolean roleRestaurant, String image) {
         this.id = id;
         this.taiKhoan = taiKhoan;
         this.password = password;
@@ -73,7 +73,7 @@ public class User implements Serializable {
         this.image = image;
     }
 
-    public User(int id, String taiKhoan, String password, String name, String SDT, boolean role, String image ) {
+    public User(int id, String taiKhoan, String password, String name, String SDT, int role, String image ) {
         this.id = id;
         this.taiKhoan = taiKhoan;
         this.password = password;
@@ -120,11 +120,11 @@ public class User implements Serializable {
         this.roleRestaurant = roleRestaurant;
     }
 
-    public boolean isRole() {
+    public int isRole() {
         return role;
     }
 
-    public void setRole(boolean role) {
+    public void setRole(int role) {
         this.role = role;
     }
 
