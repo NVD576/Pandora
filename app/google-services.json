@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "414312040508",
+    "firebase_url": "https://login-53f05-default-rtdb.firebaseio.com",
     "project_id": "login-53f05",
     "storage_bucket": "login-53f05.firebasestorage.app"
   },
@@ -12,7 +13,12 @@
           "package_name": "com.example.pandora"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "414312040508-4u31q87tidqejv3414o8jejoh15rfkhg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBb6HHLYE7e0Bi4tkOj1-6U4UsxhrMf3Pg"
@@ -20,7 +26,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414312040508-4u31q87tidqejv3414o8jejoh15rfkhg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
