@@ -402,8 +402,9 @@ public class Home extends Fragment {
                 if(selectedLocation[0].equals("Tất cả")){
                     restaurantList=restaurantDatabase.getAllRestaurants();
                 }else{
-                    restaurantList=restaurantDatabase.getRestaurantsByLocationName(selectedLocation[0]);
+                    restaurantList=restaurantDatabase.getRestaurantsByLocation(locationid);
                 }
+                restaurantAdapter.notifyDataSetChanged();
                 restaurantAdapter.updateData(restaurantList);
                 alertDialog.dismiss();
             }

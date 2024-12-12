@@ -222,7 +222,6 @@ public class RestaurantDatabase {
 
             // Duyệt qua các kết quả và thêm vào danh sách restaurantList
             while (cursor != null && cursor.moveToNext()) {
-
                 restaurantList.add(restaurant());
             }
         } catch (Exception e) {
