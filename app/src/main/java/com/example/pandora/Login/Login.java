@@ -19,21 +19,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.pandora.AdminProperties.AdminProperties;
+import com.example.pandora.Class.User;
+import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.ForgetPassword.ForgetPassword;
-import com.example.pandora.Home;
 import com.example.pandora.Main.Lobby;
 import com.example.pandora.R;
 import com.example.pandora.Register.Register;
-import com.example.pandora.Class.User;
-import com.example.pandora.Database.UserDatabase;
-import com.example.pandora.Register.RegisterInfomation;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -117,7 +113,9 @@ public class Login extends AppCompatActivity {
         });
 
 
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail().build();
+
         gsc = GoogleSignIn.getClient(this, gso);
 
         btnGoogle = findViewById(R.id.btnGoogleSignIn);
@@ -193,6 +191,7 @@ public class Login extends AppCompatActivity {
         gsc.signOut().addOnCompleteListener(task -> {
             Intent signInIntent = gsc.getSignInIntent();
             startActivityForResult(signInIntent, 1000);
+
         });
     }
 
@@ -200,14 +199,13 @@ public class Login extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1000) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
             try {
-                task.getResult(ApiException.class);
-
-                navigateToSecondActivity(task);
+                GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
+                // Đăng nhập thành công, xử lý account
+                String idToken = account.getIdToken();
+                Log.d("GoogleSignIn", "ID Token: " + idToken);
             } catch (ApiException e) {
-                throw new RuntimeException(e);
+                Log.e("GoogleSignIn", "Sign-in failed: " + e.getStatusCode());
             }
 
         }

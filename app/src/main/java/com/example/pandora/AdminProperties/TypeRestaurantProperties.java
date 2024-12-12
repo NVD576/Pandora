@@ -25,7 +25,6 @@ import com.example.pandora.Adapter.CategoryAdapter;
 import com.example.pandora.Adapter.LocationAdapter;
 import com.example.pandora.Class.Category;
 import com.example.pandora.Class.Location;
-import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Database.CatetgoryDatabase;
 import com.example.pandora.Database.LocationDatabase;
 import com.example.pandora.R;
@@ -62,8 +61,7 @@ public class TypeRestaurantProperties extends AppCompatActivity {
         });
         //nut cac dia diem
         btnLocation=findViewById(R.id.btnLocation);
-        btntypeRestaurant=findViewById(R.id.btntypeRestaurant);
-
+        btntypeRestaurant=findViewById(R.id.btnTypeRestaurant);
 
         locationDatabase = new LocationDatabase(this);
         locationDatabase.open();
@@ -106,6 +104,8 @@ public class TypeRestaurantProperties extends AppCompatActivity {
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnLocation.setBackgroundResource(R.drawable.button_selected_home_background);
+                btntypeRestaurant.setBackgroundResource(R.drawable.button_unselected_home_background);
                 isLocation = true;
                 recyclerView.setAdapter(locationAdapter);
                 locationAdapter.notifyDataSetChanged();
@@ -118,6 +118,8 @@ public class TypeRestaurantProperties extends AppCompatActivity {
         btntypeRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnLocation.setBackgroundResource(R.drawable.button_unselected_home_background);
+                btntypeRestaurant.setBackgroundResource(R.drawable.button_selected_home_background);
                 isLocation = false;
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();

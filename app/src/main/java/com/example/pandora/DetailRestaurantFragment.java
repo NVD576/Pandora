@@ -70,7 +70,6 @@ public class DetailRestaurantFragment extends Fragment {
 
         TextView nameTextView = view.findViewById(R.id.detailName);
         RatingBar ratingBar = view.findViewById(R.id.detailRating);
-        TextView detailRatingRes = view.findViewById(R.id.detailRatingRes);
         txtLocation = view.findViewById(R.id.txtLocation);
         Rating rating=null;
         // Lấy thông tin đăng nhập từ SharedPreferences
@@ -106,7 +105,6 @@ public class DetailRestaurantFragment extends Fragment {
         restaurantDatabase.updateRestaurant(restaurant);
 
         txtLocation.setText(l.getName() + ", " + restaurant.getAddress());
-        detailRatingRes.setText(String.valueOf(restaurant.getStar()));
 
         // Lắng nghe sự thay đổi điểm đánh giá
         Rating finalRating = rating;
@@ -127,7 +125,6 @@ public class DetailRestaurantFragment extends Fragment {
 
 
                 // Cập nhật giao diện
-                detailRatingRes.setText(String.valueOf(restaurant.getStar()));
                 ratingBar.setRating(r);
             }
         });

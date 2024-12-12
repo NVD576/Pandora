@@ -9,8 +9,10 @@
 
     <View
         android:id="@+id/view"
-        android:layout_width="475dp"
+        android:layout_width="match_parent"
         android:layout_height="510dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:alpha="0.5"
         android:background="@drawable/border"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -8,8 +8,9 @@
     <!-- Nội dung cuộn -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollableContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp"> <!-- Thêm khoảng trống cho thanh nhập liệu -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,6 +19,7 @@
             android:padding="10dp"
             android:spacing="10dp">
 
+            <!-- Nội dung bên trong NestedScrollView -->
             <ImageView
                 android:id="@+id/restaurantImage"
                 android:layout_width="match_parent"
@@ -26,30 +28,22 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/pandora_background" />
 
-            <!-- Thông tin nhà hàng bên dưới hình ảnh -->
+            <!-- Phần khác như nhà hàng, bình luận, tóm tắt -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_card"
-                android:clipToPadding="false"
                 android:elevation="6dp"
                 android:orientation="vertical"
                 android:padding="10dp">
 
+                <!-- Nội dung thông tin -->
                 <TextView
                     android:id="@+id/detailName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Restaurant Name"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-                <TextView
-                    android:id="@+id/detailRatingRes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Đánh giá"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -62,7 +56,7 @@
                     android:numStars="5"
                     android:rating="4"
                     android:stepSize="1"
-                    android:progressDrawable="@drawable/custom_star"/>
+                    android:progressDrawable="@drawable/custom_star" />
 
                 <TextView
                     android:id="@+id/txtLocation"
@@ -74,7 +68,6 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <!-- Tóm tắt nhà hàng -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -109,11 +102,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Thanh nhập liệu ở dưới -->
+    <!-- Thanh nhập liệu -->
     <LinearLayout
         android:id="@+id/commentSection"
         android:layout_width="match_parent"
@@ -131,6 +123,7 @@
             android:background="@drawable/bg_edittext"
             android:hint="Viết bình luận"
             android:inputType="text"
+            android:textColorHint="@color/gray"
             android:minHeight="48dp"
             android:padding="12dp"
             android:textColor="@color/black"
@@ -145,5 +138,4 @@
             android:text="Gửi"
             android:textColor="@color/white" />
     </LinearLayout>
-
 </FrameLayout>

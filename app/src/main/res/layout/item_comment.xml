@@ -1,42 +1,61 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="12dp"
+    android:background="@drawable/comment_background"
+    android:layout_margin="8dp">
 
+    <!-- Header: Avatar + Tên người dùng -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp">
 
+        <!-- Avatar -->
         <ImageView
             android:id="@+id/userImage"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:srcCompat="@tools:sample/avatars"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/avatar_border"
+            android:clipToOutline="true" />
 
+        <!-- Tên người dùng -->
         <TextView
             android:id="@+id/userTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:textColor="@color/red"
-            android:textStyle="bold" />
+            android:text="Tên người dùng"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="16sp" />
     </LinearLayout>
 
+    <!-- Nội dung bình luận -->
     <TextView
         android:id="@+id/commentTextView"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        android:text="Nội dung bình luận"
         android:textColor="@color/black"
-        android:layout_height="wrap_content" />
+        android:textSize="14sp"
+        android:lineSpacingExtra="4dp" />
 
+    <!-- Thời gian bình luận -->
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="1 giờ trước"
         android:textSize="12sp"
-        android:textColor="#888888" />
+        android:textColor="@color/gray"
+        android:gravity="end" />
 </LinearLayout>
