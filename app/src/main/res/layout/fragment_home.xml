@@ -213,6 +213,16 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
+            <Spinner
+                android:id="@+id/spinnerTypeRestaurant"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:textAlignment="center"
+                tools:ignore="TouchTargetSizeCheck" />
+
             <!-- RecyclerView để hiển thị các bài đánh giá -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewReviews"
