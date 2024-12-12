@@ -72,7 +72,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_IMAGE + " TEXT, "
             + COLUMN_DESCRIPTION + " TEXT, "
             + COLUMN_STAR + " INTEGER, "
-            + COLUMN_HISTORY + " INTEGER)";
+            + COLUMN_HISTORY + " INTEGER, "
+            + "FOREIGN KEY(" + COLUMN_LOCATION_ID + ") REFERENCES " + TABLE_LOCATIONS + "(" + COLUMN_LOCATION_LOCATION_ID + ") ON DELETE CASCADE, "
+            + "FOREIGN KEY(" + COLUMN_CATE_ID + ") REFERENCES " + TABLE_CATEGORIES + "(" + COLUMN_CATEGORY_ID + ") ON DELETE CASCADE)";
 
     // Câu lệnh tạo bảng users
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + " ("

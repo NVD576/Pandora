@@ -63,7 +63,7 @@ public class RestaurantProperties extends AppCompatActivity {
     View dialogView;
     private Handler handler = new Handler();
     private Runnable searchRunnable;
-
+    List<String> items, item1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +75,32 @@ public class RestaurantProperties extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // location
+        locationDatabase = new LocationDatabase(this);
+        locationDatabase.open();
+        List<Location> lc = locationDatabase.getAllLocations();
+
+
+
+        items = new ArrayList<>();
+        items.add("Chọn thành phố");
+        for (Location l : lc) {
+            items.add(l.getName());
+        }
+
+        //Lay ds category
+        catetgoryDatabase = new CatetgoryDatabase(this);
+        catetgoryDatabase.open();
+        List<Category> categoryList = catetgoryDatabase.getAllCategories();
+
+
+        item1= new ArrayList<>();
+        item1.add("Loại quán ăn");
+        for (Category l : categoryList) {
+            item1.add(l.getName());
+        }
+
 
 
         db = new RestaurantDatabase(this); // Khởi tạo với context
@@ -90,7 +116,7 @@ public class RestaurantProperties extends AppCompatActivity {
         adapter.setOnItemClickListener(new RestaurantAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Restaurant restaurant) {
-                showUpdateRestaurantAlertDialog();
+                showUpdateRestaurantAlertDialog(restaurant);
             }
         });
 
@@ -130,7 +156,7 @@ public class RestaurantProperties extends AppCompatActivity {
 
     }
 
-    private void showUpdateRestaurantAlertDialog() {
+    private void showUpdateRestaurantAlertDialog(Restaurant restaurant) {
         // Inflate custom layout
         LayoutInflater inflater = LayoutInflater.from(this); // Dùng `this` thay cho `getApplicationContext()`
         dialogView = inflater.inflate(R.layout.dialog_update_restaurant_admin, null);
@@ -144,10 +170,111 @@ public class RestaurantProperties extends AppCompatActivity {
         Button btnSave = dialogView.findViewById(R.id.btnSave);
         Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
         TextView deleteType = dialogView.findViewById(R.id.deleteType);
+        EditText updateName= dialogView.findViewById(R.id.updateName);
+        EditText updateAddress= dialogView.findViewById(R.id.updateAddress);
+        EditText updateDescription= dialogView.findViewById(R.id.updateDescription);
+        TextView textImage=dialogView.findViewById(R.id.textImage);
 
+
+        updateName.setText(restaurant.getName());
+        updateAddress.setText(restaurant.getAddress());
+        updateDescription.setText(restaurant.getDescription());
+
+        textImage.setText(restaurant.getImage());
+
+
+        Spinner addLocation = dialogView.findViewById(R.id.updateLocation);
+        ArrayAdapter<String> aa = new
+                ArrayAdapter<String>(this, R.layout.spinner_item,
+                items);
+
+        aa.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        addLocation.setAdapter(aa);
+
+        addLocation.setSelection(restaurant.getLocationid());
+        addLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+//               addLocation.setText(items[position]);
+                if (items.equals("Chọn loại quán")) {
+                    // Không làm gì nếu người dùng chưa chọn
+                    Toast.makeText(getApplicationContext(), "Vui lòng chọn loại quán!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Xử lý loại quán đã chọn
+                    restaurant.setLocationid(position);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+
+        //type of restaurant
+
+        Spinner addRoleRestaurant = dialogView.findViewById(R.id.updateRoleRestaurant);
+        @SuppressLint("ResourceType") ArrayAdapter<String> bb = new
+                ArrayAdapter<String>(this, R.layout.spinner_item,
+                item1);
+
+        bb.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        addRoleRestaurant.setAdapter(bb);
+        addRoleRestaurant.setSelection(restaurant.getCateid());
+        addRoleRestaurant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+//               spinner1.setText(items[position]);
+                if (item1.equals("Chọn loại quán")) {
+                    // Không làm gì nếu người dùng chưa chọn
+                    Toast.makeText(getApplicationContext(), "Vui lòng chọn loại quán!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Xử lý loại quán đã chọn
+                    restaurant.setCateid(position);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        Button btnChooseImage=dialogView.findViewById(R.id.btnChooseImage);
+
+        //button chon image
+        btnChooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.putExtra("restaurantid", restaurant.getId());
+                intent.setType("image/*");
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+
+            }
+        });
+
+        //Xu ly su kien xoa
+        deleteType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.deleteRestaurant(restaurant.getId());
+                recreate();
+//                adapter.notifyDataSetChanged();
+            }
+        });
         // Xử lý sự kiện nút "Lưu"
         btnSave.setOnClickListener(view -> {
+            restaurant.setName(updateName.getText().toString());
+            restaurant.setAddress(updateAddress.getText().toString());
+            restaurant.setDescription(updateDescription.getText().toString());
+            restaurant.setImage(textImage.getText().toString());
+            db.addRestaurant(restaurant);
             recreate();
+//            adapter.notifyDataSetChanged();
+
             alertDialog.dismiss();
         });
 
@@ -177,18 +304,7 @@ public class RestaurantProperties extends AppCompatActivity {
                 .create();
 
 
-        // location
-        locationDatabase = new LocationDatabase(this);
-        locationDatabase.open();
-        List<Location> lc = locationDatabase.getAllLocations();
 
-
-
-        List<String> items = new ArrayList<>();
-        items.add("Chọn thành phố");
-        for (Location l : lc) {
-            items.add(l.getName());
-        }
 
         Spinner addLocation = dialogView.findViewById(R.id.addLocation);
         ArrayAdapter<String> aa = new
@@ -220,16 +336,7 @@ public class RestaurantProperties extends AppCompatActivity {
 
         //type of restaurant
 
-        catetgoryDatabase = new CatetgoryDatabase(this);
-        catetgoryDatabase.open();
-        List<Category> categoryList = catetgoryDatabase.getAllCategories();
 
-
-        List<String> item1 = new ArrayList<>();
-        item1.add("Loại quán ăn");
-        for (Category l : categoryList) {
-            item1.add(l.getName());
-        }
 
         Spinner addRoleRestaurant = dialogView.findViewById(R.id.addRoleRestaurant);
         @SuppressLint("ResourceType") ArrayAdapter<String> bb = new
@@ -332,6 +439,8 @@ public class RestaurantProperties extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        int retaurantid= data.getIntExtra("restaurantid", -1);
+
         String fileName="";
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             // Lấy URI của ảnh được chọn
@@ -348,6 +457,11 @@ public class RestaurantProperties extends AppCompatActivity {
                 // Tạo tên file duy nhất
                 fileName = "restaurant_image_" + timestamp + ".png";
 
+                if(retaurantid!=-1){
+                    Restaurant rs= db.getRestaurantsByID(retaurantid);
+                    rs.setImage(fileName);
+                    db.updateRestaurant(rs);
+                }
                 // Cập nhật vào database
                 restaurant.setImage(fileName);
                 // Lưu Bitmap vào bộ nhớ trong
@@ -374,16 +488,6 @@ public class RestaurantProperties extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Lưu ảnh thất bại!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private Bitmap loadImageFromInternalStorage(String fileName) {
-        try {
-            FileInputStream fis = openFileInput(fileName);
-            return BitmapFactory.decodeStream(fis); // Chuyển đổi thành Bitmap
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null; // Trả về null nếu không tìm thấy ảnh
         }
     }
 

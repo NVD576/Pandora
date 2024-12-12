@@ -66,6 +66,8 @@
         android:autofillHints="Chọn loại quán"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+
     </Spinner>
 
 

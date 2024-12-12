@@ -45,6 +45,13 @@ public class Restaurant {
         this.star = star;
     }
 
+    public Restaurant(String name, int locationid, int cateid, int star) {
+        this.name = name;
+        this.locationid = locationid;
+        this.cateid = cateid;
+        this.star = star;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -118,18 +125,7 @@ public class Restaurant {
     public void setName(String name) {
         this.name = name;
     }
-//    public int TB_Star(List<Review> reviews) {
-//        if (reviews.isEmpty()) {
-//            return 0;
-//        }
-//
-//        int totalStars = 0;
-//        for (Review review : reviews) {
-//            totalStars += review.getRating();
-//        }
-//
-//        return totalStars / reviews.size();
-//    }
+
 }
 
 

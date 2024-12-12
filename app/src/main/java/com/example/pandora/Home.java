@@ -118,11 +118,11 @@ public class Home extends Fragment {
         restaurantDatabase.open();
         if (restaurantDatabase.getAllRestaurants().isEmpty()) {
             // Thêm dữ liệu vào cơ sở dữ liệu
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", 1, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B",  1, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C",  2, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", 1, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", 2, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", 1,2, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B",  1,1, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C",  2,3, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", 1,2, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", 2,1, 0));
         }
 
         search_toolbar.requestFocus();

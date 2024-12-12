@@ -221,11 +221,9 @@ public class RestaurantDatabase {
             cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, columns, selection, selectionArgs, null, null, null);
 
             // Duyệt qua các kết quả và thêm vào danh sách restaurantList
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    // Tạo đối tượng Restaurant và thêm vào danh sách
-                    restaurantList.add(restaurant());
-                } while (cursor.moveToNext());
+            while (cursor != null && cursor.moveToNext()) {
+
+                restaurantList.add(restaurant());
             }
         } catch (Exception e) {
             throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
