@@ -61,7 +61,8 @@
                     android:layout_marginTop="8dp"
                     android:numStars="5"
                     android:rating="4"
-                    android:stepSize="1" />
+                    android:stepSize="1"
+                    android:progressDrawable="@drawable/custom_star"/>
 
                 <TextView
                     android:id="@+id/txtLocation"

@@ -3,7 +3,6 @@ package com.example.pandora.Adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.GnssAntennaInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.Review;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.UserDatabase;
@@ -27,11 +25,21 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     private List<Review> reviewList;
     private OnItemClickListener listener;
     Context context;
+
     public ReviewAdapter(List<Review> reviewList, Context context) {
         this.reviewList = reviewList;
         this.context = context;
     }
 
+    // Định nghĩa interface OnItemClickListener
+    public interface OnItemClickListener {
+        void onItemClick(Review review);
+    }
+
+    // Hàm để thiết lập listener từ bên ngoài
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -48,10 +56,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         db.open();
         User u = db.getUserById(review.getUserid());
         db.close();
-        String name= u.getName();
-        if(u.getName().isEmpty()){
+        String name = u.getName();
+        if (u.getName().isEmpty()) {
             holder.userNameTextView.setText("User");
-        }else {
+        } else {
             holder.userNameTextView.setText(name);
         }
 
@@ -63,10 +71,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         }
         holder.commentTextView.setText(review.getReview());
         holder.dateTextView.setText(review.getDate());
-    }
 
-    public interface OnItemClickListener {
-        void onItemClick(Review review);
+        // Xử lý sự kiện click
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(review);
+            }
+        });
     }
 
     @Override
@@ -80,12 +91,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            userImage= itemView.findViewById(R.id.userImage);
+            userImage = itemView.findViewById(R.id.userImage);
             userNameTextView = itemView.findViewById(R.id.userTextView);
             commentTextView = itemView.findViewById(R.id.commentTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
         }
     }
+
     private Bitmap loadImageFromInternalStorage(String fileName) {
         try {
             FileInputStream fis = context.openFileInput(fileName);
