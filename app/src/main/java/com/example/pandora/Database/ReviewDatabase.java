@@ -85,6 +85,7 @@ public class ReviewDatabase {
         }
         return reviewList;
     }
+
     // Lấy danh sách các đánh giá theo restaurantId
     public List<Review> getReviewsByRestaurantId(int restaurantId) {
         List<Review> reviewList = new ArrayList<>();

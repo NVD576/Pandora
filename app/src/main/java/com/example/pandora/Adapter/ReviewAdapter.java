@@ -54,15 +54,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         }else {
             holder.userNameTextView.setText(name);
         }
-//        if (!u.getImage().isEmpty()) {
-//            Picasso.get().load(u.getImage()).into(holder.userImage);
-//
-////            holder.userImage.setImageBitmap(bitmap);
-//        } else {
-//            holder.userImage.setImageResource(R.drawable.person_icon); // Nếu không có ảnh, hiển thị ảnh mặc định
-//        }
-
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
 
         if (u.getImage() != null && !u.getImage().isEmpty()) {
             Bitmap bitmap = loadImageFromInternalStorage(u.getImage());
@@ -77,6 +68,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public interface OnItemClickListener {
         void onItemClick(Review review);
     }
+
     @Override
     public int getItemCount() {
         return reviewList.size();
