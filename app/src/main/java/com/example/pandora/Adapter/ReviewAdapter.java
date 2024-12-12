@@ -3,6 +3,7 @@ package com.example.pandora.Adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.GnssAntennaInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.Review;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.UserDatabase;
@@ -23,11 +25,13 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
     private List<Review> reviewList;
+    private OnItemClickListener listener;
     Context context;
     public ReviewAdapter(List<Review> reviewList, Context context) {
         this.reviewList = reviewList;
         this.context = context;
     }
+
 
     @NonNull
     @Override
@@ -70,6 +74,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         holder.dateTextView.setText(review.getDate());
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(Review review);
+    }
     @Override
     public int getItemCount() {
         return reviewList.size();
