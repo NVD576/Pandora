@@ -83,4 +83,6 @@
     <string name="logout">Đăng xuất</string>
     <string name="administrator">Quyền Admin</string>
     <string name="registerForNewAccount">Đăng kí cho tài khoản mới</string>
+    <string name="start">Bắt đầu</string>
+    <string name="hadAccount">Tôi đã có tài khoản rồi</string>
 </resources>

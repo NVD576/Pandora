@@ -71,4 +71,6 @@
     <string name="logout">Log out</string>
     <string name="administrator">Adminstator Mode</string>
     <string name="registerForNewAccount">Register for a new account</string>
+    <string name="start">Go</string>
+    <string name="hadAccount">I had an account</string>
 </resources>
