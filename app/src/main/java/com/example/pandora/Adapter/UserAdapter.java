@@ -3,20 +3,16 @@ package com.example.pandora.Adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide; // Thư viện để tải ảnh
-import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.User;
 import com.example.pandora.R;
 
@@ -50,8 +46,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         User user = userList.get(position);
 
         // Set dữ liệu cho các view
-        holder.userName.setText(user.getName() != null ? user.getName() : user.getTaiKhoan());
-        holder.userPhone.setText(user.getSDT());
+        holder.userName.setText(user.getName() != null ? user.getName() : user.getUserName());
+        holder.userPhone.setText(user.getNumberPhone());
         holder.userRole.setText(user.isRole()>0 ? "Admin" : "User");
         Log.d("Image Path", "Image path: " + user.getImage());
 

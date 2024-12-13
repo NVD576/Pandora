@@ -1,7 +1,5 @@
 package com.example.pandora.Login;
 
-import static android.content.ContentValues.TAG;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -9,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -177,7 +174,7 @@ public class Login extends AppCompatActivity {
                     // Đăng nhập thành công, chuyển sang màn hình tiếp theo
                     Intent myIntent = new Intent(Login.this, Lobby.class);
 
-                    myIntent.putExtra("userName", user.getTaiKhoan());
+                    myIntent.putExtra("userName", user.getUserName());
                     myIntent.putExtra("user", user);
                     startActivity(myIntent);
                     // Đảm bảo không quay lại màn hình đăng nhập
@@ -238,7 +235,7 @@ public class Login extends AppCompatActivity {
 //                    Log.e("Login", "UserID before " +user.getId());
         intent.putExtra("userid", nUser.getId());
 //                    Log.e("Login", "UserID aft " +user.getId());
-        intent.putExtra("userName", nUser.getTaiKhoan());
+        intent.putExtra("userName", nUser.getUserName());
         intent.putExtra("user", nUser);
         db.close();
 

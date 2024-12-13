@@ -1,27 +1,18 @@
 package com.example.pandora;
 
-import static android.content.Context.MODE_PRIVATE;
-import static android.content.Intent.getIntent;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -32,22 +23,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pandora.AdminProperties.AdminProperties;
 import com.example.pandora.Class.User;
-import com.example.pandora.Database.DatabaseHelper;
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.Login.Login;
-import com.example.pandora.Main.Lobby;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Objects;
 
 public class Profile extends Fragment {
 
@@ -200,7 +186,7 @@ public class Profile extends Fragment {
         EditText edtNumberPhone = dialogView.findViewById(R.id.edtNumberPhone);
 
         edtName.setText(user.getName());
-        edtNumberPhone.setText(user.getSDT());
+        edtNumberPhone.setText(user.getNumberPhone());
 
         // Tạo hộp thoại
         AlertDialog alertDialog = new AlertDialog.Builder(requireContext())
@@ -235,7 +221,7 @@ public class Profile extends Fragment {
         db.open();
 
         user.setName(name);
-        user.setSDT(numberPhone);
+        user.setNumberPhone(numberPhone);
         db.updateUser(user);
         db.close();
 
