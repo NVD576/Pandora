@@ -67,6 +67,7 @@ public class Home extends Fragment {
     private Runnable searchRunnable;
     Spinner spinnerTypeRestaurant;
     List<String> item1;
+    ArrayList<Integer> a;
     private Handler handler = new Handler(Looper.getMainLooper());
 
     private Runnable runnable = new Runnable() {
@@ -91,6 +92,7 @@ public class Home extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        a= new ArrayList<>();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
@@ -202,7 +204,10 @@ public class Home extends Fragment {
                     }
 
                     // Đặt Runnable mới với độ trễ 2 giây
-                    searchRunnable = () -> loading();
+                    searchRunnable = () ->{
+                        Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
+                        loading();
+                    };
                     handler1.postDelayed(searchRunnable, 1000);
 
                 } else if (scrollY > 0) {
@@ -241,7 +246,7 @@ public class Home extends Fragment {
             bundle.putInt("restaurant_rating", restaurant.getStar());
             bundle.putInt("restaurant_id", restaurant.getId());
             nextFragment.setArguments(bundle);
-
+            a.add(restaurant.getId());
             // Chuyển Fragment
             getParentFragmentManager().beginTransaction()
                     .setCustomAnimations(
@@ -288,6 +293,7 @@ public class Home extends Fragment {
             public void onClick(View view) {
 
                 Intent myIntent = new Intent(requireContext(), SaveLocationReview.class);
+                myIntent.putExtra("history",  a);
                 startActivity(myIntent);
             }
         });
@@ -354,7 +360,7 @@ public class Home extends Fragment {
 
 
         List<String> location = new ArrayList<>();
-        location.add("Tất cả");
+        location.add("All");
         for (Location a : lc) {
             location.add(a.getName());
         }
@@ -410,7 +416,6 @@ public class Home extends Fragment {
     }
 
     public void loading() {
-        Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
         restaurantList = restaurantDatabase.getAllRestaurants();
         if (locationid != 0) {
             restaurantList = restaurantDatabase.getRestaurantsByLocation(locationid);

@@ -45,7 +45,7 @@ public class Profile extends Fragment {
     private Uri contentUri;
     TextView login;
     User user;
-
+    boolean check =true;
     public Profile() {
         // Required empty public constructor
     }
@@ -120,8 +120,11 @@ public class Profile extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(getActivity(), Login.class);
-                startActivity(myIntent);
+                if(!isLogin){
+                    Intent myIntent = new Intent(getActivity(), Login.class);
+                    startActivity(myIntent);
+                }
+
             }
         });
         // thay đổi avartar
@@ -150,8 +153,8 @@ public class Profile extends Fragment {
                 }
             }
         });
-        // nút đăng xuất
 
+        // nút đăng xuất
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,7 +169,7 @@ public class Profile extends Fragment {
                     editor.clear();
                     editor.apply();
                     userImage.setImageResource(R.drawable.person_icon);
-
+                    logout.setVisibility(View.GONE);
                     isLogin = false;
                 }
             }

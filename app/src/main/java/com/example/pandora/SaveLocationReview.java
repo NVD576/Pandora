@@ -1,6 +1,7 @@
 package com.example.pandora;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -18,11 +19,12 @@ import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Database.RestaurantDatabase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SaveLocationReview extends AppCompatActivity {
 
-    List<Restaurant> restaurantList;
+    List<Restaurant> restaurantList= new ArrayList<>();
     SmaillRestaurantAdapter smaillRestaurantAdapter;
     RecyclerView recyclerView;
     @SuppressLint("MissingInflatedId")
@@ -33,8 +35,20 @@ public class SaveLocationReview extends AppCompatActivity {
         setContentView(R.layout.activity_save_location_review);
         RestaurantDatabase restaurantDatabase= new RestaurantDatabase(getApplicationContext());
         restaurantDatabase.open();
-        restaurantList=restaurantDatabase.getRestaurantsByHistory();
+
+        Intent myIntent = getIntent();
+        ArrayList<Integer> a = myIntent.getIntegerArrayListExtra("history");
+        if(a!=null){
+            for(int i : a){
+                Restaurant rs= restaurantDatabase.getRestaurantsByID(i);
+                restaurantList.add(rs);
+            }
+            Collections.reverse(restaurantList);
+        }
+
         restaurantDatabase.close();
+
+
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

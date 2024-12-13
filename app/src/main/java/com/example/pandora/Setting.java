@@ -51,9 +51,11 @@ public class Setting extends Fragment {
         {
             deleteAccount.setAlpha(0f);
             deleteAccount.setEnabled(false);
+            deleteAccount.setVisibility(View.GONE);
         }
         else {
             deleteAccount.setAlpha(1f);
+
             deleteAccount.setEnabled(true);
         }
 
