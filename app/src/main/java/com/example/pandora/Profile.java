@@ -100,7 +100,7 @@ public class Profile extends Fragment {
             if (user.isRole()>0){
                 adminMode.setAlpha(1f);
             } else adminMode.setAlpha(0f);
-            logout.setVisibility(View.GONE);
+            logout.setVisibility(View.VISIBLE);
 
             // Lấy đường dẫn ảnh từ cơ sở dữ liệu
             String userImagePath = getUserImageFromDatabase(userid);
@@ -113,7 +113,7 @@ public class Profile extends Fragment {
                 }
             }
         }else{
-            logout.setVisibility(View.VISIBLE);
+            logout.setVisibility(View.GONE);
         }
 
         //nút đăng nhập

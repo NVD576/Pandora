@@ -216,7 +216,7 @@ public class RestaurantProperties extends AppCompatActivity {
         //type of restaurant
 
         Spinner addRoleRestaurant = dialogView.findViewById(R.id.updateRoleRestaurant);
-        @SuppressLint("ResourceType") ArrayAdapter<String> bb = new
+        ArrayAdapter<String> bb = new
                 ArrayAdapter<String>(this, R.layout.spinner_item,
                 item1);
 

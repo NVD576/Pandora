@@ -109,8 +109,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
     public void updateData(List<Restaurant> newRestaurantList) {
-//        this.restaurantList.clear();
-        this.restaurantList=newRestaurantList;
+        this.restaurantList.clear();
+        this.restaurantList.addAll(newRestaurantList);
         notifyDataSetChanged();
     }
 

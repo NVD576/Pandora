@@ -41,6 +41,7 @@ import com.example.pandora.Main.SearchInfo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Home extends Fragment {
 
@@ -60,10 +61,12 @@ public class Home extends Fragment {
     private List<Integer> images = Arrays.asList(R.drawable.res1, R.drawable.res2, R.drawable.res3, R.drawable.res4);
     private int currentPage = 0;
     private boolean hasShownToast = false;
-    int locationid=0;
+    int locationid = 0;
+    int cateid = 0;
     private Handler handler1 = new Handler();
     private Runnable searchRunnable;
-
+    Spinner spinnerTypeRestaurant;
+    List<String> item1;
     private Handler handler = new Handler(Looper.getMainLooper());
 
     private Runnable runnable = new Runnable() {
@@ -92,24 +95,30 @@ public class Home extends Fragment {
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
         search_toolbar = view.findViewById(R.id.search_toolbar);
-
+        item1 = new ArrayList<>();
         //them dữ liệu location
-        LocationDatabase database= new LocationDatabase(getContext());
+        LocationDatabase database = new LocationDatabase(getContext());
         database.open();
-        if(database.isTableEmpty()){
+        if (database.isTableEmpty()) {
             database.addLocation(new Location("Hồ Chí Minh"));
             database.addLocation(new Location("Hà Nội"));
         }
-        lc= database.getAllLocations();
+        lc = database.getAllLocations();
         database.close();
 
         //them dữ liệu categories
-        CatetgoryDatabase C= new CatetgoryDatabase(getContext());
+        CatetgoryDatabase C = new CatetgoryDatabase(getContext());
         C.open();
-        if(C.isTableEmpty()){
+        if (C.isTableEmpty()) {
             C.addCategory(new Category("Quán ăn nhanh"));
             C.addCategory(new Category("Quán ăn gia đình"));
             C.addCategory(new Category("Quán lẩu/nướng"));
+        }
+
+        List<Category> categoryList = C.getAllCategories();
+        item1.add("Chọn loại quán");
+        for (Category a : categoryList) {
+            item1.add(a.getName());
         }
         C.close();
 
@@ -117,11 +126,11 @@ public class Home extends Fragment {
         restaurantDatabase.open();
         if (restaurantDatabase.getAllRestaurants().isEmpty()) {
             // Thêm dữ liệu vào cơ sở dữ liệu
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", 1,2, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B",  1,1, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C",  2,3, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", 1,2, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", 2,1, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", 1, 2, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B", 1, 1, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C", 2, 3, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", 1, 2, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", 2, 1, 0));
         }
 
         search_toolbar.requestFocus();
@@ -141,9 +150,9 @@ public class Home extends Fragment {
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        restaurantAdapter = new RestaurantAdapter(getContext(),restaurantList);
+        restaurantAdapter = new RestaurantAdapter(getContext(), restaurantList);
         recyclerView.setAdapter(restaurantAdapter);
-        restaurantAdapter.notifyDataSetChanged();
+        restaurantAdapter.updateData(restaurantList);
 
         Button btnLocationCheck = view.findViewById(R.id.btnLocationCheck);
         Button btnHighRatingCheck = view.findViewById(R.id.btnHighRatingCheck);
@@ -157,12 +166,7 @@ public class Home extends Fragment {
                 btnHighRatingCheck.setBackgroundResource(R.drawable.button_unselected_home_background);
 
                 // Update the adapter with restaurants based on location
-                if(locationid==0){
-                    restaurantList= restaurantDatabase.getAllRestaurants();
-                }else
-                    restaurantList = restaurantDatabase.getRestaurantsByLocation(locationid);
-                restaurantAdapter.updateData(restaurantList);
-//                recyclerView.setAdapter(restaurantAdapter);  // Update the RecyclerView's adapter
+                loading();
             }
         });
 
@@ -174,13 +178,8 @@ public class Home extends Fragment {
                 btnLocationCheck.setBackgroundResource(R.drawable.button_unselected_home_background);
 
                 // Update the adapter with high-rated restaurants
-                if(locationid==0){
-                    restaurantList= restaurantDatabase.getHighRatedRestaurants();
-                }else{
-                    restaurantList = restaurantDatabase.getRestaurantsByLocation(locationid);
-                    restaurantList.sort(((restaurant, t1) -> t1.getStar()-restaurant.getStar()));
-                }
-
+                loading();
+                restaurantList.sort(((restaurant, t1) -> t1.getStar() - restaurant.getStar()));
 
                 restaurantAdapter.updateData(restaurantList);
 //                recyclerView.setAdapter(restaurantAdapter);  // Update the RecyclerView's adapter
@@ -194,7 +193,8 @@ public class Home extends Fragment {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 // Kiểm tra nếu cuộn lên đầu
-                // Gọi hàm load lại dữ liệu
+                // Gọi hàm load lại dữ
+
                 if (scrollY == 0 && !hasShownToast) {
                     hasShownToast = true;
                     if (searchRunnable != null) {
@@ -208,6 +208,26 @@ public class Home extends Fragment {
                 } else if (scrollY > 0) {
                     hasShownToast = false; // Reset trạng thái nếu không ở đầu
                 }
+            }
+        });
+
+        spinnerTypeRestaurant = view.findViewById(R.id.spinnerTypeRestaurant);
+        ArrayAdapter<String> bb = new ArrayAdapter<String>(getContext(), R.layout.spinner_item, item1);
+
+        bb.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinnerTypeRestaurant.setAdapter(bb);
+        spinnerTypeRestaurant.setSelection(cateid);
+        spinnerTypeRestaurant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                spinnerTypeRestaurant.setSelection(position);
+                cateid = position;
+                loading();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
@@ -301,7 +321,7 @@ public class Home extends Fragment {
             dotsLayout.addView(dots[i], params);
         }
 
-        dots[0].setImageDrawable(ContextCompat.getDrawable( getContext(), R.drawable.dot_active)); // Chấm đầu tiên sáng
+        dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dot_active)); // Chấm đầu tiên sáng
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -316,27 +336,6 @@ public class Home extends Fragment {
     }
 
 
-
-    private void showLoginAlertDialog() {
-        // Inflate custom layout
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
-        View dialogView = inflater.inflate(R.layout.dialogsavelocation_custom_alert, null);
-
-        // Tạo AlertDialog
-        AlertDialog alertDialog = new AlertDialog.Builder(requireContext())
-                .setView(dialogView)
-                .setCancelable(true)
-                .create();
-
-        // Tìm các thành phần trong layout
-        Button btnPositive = dialogView.findViewById(R.id.btnPositive);
-
-        // Thiết lập hành động nút
-        btnPositive.setOnClickListener(v -> alertDialog.dismiss());
-
-        // Hiển thị hộp thoại
-        alertDialog.show();
-    }
     private void showLocationAlertDialog() {
         // Inflate custom layout
         LayoutInflater inflater = LayoutInflater.from(requireContext());
@@ -354,10 +353,9 @@ public class Home extends Fragment {
         Spinner spinnerLocation = dialogView.findViewById(R.id.spinnerLocation);
 
 
-
-        List<String> location= new ArrayList<>();
+        List<String> location = new ArrayList<>();
         location.add("Tất cả");
-        for (Location a: lc){
+        for (Location a : lc) {
             location.add(a.getName());
         }
         // Use the custom spinner item layout
@@ -377,7 +375,7 @@ public class Home extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedLocation[0] = adapterView.getItemAtPosition(i).toString();  // Get the selected location
-                locationid=i;
+                locationid = i;
             }
 
             @Override
@@ -398,13 +396,10 @@ public class Home extends Fragment {
                         txtLocation.setText(selectedLocation[0]);  // Cập nhật text của nút
                     }
                 }
-                if(selectedLocation[0].equals("Tất cả")){
-                    restaurantList=restaurantDatabase.getAllRestaurants();
-                }else{
-                    restaurantList=restaurantDatabase.getRestaurantsByLocation(locationid);
+                if (selectedLocation[0].equals("Tất cả")) {
+
                 }
-                restaurantAdapter.notifyDataSetChanged();
-                restaurantAdapter.updateData(restaurantList);
+                loading();
                 alertDialog.dismiss();
             }
         });
@@ -414,12 +409,17 @@ public class Home extends Fragment {
         alertDialog.show();
     }
 
-
-
     public void loading() {
         Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
+        restaurantList = restaurantDatabase.getAllRestaurants();
+        if (locationid != 0) {
+            restaurantList = restaurantDatabase.getRestaurantsByLocation(locationid);
+        }
 
-        restaurantAdapter.updateData(restaurantList); // Hàm tải lại dữ liệu từ cơ sở dữ liệu
+        if (cateid != 0) {
+            restaurantList = restaurantList.stream().filter(p -> p.getCateid() == cateid).collect(Collectors.toList());
+        }
+        restaurantAdapter.updateData(restaurantList);
     }
 
 
