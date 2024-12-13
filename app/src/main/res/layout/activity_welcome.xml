@@ -24,7 +24,7 @@
         android:layout_height="match_parent"
         android:gravity="bottom|center"
         android:textSize="125sp"
-        android:textColor="@color/lavender_light"
+        android:textColor="@color/white"
         android:text=". . ."/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

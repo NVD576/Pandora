@@ -21,21 +21,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.pandora.AdminProperties.AdminProperties;
+import com.example.pandora.Class.User;
+import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.ForgetPassword.ForgetPassword;
-import com.example.pandora.Home;
 import com.example.pandora.Main.Lobby;
 import com.example.pandora.R;
 import com.example.pandora.Register.Register;
-import com.example.pandora.Class.User;
-import com.example.pandora.Database.UserDatabase;
-import com.example.pandora.Register.RegisterInfomation;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,12 +39,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -63,7 +53,6 @@ public class Login extends AppCompatActivity {
     GoogleSignInClient gsc;
     String name;
     String email;
-    private FirebaseAuth mAuth;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -212,7 +201,6 @@ public class Login extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1000) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
             try {
 //                GoogleSignInAccount account = task.getResult(ApiException.class);
 //                firebaseAuthWithGoogle(account);
@@ -225,23 +213,6 @@ public class Login extends AppCompatActivity {
         }
 
     }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        String idToken = account.getIdToken();
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-//                        updateUI(user);
-                        Toast.makeText(this,"fsdfsdfd",Toast.LENGTH_SHORT).show();
-                    } else {
-                        Log.w(TAG, "signInWithCredential:failure", task.getException());
-//                        updateUI(null);
-                    }
-                });
-    }
-
 
     void navigateToSecondActivity(Task<GoogleSignInAccount> completedTask) throws ApiException {
 

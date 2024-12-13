@@ -9,7 +9,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="163dp"
-        android:background="@color/gray"/>
+        android:background="@drawable/view_bottom_curve"/>
 
     <!-- Nội dung chính -->
 
@@ -67,35 +67,23 @@
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:background="@drawable/item_background"
-                android:layout_marginBottom="12dp" />
-
-            <TextView
-                android:id="@+id/payment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Thanh toán"
-                android:drawableStart="@drawable/baseline_payment_24"
-                android:drawablePadding="12dp"
-                android:padding="16dp"
-                android:gravity="center_vertical"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:background="@drawable/item_background"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="12dp" />
 
             <TextView
                 android:id="@+id/logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/item_background"
+                android:text="Đăng xuất"
                 android:drawableStart="@drawable/baseline_exit_to_app_24"
                 android:drawablePadding="12dp"
-                android:gravity="center_vertical"
                 android:padding="16dp"
-                android:text="Đăng xuất"
+                android:gravity="center_vertical"
+                android:textSize="18sp"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:background="@drawable/item_background"
+                android:layout_marginBottom="12dp" />
 
             <TextView
                 android:id="@+id/adminMode"
@@ -106,6 +94,7 @@
                 android:drawablePadding="12dp"
                 android:padding="16dp"
                 android:gravity="center_vertical"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:background="@drawable/item_background"
