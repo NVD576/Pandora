@@ -25,6 +25,7 @@
         <activity
             android:name=".AdminProperties.ListCommendProperties"
             android:exported="false" />
+
         <activity
             android:name=".AdminProperties.ListReviewProperties"
             android:exported="false" />

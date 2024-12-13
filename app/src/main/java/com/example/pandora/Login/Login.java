@@ -1,5 +1,7 @@
 package com.example.pandora.Login;
 
+import static android.content.ContentValues.TAG;
+
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -114,7 +116,7 @@ public class Login extends AppCompatActivity {
 
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail().build();
+                .requestEmail().build();
 
         gsc = GoogleSignIn.getClient(this, gso);
 
@@ -191,7 +193,6 @@ public class Login extends AppCompatActivity {
         gsc.signOut().addOnCompleteListener(task -> {
             Intent signInIntent = gsc.getSignInIntent();
             startActivityForResult(signInIntent, 1000);
-
         });
     }
 
@@ -199,13 +200,14 @@ public class Login extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1000) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
-                // Đăng nhập thành công, xử lý account
-                String idToken = account.getIdToken();
-                Log.d("GoogleSignIn", "ID Token: " + idToken);
+//                GoogleSignInAccount account = task.getResult(ApiException.class);
+//                firebaseAuthWithGoogle(account);
+                task.getResult(ApiException.class);
+                navigateToSecondActivity(task);
             } catch (ApiException e) {
-                Log.e("GoogleSignIn", "Sign-in failed: " + e.getStatusCode());
+                throw new RuntimeException(e);
             }
 
         }
