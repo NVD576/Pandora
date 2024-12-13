@@ -1,5 +1,7 @@
 package com.example.pandora.Login;
 
+import static android.content.ContentValues.TAG;
+
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -41,6 +43,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -55,6 +63,7 @@ public class Login extends AppCompatActivity {
     GoogleSignInClient gsc;
     String name;
     String email;
+    private FirebaseAuth mAuth;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -117,7 +126,9 @@ public class Login extends AppCompatActivity {
         });
 
 
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail().build();
+
         gsc = GoogleSignIn.getClient(this, gso);
 
         btnGoogle = findViewById(R.id.btnGoogleSignIn);
@@ -203,8 +214,9 @@ public class Login extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {
+//                GoogleSignInAccount account = task.getResult(ApiException.class);
+//                firebaseAuthWithGoogle(account);
                 task.getResult(ApiException.class);
-
                 navigateToSecondActivity(task);
             } catch (ApiException e) {
                 throw new RuntimeException(e);
@@ -213,6 +225,23 @@ public class Login extends AppCompatActivity {
         }
 
     }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        String idToken = account.getIdToken();
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+//                        updateUI(user);
+                        Toast.makeText(this,"fsdfsdfd",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+//                        updateUI(null);
+                    }
+                });
+    }
+
 
     void navigateToSecondActivity(Task<GoogleSignInAccount> completedTask) throws ApiException {
 

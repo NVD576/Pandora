@@ -25,15 +25,7 @@
         <activity
             android:name=".AdminProperties.ListCommendProperties"
             android:exported="false" />
-        <activity
-            android:name=".AdminProperties.HotPotAndGrill"
-            android:exported="false" />
-        <activity
-            android:name=".AdminProperties.FamilyFood"
-            android:exported="false" />
-        <activity
-            android:name=".AdminProperties.FastFood"
-            android:exported="false" />
+
         <activity
             android:name=".AdminProperties.ListReviewProperties"
             android:exported="false" />

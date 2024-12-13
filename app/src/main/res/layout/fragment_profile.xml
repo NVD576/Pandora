@@ -87,15 +87,15 @@
                 android:id="@+id/logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Đăng xuất"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/item_background"
                 android:drawableStart="@drawable/baseline_exit_to_app_24"
                 android:drawablePadding="12dp"
-                android:padding="16dp"
                 android:gravity="center_vertical"
-                android:textSize="18sp"
+                android:padding="16dp"
+                android:text="Đăng xuất"
                 android:textColor="@color/white"
-                android:background="@drawable/item_background"
-                android:layout_marginBottom="12dp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/adminMode"

@@ -86,7 +86,7 @@ public class Profile extends Fragment {
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
-
+        TextView logout= view.findViewById(R.id.logout);
 
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         //xem quyền truy cập
@@ -114,8 +114,7 @@ public class Profile extends Fragment {
             if (user.isRole()>0){
                 adminMode.setAlpha(1f);
             } else adminMode.setAlpha(0f);
-
-
+            logout.setVisibility(View.GONE);
 
             // Lấy đường dẫn ảnh từ cơ sở dữ liệu
             String userImagePath = getUserImageFromDatabase(userid);
@@ -127,6 +126,8 @@ public class Profile extends Fragment {
                     userImage.setImageBitmap(bitmap);
                 }
             }
+        }else{
+            logout.setVisibility(View.VISIBLE);
         }
 
         //nút đăng nhập
@@ -164,7 +165,7 @@ public class Profile extends Fragment {
             }
         });
         // nút đăng xuất
-        TextView logout = view.findViewById(R.id.logout);
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,14 +180,6 @@ public class Profile extends Fragment {
                     editor.clear();
                     editor.apply();
                     userImage.setImageResource(R.drawable.person_icon);
-//                    Drawable drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_arrow_forward_ios_24);
-//                    Drawable[] drawables = login.getCompoundDrawablesRelative();
-//                    login.setCompoundDrawablesRelativeWithIntrinsicBounds(
-//                            drawables[0],
-//                            drawables[1],
-//                            drawableEnd,
-//                            drawables[3]
-//                    );
 
                     isLogin = false;
                 }
