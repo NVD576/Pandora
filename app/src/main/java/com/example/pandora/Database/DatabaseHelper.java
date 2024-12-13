@@ -25,9 +25,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Cấu trúc bảng users
     public static final String TABLE_USERS = "users";
     public static final String COLUMN_USER_ID = "id";
-    public static final String COLUMN_USER_TAIKHOAN = "taiKhoan";
+    public static final String COLUMN_USER_USERNAME = "userName";
     public static final String COLUMN_USER_PASSWORD = "password";
-    public static final String COLUMN_USER_SDT = "SDT";
+    public static final String COLUMN_USER_NUMBERPHONE = "numberPhone";
     public static final String COLUMN_USER_NAME = "name";
     public static final String COLUMN_USER_ROLE = "role";
     public static final String COLUMN_USER_ROLE_USER = "roleUser";
@@ -79,10 +79,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Câu lệnh tạo bảng users
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + " ("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + COLUMN_USER_TAIKHOAN + " TEXT, "
+            + COLUMN_USER_USERNAME + " TEXT, "
             + COLUMN_USER_PASSWORD + " TEXT, "
             + COLUMN_USER_NAME + " TEXT, "
-            + COLUMN_USER_SDT + " TEXT, "
+            + COLUMN_USER_NUMBERPHONE + " TEXT, "
             + COLUMN_USER_ROLE + " INTEGER, "
             + COLUMN_USER_ROLE_USER + " INTEGER, "  // Add roleUser column
             + COLUMN_USER_ROLE_CATEGORY + " INTEGER, " // Add roleCategory column

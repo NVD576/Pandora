@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.example.pandora.Class.User;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +17,9 @@ public class UserDatabase {
     private SQLiteDatabase database;
     String[] columns = {
             DatabaseHelper.COLUMN_USER_ID,
-            DatabaseHelper.COLUMN_USER_TAIKHOAN,
+            DatabaseHelper.COLUMN_USER_USERNAME,
             DatabaseHelper.COLUMN_USER_PASSWORD,
-            DatabaseHelper.COLUMN_USER_SDT,
+            DatabaseHelper.COLUMN_USER_NUMBERPHONE,
             DatabaseHelper.COLUMN_USER_NAME,
             DatabaseHelper.COLUMN_USER_ROLE,
             DatabaseHelper.COLUMN_USER_ROLE_USER,
@@ -36,10 +34,10 @@ public class UserDatabase {
 
     ContentValues values(User user){
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_USER_TAIKHOAN, user.getTaiKhoan());
+        values.put(DatabaseHelper.COLUMN_USER_USERNAME, user.getUserName());
         values.put(DatabaseHelper.COLUMN_USER_PASSWORD, user.getPassword());
         values.put(DatabaseHelper.COLUMN_USER_NAME, user.getName());
-        values.put(DatabaseHelper.COLUMN_USER_SDT, user.getSDT());
+        values.put(DatabaseHelper.COLUMN_USER_NUMBERPHONE, user.getNumberPhone());
         values.put(DatabaseHelper.COLUMN_USER_ROLE, user.isRole());
         values.put(DatabaseHelper.COLUMN_USER_IMAGE, user.getImage() != null ? user.getImage() : "");
 
@@ -63,8 +61,8 @@ public class UserDatabase {
 
     // Kiểm tra tài khoản đã tồn tại chưa
     public boolean isUserTaiKhoanExists(String userName) {
-        String[] columns = {DatabaseHelper.COLUMN_USER_TAIKHOAN};
-        String selection = DatabaseHelper.COLUMN_USER_TAIKHOAN + " = ?";
+        String[] columns = {DatabaseHelper.COLUMN_USER_USERNAME};
+        String selection = DatabaseHelper.COLUMN_USER_USERNAME + " = ?";
         String[] selectionArgs = {userName};
 
         Cursor cursor = database.query(DatabaseHelper.TABLE_USERS, columns, selection, selectionArgs, null, null, null);
@@ -80,7 +78,7 @@ public class UserDatabase {
     // Thêm một người dùng vào cơ sở dữ liệu
     public boolean addUser(User user, Context context) {
         // Kiểm tra xem tài khoản đã tồn tại chưa
-        if (isUserTaiKhoanExists(user.getTaiKhoan())) {
+        if (isUserTaiKhoanExists(user.getUserName())) {
             // Tài khoản đã tồn tại, thông báo cho người dùng
             Toast.makeText(context, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
             return false;
@@ -114,9 +112,9 @@ public class UserDatabase {
 
         if (cursor != null && cursor.moveToFirst()) {
             int id= cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ID));
-            String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_TAIKHOAN));
+            String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_USERNAME));
             String pass = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
-            String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
+            String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NUMBERPHONE));
             String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
             int role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE));
             String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
@@ -137,7 +135,7 @@ public class UserDatabase {
     //tìm user bằng tài khoản và mật khẩu
     @SuppressLint("Range")
     public User getUserByUsernameAndPassword(String userName, String password) {
-        String selection = DatabaseHelper.COLUMN_USER_TAIKHOAN + " = ? AND " + DatabaseHelper.COLUMN_USER_PASSWORD + " = ?";
+        String selection = DatabaseHelper.COLUMN_USER_USERNAME + " = ? AND " + DatabaseHelper.COLUMN_USER_PASSWORD + " = ?";
         String[] selectionArgs = {userName, password};
 
         return Search(selection,selectionArgs);
@@ -146,7 +144,7 @@ public class UserDatabase {
     //tìm user bằng số điện thoại
     @SuppressLint("Range")
     public User getUserBySDT(String sdt) {
-        String selection = DatabaseHelper.COLUMN_USER_SDT + " = ? ";
+        String selection = DatabaseHelper.COLUMN_USER_NUMBERPHONE + " = ? ";
         String[] selectionArgs = {sdt};
 
         return Search(selection,selectionArgs);
@@ -154,7 +152,7 @@ public class UserDatabase {
 
     @SuppressLint("Range")
     public User getUserByTaiKhoan(String taikhoan) {
-        String selection = DatabaseHelper.COLUMN_USER_TAIKHOAN + " = ? ";
+        String selection = DatabaseHelper.COLUMN_USER_USERNAME + " = ? ";
         String[] selectionArgs = {taikhoan};
 
         return  Search(selection,selectionArgs);
@@ -199,9 +197,9 @@ public class UserDatabase {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ID));
-                String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_TAIKHOAN));
+                String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_USERNAME));
                 String password = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
-                String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
+                String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NUMBERPHONE));
                 String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
                 int role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE));
                 String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));
@@ -230,9 +228,9 @@ public class UserDatabase {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ID));
-                String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_TAIKHOAN));
+                String taiKhoan = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_USERNAME));
                 String password = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_PASSWORD));
-                String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_SDT));
+                String SDT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NUMBERPHONE));
                 String userName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_NAME));
                 int role = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ROLE));
                 String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_IMAGE));

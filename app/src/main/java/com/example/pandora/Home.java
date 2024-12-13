@@ -23,7 +23,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -58,7 +57,7 @@ public class Home extends Fragment {
     private List<Restaurant> restaurantList;
     EditText search_toolbar;
     List<Location> lc;
-    private List<Integer> images = Arrays.asList(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4);
+    private List<Integer> images = Arrays.asList(R.drawable.res1, R.drawable.res2, R.drawable.res3, R.drawable.res4);
     private int currentPage = 0;
     private boolean hasShownToast = false;
     int locationid=0;
