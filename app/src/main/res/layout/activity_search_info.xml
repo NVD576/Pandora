@@ -41,7 +41,7 @@
                 android:drawablePadding="15dp"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center_vertical"
-                android:hint="Tìm kiếm..."
+                android:hint="@string/search"
                 android:imeOptions="actionDone"
                 android:padding="12dp"
                 android:singleLine="true"

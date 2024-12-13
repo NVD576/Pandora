@@ -38,7 +38,7 @@
         android:layout_marginBottom="30dp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
-        android:text="Chỉnh sửa tài khoản"
+        android:text="@string/editAccount"
         android:textColor="@color/darkPurple"
         android:textSize="20sp" />
 
@@ -99,7 +99,7 @@
             android:layout_marginTop="10dp"
             android:checked="true"
             android:background="@color/button_primary"
-            android:text="Quản lý user"
+            android:text="@string/userManagement"
             android:textColor="#E1BEE7" />
 
         <CheckBox
@@ -109,7 +109,7 @@
             android:layout_marginTop="10dp"
             android:checked="true"
             android:background="@color/button_primary"
-            android:text="Quản lý danh mục quán ăn "
+            android:text="@string/typeRestaurantManagement"
             android:textColor="#E1BEE7" />
         <CheckBox
             android:id="@+id/cbQlRestaurant"
@@ -118,7 +118,7 @@
             android:layout_marginTop="10dp"
             android:checked="true"
             android:background="@color/button_primary"
-            android:text="Quản lý quán ăn "
+            android:text="@string/restaurantManagement"
             android:textColor="#E1BEE7" />
 
         <CheckBox
@@ -128,7 +128,7 @@
             android:layout_marginTop="10dp"
             android:checked="true"
             android:background="@color/button_primary"
-            android:text="Quản lý các đánh giá, bình luận"
+            android:text="@string/ReviewManagement"
             android:textColor="#E1BEE7" />
 
 
@@ -143,7 +143,7 @@
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:visibility="visible"
-        android:text="Xóa tài khoản"
+        android:text="@string/deleteAccount"
         android:textColor="@color/red"
         android:textSize="20sp" />
 

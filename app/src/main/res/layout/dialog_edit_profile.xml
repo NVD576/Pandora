@@ -15,7 +15,7 @@
         android:layout_marginBottom="30dp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
-        android:text="Thay đổi thông tin"
+        android:text="@string/changeInfomation"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@drawable/edittext_background"
-        android:hint="Tên người dùng"
+        android:hint="@string/namePerson"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:paddingStart="16dp"
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@drawable/edittext_background"
-        android:hint="Số điện thoại"
+        android:hint="@string/number"
         android:inputType="phone"
         android:minHeight="48dp"
         android:paddingStart="16dp"
@@ -69,7 +69,7 @@
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
             android:background="@drawable/button_primary"
-            android:text="Lưu"
+            android:text="@string/save"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -82,7 +82,7 @@
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
             android:background="@drawable/button_primary"
-            android:text="Hủy"
+            android:text="@string/cancel"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>

@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="Đăng nhập"
+            android:text="@string/signIn"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="40sp"
@@ -128,7 +128,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_background"
             android:gravity="center"
-            android:text="Đăng nhập"
+            android:text="@string/signIn"
             android:textColor="@color/black"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:gravity="center"
-            android:text="Đăng kí cho tài khoản mới"
+            android:text="@string/registerForNewAccount"
             android:textColor="@color/text_color_check"
             android:textSize="15sp" />
 

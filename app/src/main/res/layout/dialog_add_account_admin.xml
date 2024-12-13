@@ -13,7 +13,7 @@
         android:id="@+id/titleAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thêm tài khoản"
+        android:text="@string/inputAccount"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:background="@drawable/rounded_edit"
-        android:hint="Nhập tên đăng nhập"
+        android:hint="@string/inputUsername"
         android:layout_marginBottom="10dp"
         android:minHeight="48dp"
         android:textColor="@color/black"
@@ -38,7 +38,7 @@
         android:id="@+id/addPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nhập mật khẩu"
+        android:hint="@string/inputPassword"
         android:inputType="textPassword"
         android:layout_marginBottom="10dp"
         android:textColorHint="@color/material_dynamic_neutral40"
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:layout_marginBottom="10dp"
-        android:hint="Nhập lại mật khẩu"
+        android:hint="@string/inputPasswordAgain"
         android:minHeight="48dp"
         android:textColorHint="@color/material_dynamic_neutral40"
         android:textColor="@color/black" />
@@ -64,7 +64,7 @@
         android:inputType="number"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:hint="Nhập số điện thoại"
+        android:hint="@string/numberphone"
         android:background="@drawable/rounded_edit"
         android:textColorHint="@color/material_dynamic_neutral40"
         android:minHeight="48dp"
@@ -87,7 +87,7 @@
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
             android:background="@drawable/button_primary"
-            android:text="Lưu"
+            android:text="@string/save"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -100,7 +100,7 @@
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
             android:background="@drawable/button_primary"
-            android:text="Hủy"
+            android:text="@string/cancel"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>

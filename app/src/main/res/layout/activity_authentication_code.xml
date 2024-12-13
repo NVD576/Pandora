@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="Xác nhận"
+            android:text="@string/submit"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="35dp"
@@ -50,7 +50,7 @@
             android:inputType="number"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:hint="Nhập mã xác nhận"
+            android:hint="@string/enterVerificationCode"
             android:minHeight="48dp"
             android:textColorHint="@color/material_dynamic_neutral40"
             android:textColor="@color/black" />
@@ -59,7 +59,7 @@
             android:id="@+id/btnAcp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Xác nhận"
+            android:text="@string/submit"
             android:textColor="@color/black"
             android:background="@drawable/button_background" />
 

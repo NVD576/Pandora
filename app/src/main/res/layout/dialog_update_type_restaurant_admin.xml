@@ -11,7 +11,7 @@
         android:id="@+id/titleAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chỉnh sửa danh mục"
+        android:text="@string/editTypeRestaurant"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:inputType="textCapWords"
         android:background="@drawable/rounded_edit"
-        android:hint="Tên danh mục"
+        android:hint="@string/typeRestaurantName"
         android:layout_marginBottom="10dp"
         android:minHeight="48dp"
         android:textColor="@color/black"
@@ -36,7 +36,7 @@
         android:id="@+id/deleteType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Xóa danh mục"
+        android:text="@string/deleteTypeRestaurant"
         android:textColor="@color/red"
         android:textSize="18sp"
         android:layout_marginTop="10dp"/>
@@ -65,7 +65,7 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:background="@drawable/button_primary"
-            android:text="Lưu"
+            android:text="@string/save"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -76,7 +76,7 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:background="@drawable/button_primary"
-            android:text="Hủy"
+            android:text="@string/cancel"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>

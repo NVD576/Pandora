@@ -9,22 +9,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pandora.Class.User;
 import com.example.pandora.R;
-import com.example.pandora.SaveLocationReview;
 import com.example.pandora.Slider.SliderPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class Lobby extends AppCompatActivity {
+public class Lobby extends BaseActivity {
 
     ViewPager2 viewPager2;
     String userName;

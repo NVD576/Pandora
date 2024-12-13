@@ -11,7 +11,7 @@
         android:id="@+id/titleAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thêm quán ăn"
+        android:text="@string/inputRestaurant"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:inputType="textCapWords"
         android:background="@drawable/rounded_edit"
-        android:hint="Nhập tên quán ăn"
+        android:hint="@string/inputRestaurantName"
         android:layout_marginBottom="10dp"
         android:minHeight="48dp"
         android:textColor="@color/black"
@@ -80,7 +80,7 @@
         android:textColor="@color/black"
         android:layout_marginBottom="10dp"
         android:minHeight="48dp"
-        android:hint="Nhập mô tả"
+        android:hint="@string/inputDetails"
         android:textColorHint="@color/material_dynamic_neutral40"
         android:ems="10"
         android:inputType="textMultiLine" />
@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:background="@drawable/item_admin_background"
-            android:text="Chọn ảnh"
+            android:text="@string/chooseImage"
             android:textColor="@color/black" />
 
         <TextView
@@ -107,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:hint="Nothing there"
+            android:hint="@string/nothingThere"
             android:textColorHint="@color/gray"
             android:background="@color/white"/>
     </LinearLayout>
@@ -127,7 +127,7 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:background="@drawable/button_primary"
-            android:text="Lưu"
+            android:text="@string/save"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -138,7 +138,7 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:background="@drawable/button_primary"
-            android:text="Hủy"
+            android:text="@string/cancel"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>

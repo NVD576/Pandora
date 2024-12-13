@@ -13,7 +13,7 @@
         android:id="@+id/search_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Tìm kiếm..."
+        android:hint="@string/search"
         android:singleLine="true"
         android:padding="16dp"
         android:imeOptions="actionSearch"

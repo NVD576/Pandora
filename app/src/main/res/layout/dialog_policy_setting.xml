@@ -13,7 +13,7 @@
         android:id="@+id/titleAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chính sách"
+        android:text="@string/policy"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_primary"
-        android:text="Đồng ý"
+        android:text="@string/agree"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:layout_marginTop="10dp" />

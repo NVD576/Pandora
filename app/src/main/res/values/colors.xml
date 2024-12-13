@@ -23,4 +23,6 @@
     <color name="modernEndColor">#F44336</color>
     <color name="modernAccentColor">#3F51B5</color>
     <color name="darkGray">#757575 </color>
+    <color name="light_gray">#D3D3D3</color>
+    <color name="selected_background">#4CAF50</color>
 </resources>

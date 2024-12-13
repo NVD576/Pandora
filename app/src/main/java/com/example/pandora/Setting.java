@@ -1,14 +1,18 @@
 package com.example.pandora;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +21,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.Login.Login;
+
+import java.util.Locale;
 
 public class Setting extends Fragment {
 
@@ -78,11 +84,46 @@ public class Setting extends Fragment {
                 .setCancelable(true)
                 .create();
 
+        RadioButton radioVietnamese = dialogView.findViewById(R.id.radioVietnamese);
+        RadioButton radioEnglish = dialogView.findViewById(R.id.radioEnglish);
         Button btnOk = dialogView.findViewById(R.id.btnOk);
-        btnOk.setOnClickListener(v -> alertDialog.dismiss());
+
+        // Lấy ngôn ngữ hiện tại từ SharedPreferences
+        SharedPreferences preferences = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String currentLang = preferences.getString("My_Lang", "vi");
+        if ("vi".equals(currentLang)) {
+            radioVietnamese.setChecked(true);
+        } else if ("en".equals(currentLang)) {
+            radioEnglish.setChecked(true);
+        }
+
+        btnOk.setOnClickListener(v -> {
+            String selectedLang = radioVietnamese.isChecked() ? "vi" : "en";
+            setLocale(selectedLang); // Thay đổi ngôn ngữ
+            alertDialog.dismiss();
+        });
 
         alertDialog.show();
     }
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+
+        Resources resources = requireContext().getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+
+        // Lưu ngôn ngữ vào SharedPreferences
+        SharedPreferences.Editor editor = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE).edit();
+        editor.putString("My_Lang", lang);
+        editor.apply();
+
+        // Khởi động lại Activity để áp dụng ngôn ngữ mới
+        requireActivity().recreate();
+    }
+
 
     private void showEditDeleteAccountDialog() {
         LayoutInflater inflater = getLayoutInflater();

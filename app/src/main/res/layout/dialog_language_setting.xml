@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:padding="24dp">
 
-
     <!-- Tiêu đề -->
     <TextView
         android:id="@+id/titleAlert"
@@ -17,28 +16,44 @@
         android:layout_marginBottom="10dp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
-        android:text="Ngôn ngữ"
+        android:text="@string/language"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
-    <!-- Nội dung -->
-    <RadioButton
-        android:layout_width="wrap_content"
+    <!-- Chọn Tiếng Việt -->
+    <RadioGroup
+        android:id="@+id/radioGroupLanguage"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:checked="true"
-        android:minHeight="48dp"
-        android:layout_gravity="left"
-        android:textColor="@color/black"
-        android:text="Tiếng Việt" />
+        android:orientation="vertical">
 
+        <!-- Chọn Tiếng Việt -->
+        <RadioButton
+            android:id="@+id/radioVietnamese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:textColor="@color/black"
+            android:text="Tiếng Việt" />
+
+        <!-- Chọn Tiếng Anh -->
+        <RadioButton
+            android:id="@+id/radioEnglish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:textColor="@color/black"
+            android:text="English" />
+
+    </RadioGroup>
+    <!-- Nút Lưu -->
     <Button
         android:id="@+id/btnOk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_primary"
-        android:text="Đồng ý"
+        android:text="@string/save"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:layout_marginTop="10dp" />
-
 </LinearLayout>
