@@ -124,6 +124,7 @@ public class DetailRestaurantFragment extends Fragment {
                 restaurantDatabase.updateRestaurant(restaurant);
 
 
+
                 // Cập nhật giao diện
                 ratingBar.setRating(r);
             }
