@@ -36,7 +36,7 @@
     <string name="inputDetails">Enter description</string>
     <string name="chooseImage">Choose image</string>
     <string name="nothingThere">No image</string>
-    <string name="inputTypeRestaurant">Add restaurant type</string>
+    <string name="inputTypeRestaurant">Add restaurant type/location</string>
     <string name="deleteAccount">Delete account</string>
     <string name="wantDelete">Are you sure you want to delete?</string>
     <string name="yesWantDelete">Yes, delete</string>
