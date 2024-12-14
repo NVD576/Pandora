@@ -79,7 +79,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-database:20.3.0")
     implementation ("com.google.firebase:firebase-core:21.1.1")
 
-
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 
 }

@@ -67,7 +67,7 @@ public class Home extends Fragment {
     private Runnable searchRunnable;
     Spinner spinnerTypeRestaurant;
     List<String> item1;
-    ArrayList<Integer> a;
+    ArrayList<Integer> ds_history;
     private Handler handler = new Handler(Looper.getMainLooper());
 
     private Runnable runnable = new Runnable() {
@@ -92,7 +92,7 @@ public class Home extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        a= new ArrayList<>();
+        ds_history = new ArrayList<>();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
@@ -246,7 +246,7 @@ public class Home extends Fragment {
             bundle.putInt("restaurant_rating", restaurant.getStar());
             bundle.putInt("restaurant_id", restaurant.getId());
             nextFragment.setArguments(bundle);
-            a.add(restaurant.getId());
+            ds_history.add(restaurant.getId());
             // Chuyển Fragment
             getParentFragmentManager().beginTransaction()
                     .setCustomAnimations(
@@ -293,7 +293,7 @@ public class Home extends Fragment {
             public void onClick(View view) {
 
                 Intent myIntent = new Intent(requireContext(), SaveLocationReview.class);
-                myIntent.putExtra("history",  a);
+                myIntent.putExtra("history", ds_history);
                 startActivity(myIntent);
             }
         });

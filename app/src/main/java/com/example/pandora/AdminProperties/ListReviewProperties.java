@@ -1,9 +1,22 @@
 package com.example.pandora.AdminProperties;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -14,8 +27,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pandora.Adapter.RestaurantAdapter;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Database.RestaurantDatabase;
+import com.example.pandora.Home;
 import com.example.pandora.R;
+import com.example.pandora.Trash.MainActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListReviewProperties extends AppCompatActivity {
@@ -25,6 +42,10 @@ public class ListReviewProperties extends AppCompatActivity {
     RestaurantDatabase db;
     RecyclerView recyclerView;
     List<Restaurant> restaurantList;
+    private Handler handler = new Handler();
+    private Runnable searchRunnable;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,5 +77,60 @@ public class ListReviewProperties extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+
+        EditText searchInput = findViewById(R.id.search_input);
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Filter the list as the text changes
+                if (searchRunnable != null) {
+                    handler.removeCallbacks(searchRunnable);
+                }
+
+                // Đặt Runnable mới với độ trễ 2 giây
+                searchRunnable = () -> filterList(charSequence.toString());
+                handler.postDelayed(searchRunnable, 500);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+        FloatingActionButton fabAdd = findViewById(R.id.fab_chart);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(ListReviewProperties.this, MainActivity.class);
+                startActivity(myIntent);
+            }
+        });
     }
+    private void filterList(String query) {
+        if (restaurantList == null || restaurantList.isEmpty()) {
+            return;
+        }
+
+        List<Restaurant> filteredList = new ArrayList<>();
+        for (Restaurant restaurant : restaurantList) {
+            if (restaurant.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(restaurant);
+            }
+        }
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this, "Không tìm thấy dữ liệu", Toast.LENGTH_SHORT).show();
+        } else {
+            adapter.setFilteredList(filteredList);
+
+        }
+    }
+
 }

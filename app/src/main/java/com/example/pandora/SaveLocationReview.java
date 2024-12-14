@@ -27,7 +27,6 @@ public class SaveLocationReview extends AppCompatActivity {
     List<Restaurant> restaurantList= new ArrayList<>();
     SmaillRestaurantAdapter smaillRestaurantAdapter;
     RecyclerView recyclerView;
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
