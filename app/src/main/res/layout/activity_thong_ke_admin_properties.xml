@@ -8,7 +8,8 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@color/white"
-    tools:context=".Trash.MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".AdminProperties.ThongKe">
     <com.github.mikephil.charting.charts.BarChart
         android:layout_width="match_parent"
         android:layout_height="0dp"

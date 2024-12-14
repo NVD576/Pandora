@@ -64,7 +64,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Trash.MainActivity"
+            android:name=".AdminProperties.ThongKe"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.Pandora.NoActionBar" />

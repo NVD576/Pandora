@@ -1,4 +1,4 @@
-package com.example.pandora.Trash;
+package com.example.pandora.AdminProperties;
 
 
 import android.graphics.Color;
@@ -7,9 +7,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.Review;
@@ -33,9 +30,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-public class MainActivity extends AppCompatActivity {
+public class ThongKe extends AppCompatActivity {
     BarChart barChart;
     PieChart pieChart;
 
@@ -43,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_thong_ke_admin_properties);
 
         barChart = findViewById(R.id.bar_chart);
         pieChart = findViewById(R.id.pie_chart);
