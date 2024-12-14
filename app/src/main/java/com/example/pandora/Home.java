@@ -66,6 +66,7 @@ public class Home extends Fragment {
     private Handler handler1 = new Handler();
     private Runnable searchRunnable;
     Spinner spinnerTypeRestaurant;
+    TextView txtLocation;
     List<String> item1;
     ArrayList<Integer> ds_history;
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -95,6 +96,7 @@ public class Home extends Fragment {
         ds_history = new ArrayList<>();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
+        txtLocation = getView().findViewById(R.id.txtLocation);
 
         search_toolbar = view.findViewById(R.id.search_toolbar);
         item1 = new ArrayList<>();
@@ -118,7 +120,9 @@ public class Home extends Fragment {
         }
 
         List<Category> categoryList = C.getAllCategories();
-        item1.add("Chọn loại quán");
+        if(txtLocation.getText().toString()=="Các địa điểm")
+            item1.add("Chọn loại quán");
+        else item1.add("Type of restaurant");
         for (Category a : categoryList) {
             item1.add(a.getName());
         }
@@ -397,7 +401,6 @@ public class Home extends Fragment {
                 if (selectedLocation[0] != null) {
 
                     // Truy cập btnLocation từ root view của fragment
-                    TextView txtLocation = getView().findViewById(R.id.txtLocation);
                     if (txtLocation != null) {
                         txtLocation.setText(selectedLocation[0]);  // Cập nhật text của nút
                     }
