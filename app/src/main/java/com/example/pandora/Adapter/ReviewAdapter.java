@@ -31,6 +31,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         this.context = context;
     }
 
+
+    public void setFilteredList(List<Review> filteredList) {
+        this.reviewList = filteredList;
+        notifyDataSetChanged();
+    }
     // Định nghĩa interface OnItemClickListener
     public interface OnItemClickListener {
         void onItemClick(Review review);

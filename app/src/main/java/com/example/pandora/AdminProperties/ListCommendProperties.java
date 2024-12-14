@@ -2,9 +2,13 @@ package com.example.pandora.AdminProperties;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -13,20 +17,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pandora.Adapter.ReviewAdapter;
+import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.Review;
+import com.example.pandora.Class.User;
 import com.example.pandora.Database.ReviewDatabase;
+import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListCommendProperties extends AppCompatActivity {
 
     private String restaurantName;
-    private int star, id;
+    private int  id;
     private ReviewAdapter adapter;
     private ReviewDatabase db;
     private RecyclerView recyclerView;
     private List<Review> reviewList;
+    private Handler handler = new Handler();
+    private Runnable searchRunnable;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +49,6 @@ public class ListCommendProperties extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             restaurantName = intent.getStringExtra("restaurant_name");
-            star = intent.getIntExtra("restaurant_rating", 0);
             id = intent.getIntExtra("restaurant_id", 0);
         }
 
@@ -65,6 +76,33 @@ public class ListCommendProperties extends AppCompatActivity {
                 showDialogUpdateReviewAdmin(review);
             }
         });
+
+
+        EditText searchInput = findViewById(R.id.search_input);
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Filter the list as the text changes
+                if (searchRunnable != null) {
+                    handler.removeCallbacks(searchRunnable);
+                }
+
+                // Đặt Runnable mới với độ trễ 2 giây
+                searchRunnable = () -> filterList(charSequence.toString());
+                handler.postDelayed(searchRunnable, 500);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
     }
 
     public void showDialogUpdateReviewAdmin(Review review) {
@@ -106,4 +144,32 @@ public class ListCommendProperties extends AppCompatActivity {
         super.onDestroy();
         if (db != null) db.close();
     }
+    private void filterList(String query) {
+        if (reviewList == null || reviewList.isEmpty()) {
+            return;
+        }
+
+        UserDatabase userDatabase= new UserDatabase(this);
+        userDatabase.open();
+
+
+        List<Review> filteredList = new ArrayList<>();
+        for (Review review : reviewList) {
+            // Kiểm tra xem tên người dùng và bình luận có chứa chuỗi tìm kiếm không
+            User user= userDatabase.getUserById(review.getUserid());
+            if (user.getName().toLowerCase().contains(query.toLowerCase()) ||
+                    review.getReview().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(review);
+            }
+        }
+        userDatabase.close();
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this, "Không tìm thấy dữ liệu", Toast.LENGTH_SHORT).show();
+        } else {
+            // Cập nhật lại danh sách lọc cho adapter
+            adapter.setFilteredList(filteredList);
+        }
+    }
+
+
 }
