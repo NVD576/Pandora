@@ -66,39 +66,6 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_toolbar_container">
-
-        <Spinner
-            android:id="@+id/spinnerLocation"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:padding="10dp"
-            android:layout_marginEnd="1dp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <!-- Spinner 2 -->
-        <Spinner
-            android:id="@+id/spinnerTypeRestaurant"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:layout_marginStart="1dp"
-            android:padding="10dp"
-            tools:ignore="TouchTargetSizeCheck" />
-    </LinearLayout>
-
     <!-- RecyclerView to show search results -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -111,5 +78,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutSpinner" />
+        app:layout_constraintTop_toBottomOf="@id/search_toolbar_container" />
 </androidx.constraintlayout.widget.ConstraintLayout>
