@@ -51,7 +51,7 @@ public class SaveLocationReview extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        smaillRestaurantAdapter = new SmaillRestaurantAdapter(restaurantList);
+        smaillRestaurantAdapter = new SmaillRestaurantAdapter(this,restaurantList);
         recyclerView.setAdapter(smaillRestaurantAdapter);
         smaillRestaurantAdapter.notifyDataSetChanged();
         // Trong Activity hoặc Fragment nơi bạn sử dụng RecyclerView

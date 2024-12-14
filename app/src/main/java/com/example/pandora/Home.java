@@ -86,7 +86,6 @@ public class Home extends Fragment {
         // Required empty public constructor
     }
 
-    @SuppressLint({"MissingInflatedId", "NotifyDataSetChanged"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,7 +95,7 @@ public class Home extends Fragment {
         ds_history = new ArrayList<>();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
-        txtLocation = getView().findViewById(R.id.txtLocation);
+        txtLocation = view.findViewById(R.id.txtLocation);
 
         search_toolbar = view.findViewById(R.id.search_toolbar);
         item1 = new ArrayList<>();
@@ -106,6 +105,8 @@ public class Home extends Fragment {
         if (database.isTableEmpty()) {
             database.addLocation(new Location("Hồ Chí Minh"));
             database.addLocation(new Location("Hà Nội"));
+            database.addLocation(new Location("Nha Trang"));
+            database.addLocation(new Location("Vũng Tàu"));
         }
         lc = database.getAllLocations();
         database.close();
@@ -120,7 +121,7 @@ public class Home extends Fragment {
         }
 
         List<Category> categoryList = C.getAllCategories();
-        if(txtLocation.getText().toString()=="Các địa điểm")
+        if(txtLocation.getText().toString().equals("Các địa điểm"))
             item1.add("Chọn loại quán");
         else item1.add("Type of restaurant");
         for (Category a : categoryList) {
@@ -132,11 +133,27 @@ public class Home extends Fragment {
         restaurantDatabase.open();
         if (restaurantDatabase.getAllRestaurants().isEmpty()) {
             // Thêm dữ liệu vào cơ sở dữ liệu
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn A", 1, 2, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn B", 1, 1, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn C", 2, 3, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn D", 1, 2, 0));
-            restaurantDatabase.addRestaurant(new Restaurant("Quán Ăn E", 2, 1, 0));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán ăn F, 3/4 Lê Văn Lương", "3/4 Lê Văn Lương", 1, 1, "Quán ăn phục vụ các món ăn truyền thống Việt Nam."));
+            restaurantDatabase.addRestaurant(new Restaurant("Bistro Sài Gòn", "55 Đường Nguyễn Thị Minh Khai", 2, 2, "Bistro với các món ăn phương Tây, nổi bật với pizza và pasta."));
+            restaurantDatabase.addRestaurant(new Restaurant("Nhà hàng Hải Sản Tươi Ngon", "123 Bãi Biển", 3, 3, "Hải sản tươi sống, được chế biến theo nhiều phong cách khác nhau."));
+            restaurantDatabase.addRestaurant(new Restaurant("Lẩu Nấm Tân Bình", "72 Đường Tân Bình", 4, 1, "Nhà hàng chuyên phục vụ các món lẩu nấm, bổ dưỡng và ngon miệng."));
+            restaurantDatabase.addRestaurant(new Restaurant("Khu Ẩm Thực Phố Cổ", "19 Đường Hàng Buồm", 1, 1, "Khu vực ẩm thực truyền thống với nhiều món ăn đặc sản Hà Nội."));
+            restaurantDatabase.addRestaurant(new Restaurant("Café Xuân", "45 Đường Nguyễn Huệ", 2, 2, "Café với không gian yên tĩnh, phục vụ đồ uống và bánh ngọt đa dạng."));
+            restaurantDatabase.addRestaurant(new Restaurant("Món Ngon Quê Hương", "18 Đường Lý Thường Kiệt", 3, 1, "Nhà hàng chuyên phục vụ các món ăn miền Trung đặc sắc."));
+            restaurantDatabase.addRestaurant(new Restaurant("Nhà Hàng Bạch Mai", "10 Đường Bạch Mai", 4, 1, "Món ăn truyền thống Việt Nam với nguyên liệu tươi ngon, sạch."));
+            restaurantDatabase.addRestaurant(new Restaurant("Pizza Italia", "100 Đường Lê Duẩn", 1, 2, "Pizza Italia mang đậm hương vị Ý với nhiều lựa chọn nhân phong phú."));
+            restaurantDatabase.addRestaurant(new Restaurant("Cơm Văn Phòng", "30 Đường Nguyễn Xí", 2, 1, "Cơm trưa nhanh chóng, ngon miệng cho dân văn phòng, với các món ăn đa dạng."));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Bún Đậu Mắm Tôm", "10 Đường Tôn Đức Thắng", 1, 1, "Bún đậu mắm tôm truyền thống, món ăn đặc sản Hà Nội."));
+            restaurantDatabase.addRestaurant(new Restaurant("Nhà Hàng 5 Sao", "88 Đường Lê Quang Đạo", 2, 2, "Nhà hàng sang trọng, phục vụ các món ăn quốc tế tinh tế và cao cấp."));
+            restaurantDatabase.addRestaurant(new Restaurant("Lẩu Dê Ninh Bình", "123 Đường Phan Đăng Lưu", 3, 1, "Nhà hàng nổi tiếng với món lẩu dê Ninh Bình nổi bật."));
+            restaurantDatabase.addRestaurant(new Restaurant("Sushi Sài Gòn", "22 Đường Nguyễn Công Trứ", 4, 2, "Sushi tươi ngon, đa dạng các món ăn Nhật Bản từ sushi, sashimi đến ramen."));
+            restaurantDatabase.addRestaurant(new Restaurant("Bánh Xèo Sài Gòn", "15 Đường Lê Văn Sỹ", 1, 1, "Nhà hàng chuyên phục vụ bánh xèo miền Nam, giòn ngon, đậm đà."));
+            restaurantDatabase.addRestaurant(new Restaurant("Gà Rán KFC", "30 Đường Hoàng Văn Thụ", 2, 2, "Gà rán giòn, món ăn nhanh đặc trưng của KFC, phù hợp cho cả gia đình."));
+            restaurantDatabase.addRestaurant(new Restaurant("Nhà Hàng Ẩm Thực Trung Hoa", "100 Đường Phan Đình Phùng", 3, 3, "Ẩm thực Trung Hoa truyền thống với các món dim sum và mỳ đặc sắc."));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Cơm Tấm Hương Xưa", "33 Đường Nguyễn Trãi", 4, 1, "Cơm tấm Sài Gòn đậm đà với nhiều loại topping phong phú."));
+            restaurantDatabase.addRestaurant(new Restaurant("Quán Nướng BBQ", "45 Đường Lý Tự Trọng", 1, 2, "BBQ nướng than hoa, thực đơn đa dạng với các loại thịt, hải sản tươi ngon."));
+            restaurantDatabase.addRestaurant(new Restaurant("Café Góc Phố", "20 Đường Lý Thái Tổ", 2, 1, "Café cổ điển với không gian yên tĩnh, lý tưởng để thưởng thức trà và cà phê thư giãn."));
+
         }
 
         search_toolbar.requestFocus();
@@ -246,9 +263,8 @@ public class Home extends Fragment {
 
             // Truyền dữ liệu qua Bundle
             Bundle bundle = new Bundle();
-            bundle.putString("restaurant_name", restaurant.getName());
-            bundle.putInt("restaurant_rating", restaurant.getStar());
             bundle.putInt("restaurant_id", restaurant.getId());
+
             nextFragment.setArguments(bundle);
             ds_history.add(restaurant.getId());
             // Chuyển Fragment
@@ -364,7 +380,11 @@ public class Home extends Fragment {
 
 
         List<String> location = new ArrayList<>();
-        location.add("All");
+
+        if(txtLocation.getText().toString().equals("Các địa điểm"))
+            location.add("Tất cả");
+        else location.add("All");
+
         for (Location a : lc) {
             location.add(a.getName());
         }

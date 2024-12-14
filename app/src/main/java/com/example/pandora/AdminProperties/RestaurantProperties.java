@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,7 +42,6 @@ import com.example.pandora.Database.RestaurantDatabase;
 import com.example.pandora.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,6 +62,7 @@ public class RestaurantProperties extends AppCompatActivity {
     private Handler handler = new Handler();
     private Runnable searchRunnable;
     List<String> items, item1;
+    int retaurantid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +114,10 @@ public class RestaurantProperties extends AppCompatActivity {
 
         adapter.setOnItemClickListener(new RestaurantAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Restaurant restaurant) {
+            public void onItemClick(Restaurant restaurant1) {
+                restaurant=restaurant1;
                 showUpdateRestaurantAlertDialog(restaurant);
+
             }
         });
 
@@ -174,6 +175,7 @@ public class RestaurantProperties extends AppCompatActivity {
         EditText updateAddress= dialogView.findViewById(R.id.updateAddress);
         EditText updateDescription= dialogView.findViewById(R.id.updateDescription);
         TextView textImage=dialogView.findViewById(R.id.textImage);
+
 
 
         updateName.setText(restaurant.getName());
@@ -249,7 +251,6 @@ public class RestaurantProperties extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.putExtra("restaurantid", restaurant.getId());
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
 
@@ -271,7 +272,7 @@ public class RestaurantProperties extends AppCompatActivity {
             restaurant.setAddress(updateAddress.getText().toString());
             restaurant.setDescription(updateDescription.getText().toString());
             restaurant.setImage(textImage.getText().toString());
-            db.addRestaurant(restaurant);
+            db.updateRestaurant(restaurant);
             recreate();
 //            adapter.notifyDataSetChanged();
 
@@ -295,7 +296,7 @@ public class RestaurantProperties extends AppCompatActivity {
         EditText addDescription= dialogView.findViewById(R.id.addDescription);
         Button btnChooseImage=dialogView.findViewById(R.id.btnChooseImage);
 
-        restaurant = new Restaurant();
+        restaurant= new Restaurant();
 
         // Tạo AlertDialog
         AlertDialog alertDialog = new AlertDialog.Builder(this) // Dùng `this` thay cho `getApplicationContext()`
@@ -336,10 +337,8 @@ public class RestaurantProperties extends AppCompatActivity {
 
         //type of restaurant
 
-
-
         Spinner addRoleRestaurant = dialogView.findViewById(R.id.addRoleRestaurant);
-        @SuppressLint("ResourceType") ArrayAdapter<String> bb = new
+        ArrayAdapter<String> bb = new
                 ArrayAdapter<String>(this, R.layout.spinner_item,
                 item1);
 
@@ -439,7 +438,6 @@ public class RestaurantProperties extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        int retaurantid= data.getIntExtra("restaurantid", -1);
 
         String fileName="";
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
@@ -457,13 +455,11 @@ public class RestaurantProperties extends AppCompatActivity {
                 // Tạo tên file duy nhất
                 fileName = "restaurant_image_" + timestamp + ".png";
 
-                if(retaurantid!=-1){
-                    Restaurant rs= db.getRestaurantsByID(retaurantid);
-                    rs.setImage(fileName);
-                    db.updateRestaurant(rs);
-                }
+
                 // Cập nhật vào database
                 restaurant.setImage(fileName);
+
+
                 // Lưu Bitmap vào bộ nhớ trong
                 saveImageToInternalStorage(bitmap, fileName);
 
@@ -481,7 +477,7 @@ public class RestaurantProperties extends AppCompatActivity {
     private void saveImageToInternalStorage(Bitmap bitmap, String fileName) {
         try {
             // Lưu ảnh vào bộ nhớ trong
-            FileOutputStream fos = openFileOutput(fileName, MODE_PRIVATE);
+            FileOutputStream fos = this.openFileOutput(fileName, MODE_PRIVATE);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
             Log.e("SaveImage", "Ảnh đã được lưu vào bộ nhớ trong: " + fileName);

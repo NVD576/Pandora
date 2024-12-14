@@ -3,6 +3,7 @@ package com.example.pandora.Adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,8 @@ public class SmaillRestaurantAdapter extends RecyclerView.Adapter<SmaillRestaura
     private static List<Restaurant> restaurantList;
     private OnItemClickListener listener;
 
-    public SmaillRestaurantAdapter( List<Restaurant> restaurantList) {
+    public SmaillRestaurantAdapter(Context context,List<Restaurant> restaurantList) {
+        this.context= context;
         this.restaurantList = restaurantList;
     }
 
@@ -46,18 +48,12 @@ public class SmaillRestaurantAdapter extends RecyclerView.Adapter<SmaillRestaura
         holder.restaurantAddress.setText(restaurant.getAddress());
         holder.restaurantRating.setText(String.valueOf(restaurant.getStar()));
 
-        // Hiển thị ảnh đại diện
-//        Glide.with(context)
-//                .load(user.getImage()) // Đường dẫn hoặc URL
-//                .placeholder(R.drawable.person_icon) // Hình mặc định
-//                .error(R.drawable.baseline_admin_panel_settings_24) // Hình lỗi
-//                .into(holder.userAvatar);
 
         if (restaurant.getImage() != null && !restaurant.getImage().isEmpty()) {
             Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
             holder.restaurantImage.setImageBitmap(bitmap);
         } else {
-            holder.restaurantImage.setImageResource(R.drawable.person_icon); // Đặt ảnh mặc định nếu không tải được ảnh
+            holder.restaurantImage.setImageResource(R.drawable.pandora_background); // Đặt ảnh mặc định nếu không tải được ảnh
         }
         // Gắn tag để truyền dữ liệu vào sự kiện nhấn
         holder.itemView.setTag(restaurant);

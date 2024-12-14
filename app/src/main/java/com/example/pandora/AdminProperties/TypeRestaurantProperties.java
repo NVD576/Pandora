@@ -75,7 +75,6 @@ public class TypeRestaurantProperties extends AppCompatActivity {
         locationAdapter = new LocationAdapter(locationList);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         if (!isLocation) {
 
             recyclerView.setAdapter(adapter);
@@ -95,35 +94,6 @@ public class TypeRestaurantProperties extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showAddTypeRestaurantAlertDialog();
-            }
-        });
-
-
-
-
-        btnLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnLocation.setBackgroundResource(R.drawable.button_selected_home_background);
-                btntypeRestaurant.setBackgroundResource(R.drawable.button_unselected_home_background);
-                isLocation = true;
-                recyclerView.setAdapter(locationAdapter);
-                locationAdapter.notifyDataSetChanged();
-                locationAdapter.setOnItemClickListener(location -> showUpdateTypeRestaurantAlertDialog(location));
-
-            }
-        });
-        //nut loai quan an
-
-        btntypeRestaurant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnLocation.setBackgroundResource(R.drawable.button_unselected_home_background);
-                btntypeRestaurant.setBackgroundResource(R.drawable.button_selected_home_background);
-                isLocation = false;
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-
             }
         });
 
@@ -153,6 +123,38 @@ public class TypeRestaurantProperties extends AppCompatActivity {
 
             }
         });
+
+
+
+        btnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnLocation.setBackgroundResource(R.drawable.button_selected_home_background);
+                btntypeRestaurant.setBackgroundResource(R.drawable.button_unselected_home_background);
+                isLocation = true;
+
+
+                recyclerView.setAdapter(locationAdapter);
+                locationAdapter.notifyDataSetChanged();
+                locationAdapter.setOnItemClickListener(location -> showUpdateTypeRestaurantAlertDialog(location));
+
+            }
+        });
+        //nut loai quan an
+
+        btntypeRestaurant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                btnLocation.setBackgroundResource(R.drawable.button_unselected_home_background);
+                btntypeRestaurant.setBackgroundResource(R.drawable.button_selected_home_background);
+                isLocation = false;
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
+            }
+        });
+
 
 
     }
@@ -215,7 +217,9 @@ public class TypeRestaurantProperties extends AppCompatActivity {
         // Inflate custom layout
         LayoutInflater inflater = LayoutInflater.from(this); // Dùng `this` thay cho `getApplicationContext()`
         dialogView = inflater.inflate(R.layout.dialog_add_type_restaurant_admin, null);
+
         EditText addTypeName = dialogView.findViewById(R.id.addTypeName);
+
 
         // Tạo AlertDialog
         AlertDialog alertDialog = new AlertDialog.Builder(this) // Dùng `this` thay cho `getApplicationContext()`
@@ -227,9 +231,13 @@ public class TypeRestaurantProperties extends AppCompatActivity {
         Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
 
 
+
         // Xử lý sự kiện nút "Lưu"
         btnSave.setOnClickListener(view -> {
+
+
             if(isLocation){
+
                 Location l = new Location(addTypeName.getText().toString());
                 if (addTypeName.getText().toString() == null)
                     Toast.makeText(this, "Nhap thong tin!", Toast.LENGTH_SHORT).show();
@@ -289,6 +297,8 @@ public class TypeRestaurantProperties extends AppCompatActivity {
 
         //Xu ly nut xoa
         deleteType.setOnClickListener(view -> {
+            int position = locationList.indexOf(category);
+            locationList.remove(position);
             db.deleteCategory(category.getId());
             adapter.notifyDataSetChanged();
         });
@@ -328,8 +338,10 @@ public class TypeRestaurantProperties extends AppCompatActivity {
 
         //Xu ly nut xoa
         deleteType.setOnClickListener(view -> {
+            int position = locationList.indexOf(location);
             locationDatabase.deleteLocation(location.getId());
-            locationAdapter.notifyDataSetChanged();
+            locationList.remove(position);
+            locationAdapter.notifyItemRemoved(position);
         });
 
         // Hiển thị hộp thoại

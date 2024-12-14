@@ -39,6 +39,14 @@ public class Restaurant {
         this.history = history;
     }
 
+    public Restaurant(String name, String address, int locationid, int cateid, String description) {
+        this.name = name;
+        this.address = address;
+        this.locationid = locationid;
+        this.cateid = cateid;
+        this.description = description;
+    }
+
     public Restaurant(String name, int locationid, int star) {
         this.name = name;
         this.locationid = locationid;

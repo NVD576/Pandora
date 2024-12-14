@@ -48,7 +48,7 @@ public class DetailRestaurantFragment extends Fragment {
     Review review;
     List<Review> commentsList;
     ReviewAdapter reviewAdapter;
-    TextView txtLocation;
+    TextView txtLocation,txtDescription;
     RestaurantDatabase restaurantDatabase;
     private RecyclerView commentsRecyclerView;
     RatingDatabase ratingDatabase ;
@@ -62,7 +62,7 @@ public class DetailRestaurantFragment extends Fragment {
         ratingDatabase = new RatingDatabase(context);
         reviewDatabase = new ReviewDatabase(context);
     }
-    @SuppressLint("WrongViewCast")
+    @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,12 +76,11 @@ public class DetailRestaurantFragment extends Fragment {
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
-
+        txtDescription= view.findViewById(R.id.txtDescription);
         // Nhận dữ liệu từ Bundle
         Bundle bundle = getArguments();
 
         restaurant_id = bundle.getInt("restaurant_id");
-
         // Lấy thông tin nhà hàng
         restaurantDatabase.open();
         Restaurant restaurant = restaurantDatabase.getRestaurantsByID(restaurant_id);
@@ -95,6 +94,8 @@ public class DetailRestaurantFragment extends Fragment {
         // Lấy và xử lý thông tin đánh giá
 
         ratingDatabase.open();
+        txtDescription.setText(restaurant.getDescription());
+
         rating = ratingDatabase.getRatingById(userid, restaurant_id);
         if (rating == null) {
             rating = new Rating(userid, restaurant_id, 0);
@@ -131,7 +132,7 @@ public class DetailRestaurantFragment extends Fragment {
         });
 
         ratingBar.setRating(rating.getStar());
-        nameTextView.setText(bundle.getString("restaurant_name", "N/A"));
+        nameTextView.setText(restaurant.getName());
 
 
 
