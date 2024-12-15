@@ -3,6 +3,8 @@ package com.example.pandora;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ import com.example.pandora.Database.RestaurantDatabase;
 import com.example.pandora.Database.ReviewDatabase;
 import com.example.pandora.Database.UserDatabase;
 
+import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,6 +56,7 @@ public class DetailRestaurantFragment extends Fragment {
     private RecyclerView commentsRecyclerView;
     RatingDatabase ratingDatabase ;
     ReviewDatabase reviewDatabase ;
+    ImageView restaurantImage;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -79,12 +83,12 @@ public class DetailRestaurantFragment extends Fragment {
         txtDescription= view.findViewById(R.id.txtDescription);
         // Nhận dữ liệu từ Bundle
         Bundle bundle = getArguments();
-
+        restaurantImage= view.findViewById(R.id.restaurantImage);
         restaurant_id = bundle.getInt("restaurant_id");
         // Lấy thông tin nhà hàng
         restaurantDatabase.open();
         Restaurant restaurant = restaurantDatabase.getRestaurantsByID(restaurant_id);
-        restaurant.setHistory(1);
+//        restaurant.setHistory(1);
         // Lấy thông tin vị trí
         LocationDatabase lD = new LocationDatabase(getContext());
         lD.open();
@@ -92,7 +96,6 @@ public class DetailRestaurantFragment extends Fragment {
         lD.close();
 
         // Lấy và xử lý thông tin đánh giá
-
         ratingDatabase.open();
         txtDescription.setText(restaurant.getDescription());
 
@@ -104,8 +107,18 @@ public class DetailRestaurantFragment extends Fragment {
         // Cập nhật điểm trung bình của nhà hàng
         restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
         restaurantDatabase.updateRestaurant(restaurant);
-
+        //hien dia diem
         txtLocation.setText(l.getName() + ", " + restaurant.getAddress());
+
+        //hien image
+        if (restaurant.getImage() != null) {
+            Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
+            if (bitmap != null) {
+                restaurantImage.setImageBitmap(bitmap);
+            }
+        } else {
+            restaurantImage.setImageResource(R.drawable.pandora_background); // Hiển thị ảnh mặc định
+        }
 
         // Lắng nghe sự thay đổi điểm đánh giá
         Rating finalRating = rating;
@@ -131,6 +144,7 @@ public class DetailRestaurantFragment extends Fragment {
             }
         });
 
+        //hien rating
         ratingBar.setRating(rating.getStar());
         nameTextView.setText(restaurant.getName());
 
@@ -138,7 +152,6 @@ public class DetailRestaurantFragment extends Fragment {
 
 
         // Lấy danh sách bình luận
-
         reviewDatabase.open();
         commentsList = reviewDatabase.getReviewsByRestaurantId(restaurant_id);
 
@@ -148,6 +161,7 @@ public class DetailRestaurantFragment extends Fragment {
             commentsList = new ArrayList<>();
         }
 
+        //hien binh luan-comment
         commentsRecyclerView = view.findViewById(R.id.commentsRecyclerView);
         reviewAdapter = new ReviewAdapter(commentsList, getContext());
         commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -184,6 +198,15 @@ public class DetailRestaurantFragment extends Fragment {
         });
 
         return view;
+    }
+    private Bitmap loadImageFromInternalStorage(String fileName) {
+        try {
+            FileInputStream fis = getContext().openFileInput(fileName);
+            return BitmapFactory.decodeStream(fis); // Chuyển đổi thành Bitmap
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Trả về null nếu không tìm thấy ảnh
+        }
     }
     public void onDestroyView() {
         super.onDestroyView();

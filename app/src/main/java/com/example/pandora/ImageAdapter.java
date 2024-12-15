@@ -1,5 +1,8 @@
 package com.example.pandora;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +11,29 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pandora.Adapter.RestaurantAdapter;
+import com.example.pandora.Class.Restaurant;
+
+import java.io.FileInputStream;
 import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
-    private List<Integer> imageList;
+    private List<Restaurant> imageList;
+    private Context context;
+    private OnItemClickListener listener;
 
     // Constructor để nhận vào danh sách ID hình ảnh
-    public ImageAdapter(List<Integer> imageList) {
+    public ImageAdapter(Context context,List<Restaurant> imageList) {
         this.imageList = imageList;
+        this.context= context;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Restaurant restaurant);
+    }
+    public void setOnItemClickListener(ImageAdapter.OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -30,7 +47,23 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Đặt ID hình ảnh tại vị trí hiện tại
-        holder.imageView.setImageResource(imageList.get(position));
+        Restaurant restaurant = imageList.get(position);
+//        holder.imageView.setImageResource(restaurant.getImage()); // Hiển thị ảnhf
+        if (restaurant.getImage() != null) {
+            Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
+            if (bitmap != null) {
+                holder.imageView.setImageBitmap(bitmap);
+            }
+        } else {
+            holder.imageView.setImageResource(R.drawable.pandora_background); // Hiển thị ảnh mặc định
+        }
+        // Gán sự kiện click
+        holder.imageView.setOnClickListener(v -> {
+            if (listener != null && position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(imageList.get(position));
+            }
+        });
+
     }
 
     @Override
@@ -47,4 +80,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             imageView = itemView.findViewById(R.id.imageView);
         }
     }
+    private Bitmap loadImageFromInternalStorage(String fileName) {
+        try {
+            FileInputStream fis = context.openFileInput(fileName);
+            return BitmapFactory.decodeStream(fis); // Chuyển đổi thành Bitmap
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Trả về null nếu không tìm thấy ảnh
+        }
+    }
+
 }

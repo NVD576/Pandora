@@ -58,7 +58,7 @@ public class Home extends Fragment {
     private List<Restaurant> restaurantList;
     EditText search_toolbar;
     List<Location> lc;
-    private List<Integer> images = Arrays.asList(R.drawable.res1, R.drawable.res2, R.drawable.res3, R.drawable.res4);
+    private List<Restaurant> images;
     private int currentPage = 0;
     private boolean hasShownToast = false;
     int locationid = 0;
@@ -169,6 +169,10 @@ public class Home extends Fragment {
         // Lấy lại danh sách nhà hàng
 
         restaurantList = restaurantDatabase.getAllRestaurants();
+        images= new ArrayList<>();
+        for(int i=0; i<4; i++){
+            images.add(restaurantList.get(i));
+        }
 
         // Cấu hình RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
@@ -280,7 +284,28 @@ public class Home extends Fragment {
 
         // Thiết lập ViewPager và bắt đầu tự động cuộn
         viewPager = view.findViewById(R.id.viewPager);
-        viewPager.setAdapter(new ImageAdapter(images));
+        ImageAdapter imageAdapter=new ImageAdapter(getContext(),images);
+        viewPager.setAdapter(imageAdapter);
+        imageAdapter.setOnItemClickListener(restaurant -> {
+            DetailRestaurantFragment nextFragment = new DetailRestaurantFragment();
+
+            // Truyền dữ liệu qua Bundle
+            Bundle bundle = new Bundle();
+            bundle.putInt("restaurant_id", restaurant.getId());
+
+            nextFragment.setArguments(bundle);
+            ds_history.add(restaurant.getId());
+            // Chuyển Fragment
+            getParentFragmentManager().beginTransaction()
+                    .setCustomAnimations(
+                            R.anim.fade_in,  // Khi fragment xuất hiện
+                            R.anim.fade_out    // Khi fragment rời đi
+                    )
+                    .replace(R.id.fragment_container, nextFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         handler.postDelayed(runnable, 2000); // Bắt đầu tự động lướt
 
@@ -296,6 +321,9 @@ public class Home extends Fragment {
                 handler.postDelayed(runnable, 3000);
             }
         });
+
+
+
 
         // Xử lý sự kiện click cho các button
         btnLocation = view.findViewById(R.id.btnLocation);

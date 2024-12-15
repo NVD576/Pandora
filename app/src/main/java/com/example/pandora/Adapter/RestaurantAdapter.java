@@ -65,7 +65,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         }
 
 
-//        holder.ratingBar.setRating(restaurant.getStar()); // Hiển thị đánh giá sao
 
         // Xử lý sự kiện click
         holder.itemView.setOnClickListener(v -> {

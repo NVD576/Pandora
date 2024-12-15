@@ -29,7 +29,7 @@ public class Setting extends Fragment {
     private boolean isLogin = false;
     private int userid;
     private SharedPreferences sharedPreferences;
-
+    TextView deleteAccount;
     @Override
     @SuppressLint({"MissingInflatedId", "LocalSuppress"})
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,25 +45,29 @@ public class Setting extends Fragment {
         TextView edtLanguage = view.findViewById(R.id.language);
         edtLanguage.setOnClickListener(v -> showEditLanguageDialog());
 
-        TextView deleteAccount = view.findViewById(R.id.deleteAccount);
-
-        if (!isLogin)
-        {
-            deleteAccount.setAlpha(0f);
-            deleteAccount.setEnabled(false);
-            deleteAccount.setVisibility(View.GONE);
-        }
-        else {
-            deleteAccount.setAlpha(1f);
-
-            deleteAccount.setEnabled(true);
-        }
-
+        deleteAccount = view.findViewById(R.id.deleteAccount);
         deleteAccount.setOnClickListener(v -> showEditDeleteAccountDialog());
 
         return view;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Cập nhật giá trị isLogin từ SharedPreferences
+        sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
+        // Cập nhật giao diện người dùng dựa trên giá trị isLogin
+        deleteAccount = getView().findViewById(R.id.deleteAccount);
+        if (!isLogin) {
+            deleteAccount.setAlpha(0f);
+            deleteAccount.setEnabled(false);
+            deleteAccount.setVisibility(View.GONE);
+        } else {
+            deleteAccount.setAlpha(1f);
+            deleteAccount.setEnabled(true);
+        }
+    }
     private void showEditPolicyDialog() {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_policy_setting, null);
@@ -138,21 +142,23 @@ public class Setting extends Fragment {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         CheckBox check = dialogView.findViewById(R.id.checkDelete);
         Button btnSave = dialogView.findViewById(R.id.btnSave);
-        if (!check.isChecked())
-        {
-            btnSave.setEnabled(false);
-        }
-        else {
-            btnSave.setEnabled(true);
-        }
-        btnSave.setOnClickListener(v -> {
-
-            if (check.isChecked()) {
-                deleteAccount();
-            } else {
-                alertDialog.dismiss();
-            }
+        check.setChecked(false);
+        // Thêm listener cho CheckBox
+        check.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Kích hoạt hoặc vô hiệu hóa nút Save dựa trên trạng thái của CheckBox
+            btnSave.setEnabled(isChecked);
         });
+
+        // Thiết lập listener cho nút Save
+        btnSave.setOnClickListener(v -> {
+//            if (check.isChecked()) {
+//                deleteAccount();
+//            } else {
+//                alertDialog.dismiss();
+//            }
+            deleteAccount();
+        });
+
 
         Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
         btnDismiss.setOnClickListener(v -> alertDialog.dismiss());
