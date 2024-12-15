@@ -36,7 +36,7 @@
     <string name="inputDetails">Nhập mô tả</string>
     <string name="chooseImage">Chọn ảnh</string>
     <string name="nothingThere">Không có ảnh</string>
-    <string name="inputTypeRestaurant">Thêm loại quán ăn</string>
+    <string name="inputTypeRestaurant">Thêm loại quán ăn/địa điểm</string>
     <string name="deleteAccount">Xóa tài khoản</string>
     <string name="wantDelete">Muốn xóa thật à ?</string>
     <string name="yesWantDelete">Muốn xóa</string>
