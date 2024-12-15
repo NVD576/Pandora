@@ -73,4 +73,5 @@
     <string name="registerForNewAccount">Register for a new account</string>
     <string name="start">Go</string>
     <string name="hadAccount">I had an account</string>
+    <string name="favourite">Restaurant favourite</string>
 </resources>

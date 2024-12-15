@@ -1,0 +1,7 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Khi nhấn -->
+    <item android:drawable="@drawable/press_button_image" android:state_pressed="true"/>
+
+    <!-- Khi không nhấn -->
+    <item android:drawable="@drawable/normal_button_image"/>
+</selector>

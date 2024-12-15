@@ -28,6 +28,36 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/pandora_background" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center">
+
+                <!-- Nút trước (Previous) -->
+                <ImageView
+                    android:id="@+id/previosImage"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/arrow_previous"
+                    android:background="@drawable/button_image_background"
+                    android:padding="12dp" />
+
+                <!-- Nút tiếp theo (Next) -->
+                <ImageView
+                    android:id="@+id/nextImage"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/arrow_next"
+                    android:background="@drawable/button_image_background"
+                    android:padding="12dp" />
+
+            </LinearLayout>
+
+
             <!-- Phần khác như nhà hàng, bình luận, tóm tắt -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,14 +69,34 @@
                 android:padding="10dp">
 
                 <!-- Nội dung thông tin -->
-                <TextView
-                    android:id="@+id/detailName"
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Restaurant Name"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content">
+
+                    <!-- Tên nhà hàng -->
+                    <TextView
+                        android:id="@+id/detailName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Restaurant Name"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginEnd="50dp"/> <!-- Đảm bảo có đủ không gian cho icon -->
+
+                    <!-- Icon yêu thích, cố định ở góc phải -->
+                    <ImageView
+                        android:id="@+id/favouriteCheck"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/unfavourite_red_icon"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true" />
+                </RelativeLayout>
+
+
 
                 <RatingBar
                     android:id="@+id/detailRating"
