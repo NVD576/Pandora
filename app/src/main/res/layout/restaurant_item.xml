@@ -10,8 +10,8 @@
     <!-- Ảnh đại diện người dùng -->
     <ImageView
         android:id="@+id/restaurantImage"
-        android:layout_width="92dp"
-        android:layout_height="96dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_marginEnd="16dp"
         android:background="#00000000"
         android:scaleType="centerCrop"

@@ -1,22 +1,21 @@
-package com.example.pandora;
+package com.example.pandora.Main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pandora.Adapter.RestaurantAdapter;
 import com.example.pandora.Adapter.SmaillRestaurantAdapter;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Database.RestaurantDatabase;
+import com.example.pandora.DetailRestaurantFragment;
+import com.example.pandora.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,6 +73,16 @@ public class SaveLocationReview extends AppCompatActivity {
                     .replace(R.id.fragment_container, nextFragment)
                     .addToBackStack(null)
                     .commit();
+        });
+
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        ImageView back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(SaveLocationReview.this, Lobby.class);
+                startActivity(myIntent);
+            }
         });
 
     }

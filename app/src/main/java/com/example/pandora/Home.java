@@ -36,10 +36,10 @@ import com.example.pandora.Class.User;
 import com.example.pandora.Database.CatetgoryDatabase;
 import com.example.pandora.Database.LocationDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
+import com.example.pandora.Main.SaveLocationReview;
 import com.example.pandora.Main.SearchInfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -16,9 +16,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="20dp"
-        android:gravity="center_horizontal">
+        android:padding="20dp">
 
         <!-- Hình đại diện người dùng -->
         <ImageView
@@ -26,11 +26,11 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/person_icon"
             android:background="@drawable/circle_background"
+            android:clipToOutline="true"
             android:padding="10dp"
             android:scaleType="centerCrop"
-            android:clipToOutline="true" />
+            android:src="@drawable/person_icon" />
 
 
         <!-- Tên người dùng hoặc nút Đăng nhập -->
@@ -39,66 +39,66 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/signIn"
-            android:textSize="22sp"
-            android:textColor="@color/white"
             android:background="@drawable/rounded_button"
-            android:paddingVertical="10dp"
+            android:gravity="center"
             android:paddingHorizontal="20dp"
-            android:gravity="center" />
+            android:paddingVertical="10dp"
+            android:text="@string/signIn"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
 
         <!-- Danh sách chức năng -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="24dp">
+            android:layout_marginTop="24dp"
+            android:orientation="vertical">
 
             <!-- Mỗi mục sử dụng CardView hoặc bo góc -->
             <TextView
                 android:id="@+id/changeInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/changeInfomation"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/item_background"
                 android:drawableStart="@drawable/baseline_person_24"
                 android:drawablePadding="12dp"
-                android:padding="16dp"
-                android:gravity="center_vertical"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:background="@drawable/item_background"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:layout_marginBottom="12dp" />
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="@string/changeInfomation"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/logout"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/item_background"
                 android:drawableStart="@drawable/baseline_exit_to_app_24"
                 android:drawablePadding="12dp"
-                android:padding="16dp"
-                android:gravity="center_vertical"
-                android:textSize="18sp"
                 android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="@string/logout"
                 android:textColor="@color/white"
-                android:background="@drawable/item_background"
-                android:layout_marginBottom="12dp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/adminMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/administrator"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/item_background"
                 android:drawableStart="@drawable/baseline_admin_panel_settings_24"
                 android:drawablePadding="12dp"
-                android:padding="16dp"
-                android:gravity="center_vertical"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="@string/administrator"
                 android:textColor="@color/white"
-                android:background="@drawable/item_background"
-                android:layout_marginBottom="12dp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
     </LinearLayout>

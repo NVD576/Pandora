@@ -38,7 +38,6 @@ public class Setting extends Fragment {
         userid = sharedPreferences.getInt("userid", -1); // -1 is default if not found
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
-
         TextView edtPolicy = view.findViewById(R.id.policy);
         edtPolicy.setOnClickListener(v -> showEditPolicyDialog());
 
@@ -58,7 +57,7 @@ public class Setting extends Fragment {
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
         // Cập nhật giao diện người dùng dựa trên giá trị isLogin
-        deleteAccount = getView().findViewById(R.id.deleteAccount);
+        deleteAccount = requireView().findViewById(R.id.deleteAccount);
         if (!isLogin) {
             deleteAccount.setAlpha(0f);
             deleteAccount.setEnabled(false);
