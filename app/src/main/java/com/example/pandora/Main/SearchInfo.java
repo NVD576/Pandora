@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pandora.Adapter.RestaurantAdapter;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Database.RestaurantDatabase;
-import com.example.pandora.DetailRestaurantFragment;
+import com.example.pandora.Fragment.DetailRestaurantFragment;
 import com.example.pandora.R;
 
 import java.util.ArrayList;

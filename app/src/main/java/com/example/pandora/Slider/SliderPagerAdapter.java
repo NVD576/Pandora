@@ -8,9 +8,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.pandora.Class.User;
-import com.example.pandora.Home;
-import com.example.pandora.Profile;
-import com.example.pandora.Setting;
+import com.example.pandora.Fragment.Home;
+import com.example.pandora.Fragment.Profile;
+import com.example.pandora.Fragment.Setting;
 
 public class SliderPagerAdapter extends FragmentStateAdapter {
     private final boolean isLogin;

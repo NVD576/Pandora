@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -29,6 +29,8 @@ import com.example.pandora.AdminProperties.AdminProperties;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.Login.Login;
+import com.example.pandora.Main.FavouriteActivity;
+import com.example.pandora.R;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -171,6 +173,15 @@ public class Profile extends Fragment {
                     logout.setVisibility(View.GONE);
                     isLogin = false;
                 }
+            }
+        });
+
+        TextView favourite = view.findViewById(R.id.favourite);
+        favourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(requireContext(), FavouriteActivity.class);
+                startActivity(myIntent);
             }
         });
 

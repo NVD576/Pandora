@@ -23,9 +23,11 @@
         android:theme="@style/Theme.Pandora"
         tools:targetApi="31">
         <activity
+            android:name=".Main.FavouriteActivity"
+            android:exported="false" />
+        <activity
             android:name=".AdminProperties.ListCommendProperties"
             android:exported="false" />
-
         <activity
             android:name=".AdminProperties.ListReviewProperties"
             android:exported="false" />

@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -32,6 +32,7 @@ import com.example.pandora.Database.RatingDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
 import com.example.pandora.Database.ReviewDatabase;
 import com.example.pandora.Database.UserDatabase;
+import com.example.pandora.R;
 
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;

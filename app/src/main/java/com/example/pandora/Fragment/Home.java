@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -36,8 +36,10 @@ import com.example.pandora.Class.User;
 import com.example.pandora.Database.CatetgoryDatabase;
 import com.example.pandora.Database.LocationDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
+import com.example.pandora.Adapter.ImageAdapter;
 import com.example.pandora.Main.SaveLocationReview;
 import com.example.pandora.Main.SearchInfo;
+import com.example.pandora.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.Login.Login;
+import com.example.pandora.R;
 
 import java.util.Locale;
 
