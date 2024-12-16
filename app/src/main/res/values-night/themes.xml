@@ -1,7 +1,36 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Pandora" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">@color/lavender_light</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
+
+    <style name="Theme.Pandora" parent="Base.Theme.Pandora" />
+
+    <style name="Theme.Pandora.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Dark mode -->
+    <style name="SCREEN">
+        <item name="android:background">#121212</item>
+    </style>
+
+    <!-- Text dark mode-->
+    <style name="TEXT">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="Theme.Pandora.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Pandora.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Navigation" parent="Base.Theme.Pandora">
+        <item name="colorControlHighlight">@android:color/transparent</item>
+    </style>
+
+
 </resources>

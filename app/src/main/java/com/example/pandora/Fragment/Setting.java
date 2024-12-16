@@ -13,23 +13,29 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.Login.Login;
 import com.example.pandora.R;
+import com.example.pandora.SharedPreferences.DarkModePreferences;
 
 import java.util.Locale;
 
 public class Setting extends Fragment {
 
+    Switch aSwitch;
+    boolean darkMode;
     private boolean isLogin = false;
     private int userid;
     private SharedPreferences sharedPreferences;
+    private DarkModePreferences preferences;
     TextView deleteAccount;
     @Override
     @SuppressLint({"MissingInflatedId", "LocalSuppress"})
@@ -47,6 +53,20 @@ public class Setting extends Fragment {
 
         deleteAccount = view.findViewById(R.id.deleteAccount);
         deleteAccount.setOnClickListener(v -> showEditDeleteAccountDialog());
+
+        aSwitch = view.findViewById(R.id.darkMode);
+        preferences = new DarkModePreferences(requireContext());
+
+        aSwitch.setChecked(!preferences.isDarkModeEnabled());
+        aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                preferences.setDarkModeEnabled(true);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                preferences.setDarkModeEnabled(false);
+            }
+        });
 
         return view;
     }

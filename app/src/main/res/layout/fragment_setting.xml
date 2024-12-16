@@ -50,6 +50,21 @@
                 android:background="@drawable/item_background"
                 android:layout_marginBottom="12dp" />
 
+            <Switch
+                android:id="@+id/darkMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/darkMode"
+                android:drawableStart="@drawable/night_mode_icon"
+                android:drawablePadding="12dp"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:background="@drawable/item_background"
+                android:layout_marginBottom="12dp"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
             <TextView
                 android:id="@+id/deleteAccount"
                 android:layout_width="match_parent"
