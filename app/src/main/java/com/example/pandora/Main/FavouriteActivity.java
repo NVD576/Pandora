@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pandora.Adapter.SmaillRestaurantAdapter;
+import com.example.pandora.Adapter.RestaurantAdapter;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Database.RestaurantDatabase;
 import com.example.pandora.Fragment.DetailRestaurantFragment;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class FavouriteActivity extends AppCompatActivity {
     List<Restaurant> restaurantList= new ArrayList<>();
-    SmaillRestaurantAdapter smaillRestaurantAdapter;
+    RestaurantAdapter smaillRestaurantAdapter;
     RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class FavouriteActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        smaillRestaurantAdapter = new SmaillRestaurantAdapter(this,restaurantList);
+        smaillRestaurantAdapter = new RestaurantAdapter(this,restaurantList);
         recyclerView.setAdapter(smaillRestaurantAdapter);
         smaillRestaurantAdapter.notifyDataSetChanged();
         // Trong Activity hoặc Fragment nơi bạn sử dụng RecyclerView

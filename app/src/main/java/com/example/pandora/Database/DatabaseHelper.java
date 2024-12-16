@@ -40,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_REVIEWS = "reviews";
     public static final String COLUMN_REVIEW_ID = "id";
     public static final String COLUMN_REVIEW_USER_ID = "user_id";
-    public static final String COLUMN_REVIEW_RESTAURANT_ID = "restaurant_id";
+    public static final String COLUMN_REVIEW_RESTAURANT_ID = "restaurantid";
     public static final String COLUMN_REVIEW_REVIEW = "review";
     public static final String COLUMN_REVIEW_DATE = "date";
 
@@ -52,8 +52,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Cấu trúc bảng ratings
     public static final String TABLE_RATINGS = "ratings";
     public static final String COLUMN_RATING_ID = "id";
-    public static final String COLUMN_RATING_USER_ID = "user_id";
-    public static final String COLUMN_RATING_RESTAURANT_ID = "restaurant_id";
+    public static final String COLUMN_RATING_USER_ID = "userid";
+    public static final String COLUMN_RATING_RESTAURANT_ID = "restaurantid";
     public static final String COLUMN_RATING_STAR = "rating";
 
     // Cấu trúc bảng category
@@ -61,6 +61,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CATEGORY_ID = "id";
     public static final String COLUMN_CATEGORY_NAME = "name";
 
+    // Cấu trúc bảng images
+    public static final String TABLE_IMAGES = "images";
+    public static final String COLUMN_IMAGE_ID = "id";
+    public static final String COLUMN_IMAGE_RESTAURANT_ID = "restaurantid";
+    public static final String COLUMN_IMAGE_URL = "imageUrl";
 
     // Câu lệnh tạo bảng restaurants
     private static final String CREATE_TABLE_RESTAURANTS = "CREATE TABLE " + TABLE_RESTAURANTS + " ("
@@ -123,6 +128,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "FOREIGN KEY(" + COLUMN_RATING_RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + COLUMN_ID + "))";
 
 
+
+
+    // Câu lệnh tạo bảng images
+    private static final String CREATE_TABLE_IMAGES = "CREATE TABLE " + TABLE_IMAGES + " ("
+            + COLUMN_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_IMAGE_RESTAURANT_ID + " INTEGER, "
+            + COLUMN_IMAGE_URL + " TEXT, "
+            + "FOREIGN KEY(" + COLUMN_IMAGE_RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + COLUMN_ID + ")ON DELETE CASCADE)";
+
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -135,6 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_LOCATIONS);
         db.execSQL(CREATE_TABLE_RATINGS);
         db.execSQL(CREATE_TABLE_CATEGORIES);
+        db.execSQL(CREATE_TABLE_IMAGES);
     }
 
     @Override
