@@ -46,7 +46,6 @@ public class Profile extends Fragment {
     private Uri contentUri;
     TextView login;
     User user;
-    boolean check =true;
     public Profile() {
         // Required empty public constructor
     }

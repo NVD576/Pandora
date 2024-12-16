@@ -10,6 +10,7 @@ public class Restaurant {
     int cateid;
     private String image;
     private int star;
+    int listImageid;
     String description;
     int history =0;
 
@@ -58,6 +59,14 @@ public class Restaurant {
         this.locationid = locationid;
         this.cateid = cateid;
         this.star = star;
+    }
+
+    public int getImageid() {
+        return listImageid;
+    }
+
+    public void setImageid(int imageid) {
+        this.listImageid = imageid;
     }
 
     public String getDescription() {

@@ -28,36 +28,6 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/pandora_background" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp"
-                android:layout_gravity="center">
-
-                <!-- Nút trước (Previous) -->
-                <ImageView
-                    android:id="@+id/previosImage"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/arrow_previous"
-                    android:background="@drawable/button_image_background"
-                    android:padding="12dp" />
-
-                <!-- Nút tiếp theo (Next) -->
-                <ImageView
-                    android:id="@+id/nextImage"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/arrow_next"
-                    android:background="@drawable/button_image_background"
-                    android:padding="12dp" />
-
-            </LinearLayout>
-
-
             <!-- Phần khác như nhà hàng, bình luận, tóm tắt -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -137,6 +107,51 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:columnCount="4"
+                android:rowCount="1"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/image1"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="8dp"
+                    android:layout_columnWeight="1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/pandora_background" />
+
+                <ImageView
+                    android:id="@+id/image2"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="8dp"
+                    android:layout_columnWeight="1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/pandora_background" />
+
+                <ImageView
+                    android:id="@+id/image3"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="8dp"
+                    android:layout_columnWeight="1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/pandora_background" />
+
+                <ImageView
+                    android:id="@+id/image4"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="8dp"
+                    android:layout_columnWeight="1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/pandora_background" />
+            </GridLayout>
 
             <!-- RecyclerView hiển thị các bình luận -->
             <androidx.recyclerview.widget.RecyclerView

@@ -103,7 +103,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             addressTextView = itemView.findViewById(R.id.restaurantAddress); // Kết nối với TextView địa chỉ
             imageView = itemView.findViewById(R.id.restaurantImage);
             ratingTextView = itemView.findViewById(R.id.restaurantRating);
-//            ratingBar = itemView.findViewById(R.id.restaurantRating);
         }
     }
 

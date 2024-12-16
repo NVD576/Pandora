@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pandora.Adapter.RestaurantAdapter;
-import com.example.pandora.Adapter.RestaurantHighRatingAdapter;
 import com.example.pandora.Class.Category;
 import com.example.pandora.Class.Location;
 import com.example.pandora.Class.Restaurant;
@@ -51,7 +50,6 @@ public class Home extends Fragment {
     boolean isLogin = false;
     private RecyclerView recyclerView;
     private RestaurantAdapter restaurantAdapter;
-    private RestaurantHighRatingAdapter restaurantHighRatingAdapter;
     private ViewPager2 viewPager;
     private RestaurantDatabase restaurantDatabase;
     private List<Restaurant> restaurantList;
