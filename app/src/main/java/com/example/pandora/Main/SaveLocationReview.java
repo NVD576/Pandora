@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pandora.Adapter.SmaillRestaurantAdapter;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Database.RestaurantDatabase;
-import com.example.pandora.fragment.DetailRestaurantFragment;
+import com.example.pandora.Fragment.DetailRestaurantFragment;
 import com.example.pandora.R;
 
 import java.util.ArrayList;

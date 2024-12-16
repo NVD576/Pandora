@@ -1,4 +1,4 @@
-package com.example.pandora.fragment;
+package com.example.pandora.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
