@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -32,6 +32,7 @@ import com.example.pandora.Database.RatingDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
 import com.example.pandora.Database.ReviewDatabase;
 import com.example.pandora.Database.UserDatabase;
+import com.example.pandora.R;
 
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
@@ -42,7 +43,7 @@ import java.util.Locale;
 
 public class DetailRestaurantFragment extends Fragment {
 
-    ImageView btnSend;
+    ImageView btnSend,restaurantImage,favouriteCheck;
     int userid;
     boolean isLogin = false;
     EditText txtComment;
@@ -56,8 +57,7 @@ public class DetailRestaurantFragment extends Fragment {
     private RecyclerView commentsRecyclerView;
     RatingDatabase ratingDatabase ;
     ReviewDatabase reviewDatabase ;
-    ImageView restaurantImage;
-
+    Rating rating;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -72,15 +72,17 @@ public class DetailRestaurantFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail_restaurant, container, false);
 
-        TextView nameTextView = view.findViewById(R.id.detailName);
-        RatingBar ratingBar = view.findViewById(R.id.detailRating);
-        txtLocation = view.findViewById(R.id.txtLocation);
-        Rating rating=null;
         // Lấy thông tin đăng nhập từ SharedPreferences
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
+
+        TextView nameTextView = view.findViewById(R.id.detailName);
+        RatingBar ratingBar = view.findViewById(R.id.detailRating);
+        txtLocation = view.findViewById(R.id.txtLocation);
+        favouriteCheck=view.findViewById(R.id.favouriteCheck);
         txtDescription= view.findViewById(R.id.txtDescription);
+
         // Nhận dữ liệu từ Bundle
         Bundle bundle = getArguments();
         restaurantImage= view.findViewById(R.id.restaurantImage);
@@ -103,6 +105,24 @@ public class DetailRestaurantFragment extends Fragment {
         if (rating == null) {
             rating = new Rating(userid, restaurant_id, 0);
         }
+        if(restaurant.getHistory()==1){
+            favouriteCheck.setImageResource(R.drawable.favourite_red_icon);
+        }
+        favouriteCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(restaurant.getHistory()==1){
+                    restaurant.setHistory(0);
+                    favouriteCheck.setImageResource(R.drawable.unfavourite_red_icon);
+                }
+                else{
+                    restaurant.setHistory(1);
+                    favouriteCheck.setImageResource(R.drawable.favourite_red_icon);
+                }
+                restaurantDatabase.updateRestaurant(restaurant);
+                onResume();
+            }
+        });
 
         // Cập nhật điểm trung bình của nhà hàng
         restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));

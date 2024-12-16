@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.Adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pandora.Adapter.RestaurantAdapter;
 import com.example.pandora.Class.Restaurant;
+import com.example.pandora.R;
 
 import java.io.FileInputStream;
 import java.util.List;

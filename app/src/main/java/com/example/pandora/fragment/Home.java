@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -32,12 +32,13 @@ import com.example.pandora.Adapter.RestaurantHighRatingAdapter;
 import com.example.pandora.Class.Category;
 import com.example.pandora.Class.Location;
 import com.example.pandora.Class.Restaurant;
-import com.example.pandora.Class.User;
 import com.example.pandora.Database.CatetgoryDatabase;
 import com.example.pandora.Database.LocationDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
+import com.example.pandora.Adapter.ImageAdapter;
 import com.example.pandora.Main.SaveLocationReview;
 import com.example.pandora.Main.SearchInfo;
+import com.example.pandora.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +46,6 @@ import java.util.stream.Collectors;
 
 public class Home extends Fragment {
 
-    ViewPager2 viewPager2;
-    User user;
     ImageView btnLocation;
     ImageView btnSaveLocation;
     boolean isLogin = false;
@@ -69,6 +68,7 @@ public class Home extends Fragment {
     TextView txtLocation;
     List<String> item1;
     ArrayList<Integer> ds_history;
+
     private Handler handler = new Handler(Looper.getMainLooper());
 
     private Runnable runnable = new Runnable() {

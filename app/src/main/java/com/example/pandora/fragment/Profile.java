@@ -1,4 +1,4 @@
-package com.example.pandora;
+package com.example.pandora.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -29,6 +29,7 @@ import com.example.pandora.AdminProperties.AdminProperties;
 import com.example.pandora.Class.User;
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.Login.Login;
+import com.example.pandora.R;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -41,30 +42,18 @@ public class Profile extends Fragment {
     boolean isLogin = false;
     String userName = "";
     int userid;
-    private Uri contentUri;
     TextView login;
     User user;
-    boolean check =true;
+
     public Profile() {
         // Required empty public constructor
     }
 
-    private String getUserImageFromDatabase(int userId) {
-        UserDatabase userDatabase = new UserDatabase(getActivity());
-        userDatabase.open();
-        User u= userDatabase.getUserById(userId);
-        // Lấy đường dẫn ảnh của người dùng từ cơ sở dữ liệu
-        String imagePath = u.getImage();
-
-        userDatabase.close();
-        return imagePath;
-    }
-
+    @SuppressLint("WrongViewCast")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         login = view.findViewById(R.id.loginProfile);
         userImage = view.findViewById(R.id.userImage);
@@ -72,8 +61,6 @@ public class Profile extends Fragment {
         userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
         TextView logout= view.findViewById(R.id.logout);
-
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         //xem quyền truy cập
         TextView adminMode = view.findViewById(R.id.adminMode);
         adminMode.setAlpha(0f);
@@ -326,6 +313,17 @@ public class Profile extends Fragment {
             e.printStackTrace();
             return null; // Trả về null nếu không tìm thấy ảnh
         }
+    }
+
+    private String getUserImageFromDatabase(int userId) {
+        UserDatabase userDatabase = new UserDatabase(getActivity());
+        userDatabase.open();
+        User u= userDatabase.getUserById(userId);
+        // Lấy đường dẫn ảnh của người dùng từ cơ sở dữ liệu
+        String imagePath = u.getImage();
+
+        userDatabase.close();
+        return imagePath;
     }
 
 }
