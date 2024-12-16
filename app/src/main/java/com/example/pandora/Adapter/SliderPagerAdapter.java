@@ -1,4 +1,4 @@
-package com.example.pandora.Slider;
+package com.example.pandora.Adapter;
 
 import android.os.Bundle;
 
