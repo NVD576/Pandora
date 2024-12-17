@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pandora.Class.Restaurant;
+import com.example.pandora.Database.RatingDatabase;
 import com.example.pandora.R;
 
 import java.io.FileInputStream;
@@ -53,6 +54,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         Restaurant restaurant = restaurantList.get(position);
         holder.nameTextView.setText(restaurant.getName());
         holder.addressTextView.setText(restaurant.getAddress());
+        RatingDatabase ratingDatabase= new RatingDatabase(context);
+        ratingDatabase.open();
+        restaurant.setStar(ratingDatabase.getAverageRating(restaurant.getId()));
+        ratingDatabase.close();
         holder.ratingTextView.setText(String.valueOf(restaurant.getStar()));
 //        holder.imageView.setImageResource(restaurant.getImage()); // Hiển thị ảnhf
         if (restaurant.getImage() != null) {
