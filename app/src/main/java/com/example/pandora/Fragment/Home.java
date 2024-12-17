@@ -407,7 +407,7 @@ public class Home extends Fragment {
 
         List<String> location = new ArrayList<>();
 
-        if(txtLocation.getText().toString().equals("Các địa điểm"))
+        if(txtLocation.getText().toString().equals("CÁC ĐỊA ĐIỂM"))
             location.add("Tất cả");
         else location.add("All");
 
@@ -439,7 +439,7 @@ public class Home extends Fragment {
                 // Handle when nothing is selected (optional)
             }
         });
-
+        spinnerLocation.setSelection(locationid);
         // Handle the save button click
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -449,6 +449,7 @@ public class Home extends Fragment {
                     // Truy cập btnLocation từ root view của fragment
                     if (txtLocation != null) {
                         txtLocation.setText(selectedLocation[0]);  // Cập nhật text của nút
+
                     }
                 }
                 if (selectedLocation[0].equals("Tất cả")) {

@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pandora.Class.Image;
 import com.example.pandora.Class.Restaurant;
+import com.example.pandora.Database.ImageDatabase;
 import com.example.pandora.R;
 
 import java.io.FileInputStream;
@@ -48,8 +50,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Đặt ID hình ảnh tại vị trí hiện tại
         Restaurant restaurant = imageList.get(position);
-        if (restaurant.getImage() != null) {
-            Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
+
+        ImageDatabase imageDatabase= new ImageDatabase(context);
+        imageDatabase.open();
+        List<Image> image= imageDatabase.getImageByRestaurantId(restaurant.getId());
+        imageDatabase.close();
+
+        if (!image.isEmpty()) {
+            Bitmap bitmap = loadImageFromInternalStorage(image.get(0).getImageUrl());
             if (bitmap != null) {
                 holder.imageView.setImageBitmap(bitmap);
             }

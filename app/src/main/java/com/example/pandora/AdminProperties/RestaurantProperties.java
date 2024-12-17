@@ -1,7 +1,6 @@
 package com.example.pandora.AdminProperties;
 
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -34,9 +33,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pandora.Adapter.RestaurantAdapter;
 import com.example.pandora.Class.Category;
+import com.example.pandora.Class.Image;
 import com.example.pandora.Class.Location;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Database.CatetgoryDatabase;
+import com.example.pandora.Database.ImageDatabase;
 import com.example.pandora.Database.LocationDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
 import com.example.pandora.R;
@@ -62,8 +63,9 @@ public class RestaurantProperties extends AppCompatActivity {
     private Handler handler = new Handler();
     private Runnable searchRunnable;
     List<String> items, item1;
-    int retaurantid;
-
+    ImageDatabase imageDatabase;
+    List<Image> imageList;
+    String fileName="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +81,8 @@ public class RestaurantProperties extends AppCompatActivity {
         locationDatabase = new LocationDatabase(this);
         locationDatabase.open();
         List<Location> lc = locationDatabase.getAllLocations();
+        imageDatabase= new ImageDatabase(this);
+        imageDatabase.open();
 
 
 
@@ -174,7 +178,11 @@ public class RestaurantProperties extends AppCompatActivity {
         EditText updateName= dialogView.findViewById(R.id.updateName);
         EditText updateAddress= dialogView.findViewById(R.id.updateAddress);
         EditText updateDescription= dialogView.findViewById(R.id.updateDescription);
+
         TextView textImage=dialogView.findViewById(R.id.textImage);
+        TextView textImage1=dialogView.findViewById(R.id.textImage1);
+        TextView textImage2=dialogView.findViewById(R.id.textImage2);
+        TextView textImage3=dialogView.findViewById(R.id.textImage3);
 
 
 
@@ -182,7 +190,17 @@ public class RestaurantProperties extends AppCompatActivity {
         updateAddress.setText(restaurant.getAddress());
         updateDescription.setText(restaurant.getDescription());
 
-        textImage.setText(restaurant.getImage());
+        imageList = imageDatabase.getImageByRestaurantId(restaurant.getId());
+
+        if (!imageList.isEmpty())
+            textImage.setText(imageList.get(0).getImageUrl());
+        if (imageList.size()>1)
+            textImage1.setText(imageList.get(1).getImageUrl());
+        if (imageList.size()>2)
+            textImage2.setText(imageList.get(2).getImageUrl());
+        if (imageList.size()>3)
+            textImage3.setText(imageList.get(3).getImageUrl());
+
 
 
         Spinner addLocation = dialogView.findViewById(R.id.updateLocation);
@@ -245,17 +263,15 @@ public class RestaurantProperties extends AppCompatActivity {
             }
         });
         Button btnChooseImage=dialogView.findViewById(R.id.btnChooseImage);
+        Button btnChooseImage1=dialogView.findViewById(R.id.btnChooseImage1);
+        Button btnChooseImage2=dialogView.findViewById(R.id.btnChooseImage2);
+        Button btnChooseImage3=dialogView.findViewById(R.id.btnChooseImage3);
 
         //button chon image
-        btnChooseImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, PICK_IMAGE_REQUEST);
-
-            }
-        });
+        btnChooseImage.setOnClickListener(v -> pickImage(PICK_IMAGE_REQUEST));
+        btnChooseImage1.setOnClickListener(v -> pickImage(PICK_IMAGE_REQUEST + 1));
+        btnChooseImage2.setOnClickListener(v -> pickImage(PICK_IMAGE_REQUEST + 2));
+        btnChooseImage3.setOnClickListener(v -> pickImage(PICK_IMAGE_REQUEST + 3));
 
         //Xu ly su kien xoa
         deleteType.setOnClickListener(new View.OnClickListener() {
@@ -266,15 +282,57 @@ public class RestaurantProperties extends AppCompatActivity {
 //                adapter.notifyDataSetChanged();
             }
         });
+
         // Xử lý sự kiện nút "Lưu"
         btnSave.setOnClickListener(view -> {
             restaurant.setName(updateName.getText().toString());
             restaurant.setAddress(updateAddress.getText().toString());
             restaurant.setDescription(updateDescription.getText().toString());
-            restaurant.setImage(textImage.getText().toString());
+
+            Image a=new Image(restaurant.getId(), textImage.getText().toString());
+            Image b=new Image(restaurant.getId(), textImage1.getText().toString());
+            Image c=new Image(restaurant.getId(), textImage2.getText().toString());
+            Image d=new Image(restaurant.getId(), textImage3.getText().toString());
+
+            if(!textImage.getText().toString().equals(""))
+            {
+                if(imageList.size()>0){
+                    imageList.get(0).setImageUrl(a.getImageUrl());
+                    imageDatabase.updateImage(imageList.get(0));
+                }else
+                    imageDatabase.addImage(a);
+            }
+
+            if(!textImage1.getText().toString().equals(""))
+            {
+                if(imageList.size()>1){
+                    imageList.get(1).setImageUrl(b.getImageUrl());
+                    imageDatabase.updateImage(imageList.get(1));
+                }else
+                    imageDatabase.addImage(b);
+            }
+
+            if(!textImage2.getText().toString().equals(""))
+            {
+                if(imageList.size()>2){
+                    imageList.get(2).setImageUrl(c.getImageUrl());
+                    imageDatabase.updateImage(imageList.get(2));
+                }else
+                    imageDatabase.addImage(c);
+            }
+
+            if(!textImage3.getText().toString().equals(""))
+            {
+                if(imageList.size()>2){
+                    imageList.get(3).setImageUrl(d.getImageUrl());
+                    imageDatabase.updateImage(imageList.get(3));
+                }else
+                    imageDatabase.addImage(d);
+            }
+
             db.updateRestaurant(restaurant);
-            recreate();
-//            adapter.notifyDataSetChanged();
+//            recreate();
+            adapter.notifyDataSetChanged();
 
             alertDialog.dismiss();
         });
@@ -294,16 +352,15 @@ public class RestaurantProperties extends AppCompatActivity {
         EditText addRestaurantName= dialogView.findViewById(R.id.addRestaurantName);
         EditText addAddress= dialogView.findViewById(R.id.addAddress);
         EditText addDescription= dialogView.findViewById(R.id.addDescription);
-        Button btnChooseImage=dialogView.findViewById(R.id.btnChooseImage);
 
         restaurant= new Restaurant();
+
 
         // Tạo AlertDialog
         AlertDialog alertDialog = new AlertDialog.Builder(this) // Dùng `this` thay cho `getApplicationContext()`
                 .setView(dialogView)
                 .setCancelable(true)
                 .create();
-
 
 
 
@@ -334,9 +391,7 @@ public class RestaurantProperties extends AppCompatActivity {
             }
         });
 
-
         //type of restaurant
-
         Spinner addRoleRestaurant = dialogView.findViewById(R.id.addRoleRestaurant);
         ArrayAdapter<String> bb = new
                 ArrayAdapter<String>(this, R.layout.spinner_item,
@@ -364,16 +419,22 @@ public class RestaurantProperties extends AppCompatActivity {
             }
         });
 
-        //button chon image
-        btnChooseImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        TextView textImage=dialogView.findViewById(R.id.textImage);
+        TextView textImage1=dialogView.findViewById(R.id.textImage1);
+        TextView textImage2=dialogView.findViewById(R.id.textImage2);
+        TextView textImage3=dialogView.findViewById(R.id.textImage3);
 
-            }
-        });
+
+        Button btnChooseImage=dialogView.findViewById(R.id.btnChooseImage);
+        Button btnChooseImage1=dialogView.findViewById(R.id.btnChooseImage1);
+        Button btnChooseImage2=dialogView.findViewById(R.id.btnChooseImage2);
+        Button btnChooseImage3=dialogView.findViewById(R.id.btnChooseImage3);
+
+        //button chon image
+        btnChooseImage.setOnClickListener(v -> pickImage(PICK_IMAGE_REQUEST));
+        btnChooseImage1.setOnClickListener(v -> pickImage(PICK_IMAGE_REQUEST + 1));
+        btnChooseImage2.setOnClickListener(v -> pickImage(PICK_IMAGE_REQUEST + 2));
+        btnChooseImage3.setOnClickListener(v -> pickImage(PICK_IMAGE_REQUEST + 3));
 
 
 
@@ -389,6 +450,20 @@ public class RestaurantProperties extends AppCompatActivity {
             restaurant.setAddress(addAddress.getText().toString());
             restaurant.setDescription(addDescription.getText().toString());
             db.addRestaurant(restaurant);
+
+
+            if(!textImage.getText().toString().equals("")){
+                imageDatabase.addImage(new Image(restaurant.getId(), textImage.getText().toString()));
+            }
+            if(!textImage1.getText().toString().equals("")){
+                imageDatabase.addImage(new Image(restaurant.getId(), textImage1.getText().toString()));
+            }
+            if(!textImage2.getText().toString().equals("")){
+                imageDatabase.addImage(new Image(restaurant.getId(), textImage2.getText().toString()));
+            }
+            if(!textImage3.getText().toString().equals("")){
+                imageDatabase.addImage(new Image(restaurant.getId(), textImage3.getText().toString()));
+            }
 
             adapter.updateData(restaurantList);
             recreate();
@@ -432,15 +507,22 @@ public class RestaurantProperties extends AppCompatActivity {
             locationDatabase.close();
         if(catetgoryDatabase!=null)
             catetgoryDatabase.close();
+        if(imageDatabase!=null)
+            imageDatabase.close();
     }
 
+    private void pickImage(int requestCode) {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, requestCode);
+    }
     //lưu ảnh
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        fileName="";
 
-        String fileName="";
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+        if ( resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             // Lấy URI của ảnh được chọn
             Uri selectedImageUri = data.getData();
 
@@ -455,11 +537,6 @@ public class RestaurantProperties extends AppCompatActivity {
                 // Tạo tên file duy nhất
                 fileName = "restaurant_image_" + timestamp + ".png";
 
-
-                // Cập nhật vào database
-                restaurant.setImage(fileName);
-
-
                 // Lưu Bitmap vào bộ nhớ trong
                 saveImageToInternalStorage(bitmap, fileName);
 
@@ -468,7 +545,25 @@ public class RestaurantProperties extends AppCompatActivity {
             }
             // Cập nhật ngay trong ImageView
             TextView textImage= dialogView.findViewById(R.id.textImage);
-            textImage.setText(fileName);
+            TextView textImage1= dialogView.findViewById(R.id.textImage1);
+            TextView textImage2= dialogView.findViewById(R.id.textImage2);
+            TextView textImage3= dialogView.findViewById(R.id.textImage3);
+            switch (requestCode) {
+
+                case PICK_IMAGE_REQUEST:
+                    textImage.setText(fileName);
+                    break;
+                case PICK_IMAGE_REQUEST + 1:
+                    textImage1.setText(fileName);
+                    break;
+                case PICK_IMAGE_REQUEST + 2:
+                    textImage2.setText(fileName);
+                    break;
+                case PICK_IMAGE_REQUEST + 3:
+                    textImage3.setText(fileName);
+                    break;
+            }
+
 
             // Thông báo thành công
             Toast.makeText(this, "Cập nhật ảnh thành công!", Toast.LENGTH_SHORT).show();

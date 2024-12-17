@@ -67,6 +67,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_IMAGE_RESTAURANT_ID = "restaurantid";
     public static final String COLUMN_IMAGE_URL = "imageUrl";
 
+    public static final String TABLE_FAVORITES = "favorites";
+    public static final String COLUMN_FAVORITE_ID = "id";
+    public static final String COLUMN_FAVORITE_RESTAURANT_ID = "restaurantid";
+    public static final String COLUMN_FAVORITE_USER_ID = "userid";
+    public static final String COLUMN_FAVORITE_LIKE = "is_liked";
+
+
+
     // Câu lệnh tạo bảng restaurants
     private static final String CREATE_TABLE_RESTAURANTS = "CREATE TABLE " + TABLE_RESTAURANTS + " ("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -138,6 +146,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "FOREIGN KEY(" + COLUMN_IMAGE_RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + COLUMN_ID + ")ON DELETE CASCADE)";
 
 
+    // Câu lệnh tạo bảng favorites
+    private static final String CREATE_TABLE_FAVORITES = "CREATE TABLE " + TABLE_FAVORITES + " ("
+            + COLUMN_FAVORITE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_FAVORITE_RESTAURANT_ID + " INTEGER, "
+            + COLUMN_FAVORITE_USER_ID + " INTEGER, "
+            + COLUMN_FAVORITE_LIKE + " INTEGER, "  // Sử dụng tên cột không trùng từ khóa SQL
+            + "UNIQUE(" + COLUMN_FAVORITE_USER_ID + ", " + COLUMN_FAVORITE_RESTAURANT_ID + "), "
+            + "FOREIGN KEY(" + COLUMN_FAVORITE_RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + COLUMN_ID + ") ON DELETE CASCADE, "
+            + "FOREIGN KEY(" + COLUMN_FAVORITE_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + ") ON DELETE CASCADE)";
+
+
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -151,6 +171,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_RATINGS);
         db.execSQL(CREATE_TABLE_CATEGORIES);
         db.execSQL(CREATE_TABLE_IMAGES);
+        db.execSQL(CREATE_TABLE_FAVORITES);
     }
 
     @Override

@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pandora.Class.Image;
 import com.example.pandora.Class.Restaurant;
+import com.example.pandora.Database.ImageDatabase;
 import com.example.pandora.Database.RatingDatabase;
 import com.example.pandora.R;
 
@@ -60,8 +62,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         ratingDatabase.close();
         holder.ratingTextView.setText(String.valueOf(restaurant.getStar()));
 //        holder.imageView.setImageResource(restaurant.getImage()); // Hiển thị ảnhf
-        if (restaurant.getImage() != null) {
-            Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
+        ImageDatabase imageDatabase= new ImageDatabase(context);
+        imageDatabase.open();
+        List<Image> image= imageDatabase.getImageByRestaurantId(restaurant.getId());
+
+        imageDatabase.close();
+        if (!image.isEmpty()) {
+            Bitmap bitmap = loadImageFromInternalStorage(image.get(0).getImageUrl().toString());
             if (bitmap != null) {
                 holder.imageView.setImageBitmap(bitmap);
             }

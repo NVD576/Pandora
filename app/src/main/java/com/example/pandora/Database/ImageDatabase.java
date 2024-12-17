@@ -45,7 +45,7 @@ public class ImageDatabase {
     public void addImage(Image image) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_IMAGE_RESTAURANT_ID, image.getRestaurantid());
-        values.put(DatabaseHelper.COLUMN_IMAGE_URL, image.getRestaurantid());
+        values.put(DatabaseHelper.COLUMN_IMAGE_URL, image.getImageUrl());
 
         long id = database.insert(DatabaseHelper.TABLE_IMAGES, null, values);
         if (id != -1) {
@@ -117,7 +117,7 @@ public class ImageDatabase {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_IMAGE_ID, image.getId());
         values.put(DatabaseHelper.COLUMN_IMAGE_RESTAURANT_ID, image.getRestaurantid());
-        values.put(DatabaseHelper.COLUMN_IMAGE_URL, image.getRestaurantid());
+        values.put(DatabaseHelper.COLUMN_IMAGE_URL, image.getImageUrl());
 
 
         int rowsUpdated = database.update(DatabaseHelper.TABLE_IMAGES, values,

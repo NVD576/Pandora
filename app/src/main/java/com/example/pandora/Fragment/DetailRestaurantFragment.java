@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +25,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pandora.Adapter.ReviewAdapter;
+import com.example.pandora.Class.Favorite;
+import com.example.pandora.Class.Image;
 import com.example.pandora.Class.Location;
 import com.example.pandora.Class.Rating;
 import com.example.pandora.Class.Restaurant;
 import com.example.pandora.Class.Review;
 import com.example.pandora.Class.User;
+import com.example.pandora.Database.FavoriteDatabase;
+import com.example.pandora.Database.ImageDatabase;
 import com.example.pandora.Database.LocationDatabase;
 import com.example.pandora.Database.RatingDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
@@ -56,10 +61,14 @@ public class DetailRestaurantFragment extends Fragment {
     ReviewAdapter reviewAdapter;
     TextView txtLocation,txtDescription;
     RestaurantDatabase restaurantDatabase;
+    FavoriteDatabase favoriteDatabase;
     private RecyclerView commentsRecyclerView;
     RatingDatabase ratingDatabase ;
     ReviewDatabase reviewDatabase ;
     Rating rating;
+    ImageDatabase imageDatabase;
+    LocationDatabase lD ;
+    Favorite favorite;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -94,37 +103,79 @@ public class DetailRestaurantFragment extends Fragment {
         Restaurant restaurant = restaurantDatabase.getRestaurantsByID(restaurant_id);
 //        restaurant.setHistory(1);
         // Lấy thông tin vị trí
-        LocationDatabase lD = new LocationDatabase(getContext());
+        lD = new LocationDatabase(getContext());
         lD.open();
         Location l = lD.getLocationById(restaurant.getLocationid());
-        lD.close();
+        imageDatabase= new ImageDatabase(getContext());
+        favoriteDatabase= new FavoriteDatabase(getContext());
+        favoriteDatabase.open();
+
+
 
         // Lấy và xử lý thông tin đánh giá
         ratingDatabase.open();
         txtDescription.setText(restaurant.getDescription());
 
-        rating = ratingDatabase.getRatingById(userid, restaurant_id);
-        if (rating == null) {
-            rating = new Rating(userid, restaurant_id, 0);
-        }
-        if(restaurant.getHistory()==1){
-            favouriteCheck.setImageResource(R.drawable.favourite_red_icon);
-        }
-        favouriteCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(restaurant.getHistory()==1){
-                    restaurant.setHistory(0);
-                    favouriteCheck.setImageResource(R.drawable.unfavourite_red_icon);
-                }
-                else{
-                    restaurant.setHistory(1);
-                    favouriteCheck.setImageResource(R.drawable.favourite_red_icon);
-                }
-                restaurantDatabase.updateRestaurant(restaurant);
-                onResume();
+        if (userid!=-1){
+            favorite= favoriteDatabase.getFavoriteById(userid, restaurant_id);
+            if(favorite==null){
+                favorite=new Favorite(restaurant_id, userid,0);
+                favoriteDatabase.addFavorite(favorite);
             }
-        });
+
+
+            rating = ratingDatabase.getRatingById(userid, restaurant_id);
+            if (rating == null) {
+                rating = new Rating(userid, restaurant_id, 0);
+            }
+            if(favorite.getLike()==1){
+                favouriteCheck.setImageResource(R.drawable.favourite_red_icon);
+            }
+            favouriteCheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(favorite.getLike()==1){
+                        favorite.setLike(0);
+                        favouriteCheck.setImageResource(R.drawable.unfavourite_red_icon);
+                    }
+                    else{
+                        favorite.setLike(1);
+                        favouriteCheck.setImageResource(R.drawable.favourite_red_icon);
+                    }
+                    favoriteDatabase.updateFavorite(favorite);
+                    onResume();
+                }
+            });
+            // Lắng nghe sự thay đổi điểm đánh giá
+            Rating finalRating = rating;
+            ratingBar.setOnRatingBarChangeListener((ratingBar1, r, fromUser) -> {
+                if (fromUser && isLogin) {
+                    // Lưu giá trị rating vào cơ sở dữ liệu
+                    finalRating.setStar((int) r);
+                    if (finalRating.getId() > 0) {
+                        ratingDatabase.updateRating(userid, restaurant_id, (int) r);
+                    } else {
+                        ratingDatabase.addRating(finalRating);
+                    }
+
+                    // Cập nhật lại điểm trung bình của nhà hàng
+                    restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
+
+                    restaurantDatabase.updateRestaurant(restaurant);
+
+
+
+                    // Cập nhật giao diện
+                    ratingBar.setRating(r);
+                }
+            });
+            ratingBar.setRating(rating.getStar());
+
+
+        }
+
+        //hien rating
+        nameTextView.setText(restaurant.getName());
 
         // Cập nhật điểm trung bình của nhà hàng
         restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
@@ -133,45 +184,18 @@ public class DetailRestaurantFragment extends Fragment {
         txtLocation.setText(l.getName() + ", " + restaurant.getAddress());
 
         //hien image
-        if (restaurant.getImage() != null) {
-            Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
+        imageDatabase.open();
+        List<Image> imageList= imageDatabase.getImageByRestaurantId(restaurant_id);
+        imageDatabase.close();
+
+        if (!imageList.isEmpty()) {
+            Bitmap bitmap = loadImageFromInternalStorage(imageList.get(0).getImageUrl());
             if (bitmap != null) {
                 restaurantImage.setImageBitmap(bitmap);
             }
         } else {
             restaurantImage.setImageResource(R.drawable.pandora_background); // Hiển thị ảnh mặc định
         }
-
-        // Lắng nghe sự thay đổi điểm đánh giá
-        Rating finalRating = rating;
-        ratingBar.setOnRatingBarChangeListener((ratingBar1, r, fromUser) -> {
-            if (fromUser && isLogin) {
-                // Lưu giá trị rating vào cơ sở dữ liệu
-                finalRating.setStar((int) r);
-                if (finalRating.getId() > 0) {
-                    ratingDatabase.updateRating(userid, restaurant_id, (int) r);
-                } else {
-                    ratingDatabase.addRating(finalRating);
-                }
-
-                // Cập nhật lại điểm trung bình của nhà hàng
-                restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
-
-                restaurantDatabase.updateRestaurant(restaurant);
-
-
-
-                // Cập nhật giao diện
-                ratingBar.setRating(r);
-            }
-        });
-
-        //hien rating
-        ratingBar.setRating(rating.getStar());
-        nameTextView.setText(restaurant.getName());
-
-
-
 
         // Lấy danh sách bình luận
         reviewDatabase.open();
@@ -224,30 +248,58 @@ public class DetailRestaurantFragment extends Fragment {
         ImageView image3 = view.findViewById(R.id.image3);
         ImageView image4 = view.findViewById(R.id.image4);
 
+        if(!imageList.isEmpty()){
+            Bitmap bitmap = loadImageFromInternalStorage(imageList.get(0).getImageUrl());
+            if (bitmap != null) {
+                image1.setImageBitmap(bitmap);
+            }
+        }
+        if(imageList.size()>1){
+            Bitmap bitmap = loadImageFromInternalStorage(imageList.get(1).getImageUrl());
+            if (bitmap != null) {
+                image2.setImageBitmap(bitmap);
+            }
+        }else image2.setVisibility(View.GONE);
+        if(imageList.size()>2){
+            Bitmap bitmap = loadImageFromInternalStorage(imageList.get(2).getImageUrl());
+            if (bitmap != null) {
+                image3.setImageBitmap(bitmap);
+            }
+        }else image3.setVisibility(View.GONE);
+        if(imageList.size()>3){
+            Bitmap bitmap = loadImageFromInternalStorage(imageList.get(3).getImageUrl());
+            if (bitmap != null) {
+                image4.setImageBitmap(bitmap);
+            }
+        } else image4.setVisibility(View.GONE);
+
+
+
         // Set sự kiện click cho từng ảnh
-        setImageClickListener(image1, R.drawable.pandora_background);
-        setImageClickListener(image2, R.drawable.pandora_background);
-        setImageClickListener(image3, R.drawable.pandora_background);
-        setImageClickListener(image4, R.drawable.pandora_background);
+        setImageClickListener(image1);
+        setImageClickListener(image2);
+        setImageClickListener(image3);
+        setImageClickListener(image4);
 
         return view;
     }
 
-    private void setImageClickListener(ImageView imageView, int imageResId) {
+    private void setImageClickListener(ImageView imageView) {
         imageView.setOnClickListener(v -> {
             // Hiển thị Dialog
-            showFullscreenImage(imageResId);
+            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            showFullscreenImage(bitmap);
         });
     }
 
-    private void showFullscreenImage(int imageResId) {
+    private void showFullscreenImage(Bitmap bitmap) {
         // Tạo dialog
         Dialog dialog = new Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.setContentView(R.layout.dialog_fullscreen_image);
 
         // Set ảnh vào ImageView trong dialog
         ImageView fullscreenImageView = dialog.findViewById(R.id.fullscreenImageView);
-        fullscreenImageView.setImageResource(imageResId);
+        fullscreenImageView.setImageBitmap(bitmap);
 
         // Nút thoát
         ImageButton btnClose = dialog.findViewById(R.id.btnClose);
@@ -269,13 +321,15 @@ public class DetailRestaurantFragment extends Fragment {
             return null; // Trả về null nếu không tìm thấy ảnh
         }
     }
+
     public void onDestroyView() {
         super.onDestroyView();
         // Đóng cơ sở dữ liệu ở đây khi người dùng thoát trang
         restaurantDatabase.close();
 
         ratingDatabase.close();
-
+        lD.close();
+        favoriteDatabase.close();
         reviewDatabase.close();
     }
     // Lưu bình luận vào cơ sở dữ liệu

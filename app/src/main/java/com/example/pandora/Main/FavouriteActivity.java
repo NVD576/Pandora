@@ -1,5 +1,6 @@
 package com.example.pandora.Main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -8,7 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pandora.Adapter.RestaurantAdapter;
+import com.example.pandora.Class.Favorite;
 import com.example.pandora.Class.Restaurant;
+import com.example.pandora.Database.FavoriteDatabase;
 import com.example.pandora.Database.RestaurantDatabase;
 import com.example.pandora.Fragment.DetailRestaurantFragment;
 import com.example.pandora.R;
@@ -21,16 +24,36 @@ public class FavouriteActivity extends AppCompatActivity {
     List<Restaurant> restaurantList= new ArrayList<>();
     RestaurantAdapter smaillRestaurantAdapter;
     RecyclerView recyclerView;
+    List<Favorite> favoriteList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_favourite);
-        RestaurantDatabase restaurantDatabase= new RestaurantDatabase(getApplicationContext());
-        restaurantDatabase.open();
-        restaurantList= restaurantDatabase.getAllRestaurants();
-        restaurantList=restaurantList.stream().filter(p->p.getHistory()==1).collect(Collectors.toList());
-        restaurantDatabase.close();
+
+        Intent myIntent = getIntent();
+        int userid = myIntent.getIntExtra("userid", -1);
+        if(userid!=-1){
+            FavoriteDatabase favoriteDatabase= new FavoriteDatabase(this);
+            favoriteDatabase.open();
+            favoriteList= favoriteDatabase.getFavoritesByUserId(userid);
+
+            favoriteList= favoriteList.stream().filter(p->p.getLike()==1)
+                    .collect(Collectors.toList());
+            favoriteDatabase.close();
+
+            RestaurantDatabase restaurantDatabase= new RestaurantDatabase(getApplicationContext());
+            restaurantDatabase.open();
+            restaurantList= restaurantDatabase.getAllRestaurants();
+
+            restaurantList = restaurantList.stream()
+                    .filter(restaurant -> favoriteList.stream()
+                            .anyMatch(favorite -> favorite.getRestaurantid() == restaurant.getId()))
+                    .collect(Collectors.toList());
+
+            restaurantDatabase.close();
+        }
+
 
 
 

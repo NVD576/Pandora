@@ -180,6 +180,7 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(requireContext(), FavouriteActivity.class);
+                myIntent.putExtra("userid", userid);
                 startActivity(myIntent);
             }
         });

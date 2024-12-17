@@ -74,7 +74,7 @@
                     android:layout_marginTop="8dp"
                     style="?android:attr/ratingBarStyle"
                     android:numStars="5"
-                    android:rating="4"
+                    android:rating="0"
                     android:stepSize="1"
                     android:progressDrawable="@drawable/custom_star" />
 
