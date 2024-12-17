@@ -1,7 +1,5 @@
 package com.example.pandora.Class;
 
-import java.util.List;
-
 public class Restaurant {
     private int id;
     private String name;
@@ -10,7 +8,6 @@ public class Restaurant {
     int cateid;
     private String image;
     private int star;
-    int listImageid;
     String description;
     int history =0;
 
@@ -61,13 +58,7 @@ public class Restaurant {
         this.star = star;
     }
 
-    public int getImageid() {
-        return listImageid;
-    }
 
-    public void setImageid(int imageid) {
-        this.listImageid = imageid;
-    }
 
     public String getDescription() {
         return description;

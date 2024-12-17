@@ -48,7 +48,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Đặt ID hình ảnh tại vị trí hiện tại
         Restaurant restaurant = imageList.get(position);
-//        holder.imageView.setImageResource(restaurant.getImage()); // Hiển thị ảnhf
         if (restaurant.getImage() != null) {
             Bitmap bitmap = loadImageFromInternalStorage(restaurant.getImage());
             if (bitmap != null) {
