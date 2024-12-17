@@ -113,6 +113,87 @@
             android:background="@color/white"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="start"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/btnChooseImage1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/item_admin_background"
+            android:text="@string/chooseImage"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/textImage1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:hint="@string/nothingThere"
+            android:textColorHint="@color/gray"
+            android:background="@color/white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="start"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/btnChooseImage2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/item_admin_background"
+            android:text="@string/chooseImage"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/textImage2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:hint="@string/nothingThere"
+            android:textColorHint="@color/gray"
+            android:background="@color/white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="start"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/btnChooseImage3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/item_admin_background"
+            android:text="@string/chooseImage"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/textImage3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:hint="@string/nothingThere"
+            android:textColorHint="@color/gray"
+            android:background="@color/white"/>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/deleteType"
         android:layout_width="wrap_content"
@@ -121,9 +202,6 @@
         android:textColor="@color/red"
         android:textSize="18sp"
         android:layout_marginTop="10dp"/>
-
-
-
 
     <LinearLayout
         android:layout_width="wrap_content"
