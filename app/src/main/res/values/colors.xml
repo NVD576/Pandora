@@ -25,4 +25,6 @@
     <color name="darkGray">#757575 </color>
     <color name="light_gray">#D3D3D3</color>
     <color name="selected_background">#4CAF50</color>
+    <color name="background">#F4F4F4</color>
+    <color name="backgroundNight">#121212</color>
 </resources>

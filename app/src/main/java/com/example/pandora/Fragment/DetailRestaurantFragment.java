@@ -1,6 +1,7 @@
 package com.example.pandora.Fragment;
-import androidx.fragment.app.Fragment;
+
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -216,8 +219,47 @@ public class DetailRestaurantFragment extends Fragment {
             }
         });
 
+        ImageView image1 = view.findViewById(R.id.image1);
+        ImageView image2 = view.findViewById(R.id.image2);
+        ImageView image3 = view.findViewById(R.id.image3);
+        ImageView image4 = view.findViewById(R.id.image4);
+
+        // Set sự kiện click cho từng ảnh
+        setImageClickListener(image1, R.drawable.pandora_background);
+        setImageClickListener(image2, R.drawable.pandora_background);
+        setImageClickListener(image3, R.drawable.pandora_background);
+        setImageClickListener(image4, R.drawable.pandora_background);
+
         return view;
     }
+
+    private void setImageClickListener(ImageView imageView, int imageResId) {
+        imageView.setOnClickListener(v -> {
+            // Hiển thị Dialog
+            showFullscreenImage(imageResId);
+        });
+    }
+
+    private void showFullscreenImage(int imageResId) {
+        // Tạo dialog
+        Dialog dialog = new Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialog.setContentView(R.layout.dialog_fullscreen_image);
+
+        // Set ảnh vào ImageView trong dialog
+        ImageView fullscreenImageView = dialog.findViewById(R.id.fullscreenImageView);
+        fullscreenImageView.setImageResource(imageResId);
+
+        // Nút thoát
+        ImageButton btnClose = dialog.findViewById(R.id.btnClose);
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+        }
+        // Hiển thị dialog
+        dialog.show();
+    }
+
     private Bitmap loadImageFromInternalStorage(String fileName) {
         try {
             FileInputStream fis = getContext().openFileInput(fileName);

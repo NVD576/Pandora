@@ -14,15 +14,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Dark mode -->
-    <style name="SCREEN">
-        <item name="android:background">#121212</item>
-    </style>
-
-    <!-- Text dark mode-->
-    <style name="TEXT">
-        <item name="android:textColor">#FFFFFF</item>
-    </style>
 
     <style name="Theme.Pandora.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
