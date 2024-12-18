@@ -160,8 +160,8 @@ public class LocationDatabase {
     }
 
     // Lấy một địa điểm theo tên
-    public List<Location> getLocationsByName(String name) {
-        List<Location> locationList = new ArrayList<>();
+    public Location getLocationByName(String name) {
+        Location location = null;
         Cursor cursor = null;
 
         try {
@@ -174,24 +174,26 @@ public class LocationDatabase {
             String selection = DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME + " LIKE ?";
             String[] selectionArgs = {"%" + name + "%"}; // Tìm kiếm các chuỗi có chứa `name`
 
+            // Thực hiện truy vấn
             cursor = database.query(DatabaseHelper.TABLE_LOCATIONS, columns, selection, selectionArgs, null, null, null);
 
-            // Duyệt qua kết quả và thêm vào danh sách
-            while (cursor != null && cursor.moveToNext()) {
+            // Nếu có kết quả, chỉ lấy dòng đầu tiên
+            if (cursor != null && cursor.moveToFirst()) {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_LOCATION_ID));
                 String locationName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME));
-                locationList.add(new Location(id, locationName));
+                location = new Location(id, locationName); // Tạo đối tượng Location từ kết quả
             }
         } catch (Exception e) {
             throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
         } finally {
             if (cursor != null) {
-                cursor.close();
+                cursor.close(); // Đóng cursor để tránh rò rỉ bộ nhớ
             }
         }
 
-        return locationList;
+        return location; // Trả về đối tượng Location (hoặc null nếu không có kết quả)
     }
+
 
     // Cập nhật thông tin địa điểm
     public void updateLocation(Location location) {

@@ -154,9 +154,9 @@ public class CatetgoryDatabase {
         return categoryList;
     }
 
-    // Lấy  theo tên
-    public List<Category> getCategoryByName(String name) {
-        List<Category> categoryList = new ArrayList<>();
+    // Lấy một Category theo tên
+    public Category getCategoryByName(String name) {
+        Category category = null; // Đối tượng Category để lưu kết quả
         Cursor cursor = null;
 
         try {
@@ -169,23 +169,24 @@ public class CatetgoryDatabase {
             String selection = DatabaseHelper.COLUMN_CATEGORY_NAME + " LIKE ?";
             String[] selectionArgs = {"%" + name + "%"}; // Tìm kiếm các chuỗi có chứa `name`
 
+            // Truy vấn cơ sở dữ liệu
             cursor = database.query(DatabaseHelper.TABLE_CATEGORIES, columns, selection, selectionArgs, null, null, null);
 
-            // Duyệt qua kết quả và thêm vào danh sách
-            while (cursor != null && cursor.moveToNext()) {
+            // Kiểm tra nếu có kết quả
+            if (cursor != null && cursor.moveToFirst()) {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATEGORY_ID));
                 String categoryName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATEGORY_NAME));
-                categoryList.add(new Category(id, categoryName));
+                category = new Category(id, categoryName); // Tạo đối tượng Category
             }
         } catch (Exception e) {
             throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
         } finally {
             if (cursor != null) {
-                cursor.close();
+                cursor.close(); // Đóng Cursor
             }
         }
 
-        return categoryList;
+        return category; // Trả về Category (hoặc null nếu không tìm thấy)
     }
 
     // Cập nhật thông tin địa điểm

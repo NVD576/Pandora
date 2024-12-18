@@ -415,11 +415,10 @@ public class Home extends Fragment {
 
         List<String> location = new ArrayList<>();
         location.add("Tất cả");
-
         if(!txtLocation.getText().toString().equals("Các địa điểm"))
             location.set(0,"All");
         lc=database.getAllLocations();
-        location.clear();
+
         for (Location a : lc) {
             location.add(a.getName());
         }

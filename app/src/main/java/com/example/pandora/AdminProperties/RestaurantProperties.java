@@ -395,7 +395,8 @@ public class RestaurantProperties extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Vui lòng chọn loại quán!", Toast.LENGTH_SHORT).show();
                 } else {
                     // Xử lý loại quán đã chọn
-                    restaurant.setLocationid(position);
+                    Location l= locationDatabase.getLocationByName(items.get(position));
+                    restaurant.setLocationid(l.getId());
 
                  }
             }
@@ -423,7 +424,9 @@ public class RestaurantProperties extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Vui lòng chọn loại quán!", Toast.LENGTH_SHORT).show();
                 } else {
                     // Xử lý loại quán đã chọn
-                    restaurant.setCateid(position);
+                    Category l= catetgoryDatabase.getCategoryByName(item1.get(position));
+
+                    restaurant.setCateid(l.getId());
 
                 }
             }
