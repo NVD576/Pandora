@@ -587,7 +587,7 @@ public class RestaurantProperties extends AppCompatActivity {
         try {
             // Lưu ảnh vào bộ nhớ trong
             FileOutputStream fos = this.openFileOutput(fileName, MODE_PRIVATE);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 50, fos);
             fos.close();
             Log.e("SaveImage", "Ảnh đã được lưu vào bộ nhớ trong: " + fileName);
         } catch (Exception e) {
