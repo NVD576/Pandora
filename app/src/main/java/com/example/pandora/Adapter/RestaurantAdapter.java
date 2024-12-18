@@ -18,7 +18,9 @@ import com.example.pandora.Database.RatingDatabase;
 import com.example.pandora.R;
 
 import java.io.FileInputStream;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
 
@@ -73,7 +75,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 holder.imageView.setImageBitmap(bitmap);
             }
         } else {
-            holder.imageView.setImageResource(R.drawable.pandora_background); // Hiển thị ảnh mặc định
+
+            holder.imageView.setImageResource(R.drawable.res1); // Hiển thị ảnh mặc định
         }
 
 

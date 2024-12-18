@@ -195,8 +195,6 @@ public class DetailRestaurantFragment extends Fragment {
             if (bitmap != null) {
                 restaurantImage.setImageBitmap(bitmap);
             }
-        } else {
-            restaurantImage.setImageResource(R.drawable.pandora_background); // Hiển thị ảnh mặc định
         }
 
         // Lấy danh sách bình luận
