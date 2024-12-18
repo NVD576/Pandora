@@ -69,6 +69,7 @@ public class DetailRestaurantFragment extends Fragment {
     LocationDatabase lD ;
     Favorite favorite;
     RatingBar ratingBar;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -90,6 +91,7 @@ public class DetailRestaurantFragment extends Fragment {
 
         nameTextView = view.findViewById(R.id.detailName);
         ratingBar = view.findViewById(R.id.detailRating);
+
         txtLocation = view.findViewById(R.id.txtLocation);
         favouriteCheck=view.findViewById(R.id.favouriteCheck);
         txtDescription= view.findViewById(R.id.txtDescription);
@@ -225,7 +227,7 @@ public class DetailRestaurantFragment extends Fragment {
         txtComment = view.findViewById(R.id.txtComment);
         btnSend.setOnClickListener(v -> {
             String newComment = txtComment.getText().toString().trim();
-            if (!newComment.isEmpty() && isLogin) {
+            if (!newComment.isEmpty() && isLogin &&ratingBar.getRating()>0) {
                 String currentTime = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.getDefault()).format(new Date());
                 review = new Review(userid, restaurant_id, newComment, currentTime);
 
@@ -238,7 +240,10 @@ public class DetailRestaurantFragment extends Fragment {
                 saveCommentToDatabase(review);
             } else if (!isLogin) {
                 Toast.makeText(getContext(), "Cần đăng nhập để bình luận", Toast.LENGTH_SHORT).show();
-            } else {
+            } else if(ratingBar.getRating()<1) {
+                Toast.makeText(getContext(), "Cần đánh giá trước", Toast.LENGTH_SHORT).show();
+            }
+            else {
                 Toast.makeText(getContext(), "Bình luận không thể trống", Toast.LENGTH_SHORT).show();
             }
         });
