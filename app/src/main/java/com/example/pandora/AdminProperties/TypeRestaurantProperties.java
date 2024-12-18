@@ -75,6 +75,7 @@ public class TypeRestaurantProperties extends AppCompatActivity {
         locationAdapter = new LocationAdapter(locationList);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         if (!isLocation) {
 
             recyclerView.setAdapter(adapter);
@@ -136,7 +137,8 @@ public class TypeRestaurantProperties extends AppCompatActivity {
 
                 recyclerView.setAdapter(locationAdapter);
                 locationAdapter.notifyDataSetChanged();
-                locationAdapter.setOnItemClickListener(location -> showUpdateTypeRestaurantAlertDialog(location));
+                locationAdapter.setOnItemClickListener(location ->
+                        showUpdateTypeRestaurantAlertDialog(location));
 
             }
         });
@@ -213,6 +215,7 @@ public class TypeRestaurantProperties extends AppCompatActivity {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void showAddTypeRestaurantAlertDialog() {
         // Inflate custom layout
         LayoutInflater inflater = LayoutInflater.from(this); // Dùng `this` thay cho `getApplicationContext()`
@@ -243,18 +246,24 @@ public class TypeRestaurantProperties extends AppCompatActivity {
                     Toast.makeText(this, "Nhap thong tin!", Toast.LENGTH_SHORT).show();
                 else {
                     locationDatabase.addLocation(l);
+                    locationList.add(new Location(addTypeName.getText().toString())); // Xóa item khỏi danh sách
+                    locationList.clear();
+                    locationList.addAll(locationDatabase.getAllLocations());
                     locationAdapter.notifyDataSetChanged();
+//                    onResume();
                 }
             }else{
                 Category c = new Category(addTypeName.getText().toString());
                 if (addTypeName.getText().toString() == null)
                     Toast.makeText(this, "Nhap thong tin!", Toast.LENGTH_SHORT).show();
                 else {
+
                     db.addCategory(c);
                     adapter.notifyDataSetChanged();
+//                    onResume();
+                    recreate();
                 }
             }
-
 
             alertDialog.dismiss();
         });
@@ -297,10 +306,9 @@ public class TypeRestaurantProperties extends AppCompatActivity {
 
         //Xu ly nut xoa
         deleteType.setOnClickListener(view -> {
-            int position = locationList.indexOf(category);
-            locationList.remove(position);
+//            int position = categoryList.indexOf(category);
             db.deleteCategory(category.getId());
-            adapter.notifyDataSetChanged();
+            recreate();
         });
 
         // Hiển thị hộp thoại
@@ -315,7 +323,6 @@ public class TypeRestaurantProperties extends AppCompatActivity {
         TextView deleteType = dialogView.findViewById(R.id.deleteType);
         EditText updateTypeName = dialogView.findViewById(R.id.updateTypeName);
         updateTypeName.setText(location.getName());
-
         // Tạo AlertDialog
         AlertDialog alertDialog = new AlertDialog.Builder(this) // Dùng `this` thay cho `getApplicationContext()`
                 .setView(dialogView)
@@ -331,6 +338,7 @@ public class TypeRestaurantProperties extends AppCompatActivity {
             locationDatabase.updateLocation(location);
             locationAdapter.notifyDataSetChanged();
             alertDialog.dismiss();
+//            recreate();
         });
 
         // Xử lý sự kiện nút "Đóng"
@@ -338,11 +346,15 @@ public class TypeRestaurantProperties extends AppCompatActivity {
 
         //Xu ly nut xoa
         deleteType.setOnClickListener(view -> {
-            int position = locationList.indexOf(location);
-            locationDatabase.deleteLocation(location.getId());
-            locationList.remove(position);
-            locationAdapter.notifyItemRemoved(position);
+            int position = locationList.indexOf(location); // Lấy vị trí của item trong danh sách
+            if (position != -1) { // Kiểm tra nếu item tồn tại trong danh sách
+                locationDatabase.deleteLocation(location.getId()); // Xóa item khỏi database
+                locationList.remove(position); // Xóa item khỏi danh sách// Cập nhật RecyclerView
+                locationAdapter.notifyDataSetChanged();
+                alertDialog.dismiss();
+            }
         });
+
 
         // Hiển thị hộp thoại
         alertDialog.show();

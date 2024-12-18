@@ -217,12 +217,20 @@ public class LocationDatabase {
         }
     }
 
+    public void deleteLocationByName(String locationName) {
+        int rowsDeleted = database.delete(DatabaseHelper.TABLE_LOCATIONS,
+                DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME + " = ?", new String[]{locationName});
+
+        if (rowsDeleted == 0) {
+            throw new SQLException("Không thể xóa địa điểm có tên: " + locationName);
+        }
+    }
+
+
     // Xóa tất cả các địa điểm
     public void deleteAllLocations() {
         int rowsDeleted = database.delete(DatabaseHelper.TABLE_LOCATIONS, null, null);
         if (rowsDeleted == 0) {
-
-
             throw new SQLException("Không thể xóa tất cả các địa điểm.");
         }
     }
