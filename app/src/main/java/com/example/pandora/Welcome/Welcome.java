@@ -59,7 +59,7 @@ public class Welcome extends AppCompatActivity {
         editor.apply();
         if(db.isUserTableEmpty()){
             String pass= "123123";
-            User admin= new User("duc", hash(pass),"1234567890", 1);
+            User admin= new User("admin", hash(pass),"1234567890", 1);
             admin.setName("Admin");
             admin.setRoleUser(true);
             admin.setRoleCategory(true);
