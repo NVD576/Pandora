@@ -181,6 +181,7 @@ public class Profile extends Fragment {
             public void onClick(View view) {
                 Intent myIntent = new Intent(requireContext(), FavouriteActivity.class);
                 myIntent.putExtra("userid", userid);
+                myIntent.putExtra("isLogin", isLogin);
                 startActivity(myIntent);
             }
         });
@@ -283,38 +284,6 @@ public class Profile extends Fragment {
         userDatabase.close();
     }
 
-    // Hàm hỗ trợ lấy đường dẫn thực tế từ URI
-    private String getRealPathFromURI(Uri contentUri) {
-        String path = null;
-        String[] projection = {MediaStore.Images.Media.DATA};
-
-        try (Cursor cursor = getActivity().getContentResolver().query(contentUri, projection, null, null, null)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                path = cursor.getString(columnIndex);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Nếu không thể lấy đường dẫn từ MediaStore, sử dụng phương thức khác để lấy URI
-        if (path == null) {
-            if ("content".equalsIgnoreCase(contentUri.getScheme())) {
-                // For API level >= 29, use ContentResolver to get the file path
-                String[] filePathColumn = {MediaStore.Images.Media.RELATIVE_PATH};
-                try (Cursor cursor = getActivity().getContentResolver().query(contentUri, filePathColumn, null, null, null)) {
-                    if (cursor != null && cursor.moveToFirst()) {
-                        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.RELATIVE_PATH);
-                        path = cursor.getString(columnIndex);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return path;
-    }
 
     private void saveImageToInternalStorage(Bitmap bitmap, String fileName) {
         try {

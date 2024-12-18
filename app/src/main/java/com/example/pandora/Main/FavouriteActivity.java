@@ -33,7 +33,9 @@ public class FavouriteActivity extends AppCompatActivity {
 
         Intent myIntent = getIntent();
         int userid = myIntent.getIntExtra("userid", -1);
-        if(userid!=-1){
+        boolean isLogin = myIntent.getBooleanExtra("isLogin", false); // false là giá trị mặc định
+
+        if(isLogin){
             FavoriteDatabase favoriteDatabase= new FavoriteDatabase(this);
             favoriteDatabase.open();
             favoriteList= favoriteDatabase.getFavoritesByUserId(userid);
@@ -52,39 +54,35 @@ public class FavouriteActivity extends AppCompatActivity {
                     .collect(Collectors.toList());
 
             restaurantDatabase.close();
+
+            recyclerView = findViewById(R.id.recyclerView);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            smaillRestaurantAdapter = new RestaurantAdapter(this,restaurantList);
+            recyclerView.setAdapter(smaillRestaurantAdapter);
+            smaillRestaurantAdapter.notifyDataSetChanged();
+            // Trong Activity hoặc Fragment nơi bạn sử dụng RecyclerView
+            smaillRestaurantAdapter.setOnItemClickListener(restaurant -> {
+                DetailRestaurantFragment nextFragment = new DetailRestaurantFragment();
+
+                // Truyền dữ liệu qua Bundle
+                Bundle bundle = new Bundle();
+                bundle.putString("restaurant_name", restaurant.getName());
+                bundle.putInt("restaurant_rating", restaurant.getStar());
+                bundle.putInt("restaurant_id", restaurant.getId());
+                nextFragment.setArguments(bundle);
+
+                // Chuyển Fragment
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(
+                                R.anim.fade_in,  // Khi fragment xuất hiện
+                                R.anim.fade_out    // Khi fragment rời đi
+                        )
+                        .replace(R.id.fragment_container, nextFragment)
+                        .addToBackStack(null)
+                        .commit();
+            });
+
         }
-
-
-
-
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        smaillRestaurantAdapter = new RestaurantAdapter(this,restaurantList);
-        recyclerView.setAdapter(smaillRestaurantAdapter);
-        smaillRestaurantAdapter.notifyDataSetChanged();
-        // Trong Activity hoặc Fragment nơi bạn sử dụng RecyclerView
-        smaillRestaurantAdapter.setOnItemClickListener(restaurant -> {
-            DetailRestaurantFragment nextFragment = new DetailRestaurantFragment();
-
-            // Truyền dữ liệu qua Bundle
-            Bundle bundle = new Bundle();
-            bundle.putString("restaurant_name", restaurant.getName());
-            bundle.putInt("restaurant_rating", restaurant.getStar());
-            bundle.putInt("restaurant_id", restaurant.getId());
-            nextFragment.setArguments(bundle);
-
-            // Chuyển Fragment
-            getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(
-                            R.anim.fade_in,  // Khi fragment xuất hiện
-                            R.anim.fade_out    // Khi fragment rời đi
-                    )
-                    .replace(R.id.fragment_container, nextFragment)
-                    .addToBackStack(null)
-                    .commit();
-        });
-
-
     }
 
 }

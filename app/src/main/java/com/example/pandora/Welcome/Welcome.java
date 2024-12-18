@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,10 +23,18 @@ import com.example.pandora.Login.Login;
 import com.example.pandora.Main.Lobby;
 import com.example.pandora.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Welcome extends AppCompatActivity {
+    String DB_PATH_SUFFIX = "/databases/";
+    String DATABASE_NAME = "reviewFood.db";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +45,8 @@ public class Welcome extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        //nạp csdl
+        processCopy();
 
         TextView loadingText = findViewById(R.id.loading);
         loadingText.setAlpha(0f);
@@ -45,7 +55,7 @@ public class Welcome extends AppCompatActivity {
             public void run() {
                 loadingText.setAlpha(1f);
             }
-        },500);
+        }, 500);
         Animation blinkAnimation = AnimationUtils.loadAnimation(this, R.anim.blink);
         loadingText.startAnimation(blinkAnimation);
 
@@ -54,12 +64,12 @@ public class Welcome extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        if(db.isUserTableEmpty())
+        if (db.isUserTableEmpty())
             editor.putBoolean("isLogin", false);
         editor.apply();
-        if(db.isUserTableEmpty()){
-            String pass= "123123";
-            User admin= new User("admin", hash(pass),"1234567890", 1);
+        if (db.isUserTableEmpty()) {
+            String pass = "123123";
+            User admin = new User("admin", hash(pass), "1234567890", 1);
             admin.setName("Admin");
             admin.setRoleUser(true);
             admin.setRoleCategory(true);
@@ -76,8 +86,9 @@ public class Welcome extends AppCompatActivity {
                 startActivity(myIntent);
                 finish();
             }
-        },2000);
+        }, 2000);
     }
+
     public static String hash(String input) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -91,5 +102,53 @@ public class Welcome extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
+
+    private void processCopy() {
+    //private app
+        File dbFile = getDatabasePath(DATABASE_NAME);
+        if (!dbFile.exists()) {
+            try {
+                CopyDataBaseFromAsset();
+                Toast.makeText(this, "Copying sucess from Assets folder",
+                        Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private String getDatabasePath() {
+        return getApplicationInfo().dataDir + DB_PATH_SUFFIX + DATABASE_NAME;
+    }
+
+    public void CopyDataBaseFromAsset() {
+    // TODO Auto-generated method stub
+        try {
+            InputStream myInput;
+            myInput = getAssets().open(DATABASE_NAME);
+    // Path to the just created empty db
+            String outFileName = getDatabasePath();
+    // if the path doesn't exist first, create it
+            File f = new File(getApplicationInfo().dataDir + DB_PATH_SUFFIX);
+            if (!f.exists())
+                f.mkdir();
+    // Open the empty db as the output stream
+            OutputStream myOutput = new FileOutputStream(outFileName);
+    // transfer bytes from the inputfile to the outputfile
+    // Truyền bytes dữ liệu từ input đến output
+            int size = myInput.available();
+            byte[] buffer = new byte[size];
+            myInput.read(buffer);
+            myOutput.write(buffer);
+    // Close the streams
+            myOutput.flush();
+            myOutput.close();
+            myInput.close();
+        } catch (IOException e) {
+    // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 
 }

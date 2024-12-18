@@ -117,7 +117,7 @@ public class DetailRestaurantFragment extends Fragment {
         ratingDatabase.open();
         txtDescription.setText(restaurant.getDescription());
 
-        if (userid!=-1){
+        if (isLogin){
             favorite= favoriteDatabase.getFavoriteById(userid, restaurant_id);
             if(favorite==null){
                 favorite=new Favorite(restaurant_id, userid,0);
