@@ -261,4 +261,6 @@ public class RestaurantDatabase {
             throw new SQLException("Không thể xóa tất cả các quán ăn.");
         }
     }
+
+
 }

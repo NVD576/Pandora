@@ -36,6 +36,7 @@ import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -278,8 +279,10 @@ public class AccountProperties extends AppCompatActivity {
         TextView deleteAccount = dialogView.findViewById(R.id.deleteAccount);
         deleteAccount.setOnClickListener(v -> {
             // Xóa tài khoản khỏi cơ sở dữ liệu
-            UserDatabase db = new UserDatabase(getApplicationContext());
-            db.open();
+
+            if(!user.getImage().isEmpty()){
+                deleteRestaurantImage(user.getImage());
+            }
             db.deleteUser(user.getId());
             recyclerView.getAdapter().notifyDataSetChanged();
             alertDialog.dismiss();
@@ -407,6 +410,31 @@ public class AccountProperties extends AppCompatActivity {
             adapter.setFilteredList(filteredList);
 
         }
+    }
+
+    // Phương thức xóa ảnh từ đường dẫn cụ thể
+    public void deleteImage(String imagePath) {
+        File imageFile = new File(imagePath);
+
+        // Kiểm tra xem file có tồn tại không
+        if (imageFile.exists()) {
+            imageFile.delete();
+        }
+    }
+
+    // Ví dụ về cách sử dụng phương thức deleteImage()
+    public void deleteRestaurantImage(String imageRestaurant) {
+        // Giả sử bạn lấy đường dẫn ảnh từ cơ sở dữ liệu
+        String imagePath = getRestaurantImagePath(imageRestaurant); // Lấy đường dẫn ảnh từ cơ sở dữ liệu
+
+        if (imagePath != null) {
+            deleteImage(imagePath);
+        }
+    }
+
+    // Giả sử bạn lấy đường dẫn ảnh từ cơ sở dữ liệu
+    private String getRestaurantImagePath(String imageRestaurant) {
+        return "/data/data/com.example.pandora/files/"+imageRestaurant;
     }
 
 }

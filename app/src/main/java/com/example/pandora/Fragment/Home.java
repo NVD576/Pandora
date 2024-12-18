@@ -132,7 +132,7 @@ public class Home extends Fragment {
         restaurantDatabase.open();
         if (restaurantDatabase.getAllRestaurants().isEmpty()) {
             // Thêm dữ liệu vào cơ sở dữ liệu
-            restaurantDatabase.addRestaurant(new Restaurant("Quán ăn F, 3/4 Lê Văn Lương", "3/4 Lê Văn Lương", 1, 1, "Quán ăn phục vụ các món ăn truyền thống Việt Nam."));
+            restaurantDatabase.addRestaurant(new Restaurant("Bánh Mì Cô Lan", "3/4 Lê Văn Lương", 1, 1, "Quán ăn phục vụ các món ăn truyền thống Việt Nam."));
             restaurantDatabase.addRestaurant(new Restaurant("Bistro Sài Gòn", "55 Đường Nguyễn Thị Minh Khai", 2, 2, "Bistro với các món ăn phương Tây, nổi bật với pizza và pasta."));
             restaurantDatabase.addRestaurant(new Restaurant("Nhà hàng Hải Sản Tươi Ngon", "123 Bãi Biển", 3, 3, "Hải sản tươi sống, được chế biến theo nhiều phong cách khác nhau."));
             restaurantDatabase.addRestaurant(new Restaurant("Lẩu Nấm Tân Bình", "72 Đường Tân Bình", 4, 1, "Nhà hàng chuyên phục vụ các món lẩu nấm, bổ dưỡng và ngon miệng."));

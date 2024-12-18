@@ -161,10 +161,10 @@ public class DetailRestaurantFragment extends Fragment {
 
                     // Cập nhật lại điểm trung bình của nhà hàng
                     restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
-                    ratingOver.setText("Đánh giá: "+restaurant.getStar()+" star");
+                    ratingOver.setText("Đánh giá: "+restaurant.getStar()+" ");
 
                     restaurantDatabase.updateRestaurant(restaurant);
-
+                    reviewAdapter.notifyDataSetChanged();
 
 
                     // Cập nhật giao diện
@@ -178,7 +178,7 @@ public class DetailRestaurantFragment extends Fragment {
 
         //hien rating
         nameTextView.setText(restaurant.getName());
-        ratingOver.setText("Đánh giá: "+restaurant.getStar()+" star");
+        ratingOver.setText("Đánh giá: "+restaurant.getStar()+" ");
         // Cập nhật điểm trung bình của nhà hàng
         restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
         restaurantDatabase.updateRestaurant(restaurant);

@@ -34,6 +34,7 @@ import java.security.NoSuchAlgorithmException;
 public class Welcome extends AppCompatActivity {
     String DB_PATH_SUFFIX = "/databases/";
     String DATABASE_NAME = "reviewFood.db";
+     private static final String IMAGE_PATH_SUFFIX = "/files/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class Welcome extends AppCompatActivity {
         });
         //nạp csdl
         processCopy();
-
+        processCopyImages();
         TextView loadingText = findViewById(R.id.loading);
         loadingText.setAlpha(0f);
         new Handler().postDelayed(new Runnable() {
@@ -109,8 +110,6 @@ public class Welcome extends AppCompatActivity {
         if (!dbFile.exists()) {
             try {
                 CopyDataBaseFromAsset();
-                Toast.makeText(this, "Copying sucess from Assets folder",
-                        Toast.LENGTH_LONG).show();
             } catch (Exception e) {
                 Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
             }
@@ -148,6 +147,54 @@ public class Welcome extends AppCompatActivity {
     // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private void processCopyImages() {
+        try {
+            // Lấy tất cả các file trong thư mục assets/images
+            String[] files = getAssets().list("files");
+
+            if (files != null) {
+                for (String file : files) {
+                    // Sao chép từng file ảnh
+                    copyImageFromAsset(file);
+                }
+            }
+        } catch (IOException e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void copyImageFromAsset(String fileName) {
+        try {
+            InputStream inputStream = getAssets().open("files/" + fileName);
+            String outFileName = getImagePath(fileName);
+
+            // Tạo thư mục nếu chưa tồn tại
+            File folder = new File(getApplicationInfo().dataDir + IMAGE_PATH_SUFFIX);
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+
+            OutputStream outputStream = new FileOutputStream(outFileName);
+
+            // Copy dữ liệu từ input stream sang output stream
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+
+            outputStream.flush();
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getImagePath(String fileName) {
+        return getApplicationInfo().dataDir + IMAGE_PATH_SUFFIX + fileName;
     }
 
 

@@ -43,6 +43,7 @@ import com.example.pandora.Database.RestaurantDatabase;
 import com.example.pandora.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -277,7 +278,20 @@ public class RestaurantProperties extends AppCompatActivity {
         deleteType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (!imageList.isEmpty())
+                    deleteRestaurantImage(imageList.get(0).getImageUrl());
+                if (imageList.size()>1)
+                    deleteRestaurantImage(imageList.get(1).getImageUrl());
+
+                if (imageList.size()>2)
+                    deleteRestaurantImage(imageList.get(2).getImageUrl());
+
+                if (imageList.size()>3)
+                    deleteRestaurantImage(imageList.get(3).getImageUrl());
+
                 db.deleteRestaurant(restaurant.getId());
+
                 recreate();
 //                adapter.notifyDataSetChanged();
             }
@@ -582,6 +596,30 @@ public class RestaurantProperties extends AppCompatActivity {
         }
     }
 
+    // Phương thức xóa ảnh từ đường dẫn cụ thể
+    public void deleteImage(String imagePath) {
+        File imageFile = new File(imagePath);
+
+        // Kiểm tra xem file có tồn tại không
+        if (imageFile.exists()) {
+            imageFile.delete();
+        }
+    }
+
+    // Ví dụ về cách sử dụng phương thức deleteImage()
+    public void deleteRestaurantImage(String imageRestaurant) {
+        // Giả sử bạn lấy đường dẫn ảnh từ cơ sở dữ liệu
+        String imagePath = getRestaurantImagePath(imageRestaurant); // Lấy đường dẫn ảnh từ cơ sở dữ liệu
+
+        if (imagePath != null) {
+            deleteImage(imagePath);
+        }
+    }
+
+    // Giả sử bạn lấy đường dẫn ảnh từ cơ sở dữ liệu
+    private String getRestaurantImagePath(String imageRestaurant) {
+        return "/data/data/com.example.pandora/files/"+imageRestaurant;
+    }
 
 
 }

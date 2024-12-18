@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pandora.Class.Review;
 import com.example.pandora.Class.User;
+import com.example.pandora.Database.RatingDatabase;
 import com.example.pandora.Database.UserDatabase;
 import com.example.pandora.R;
 
@@ -77,6 +78,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         holder.commentTextView.setText(review.getReview());
         holder.dateTextView.setText(review.getDate());
 
+        RatingDatabase ratingDatabase= new RatingDatabase(context);
+        ratingDatabase.open();
+        int ra= ratingDatabase.getRatingById(u.getId(),review.getRestaurantid()).getStar();
+        holder.starNumber.setText(String.valueOf(ra));
+        ratingDatabase.close();
+
+
+
         // Xử lý sự kiện click
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -91,12 +100,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView userNameTextView, commentTextView, dateTextView;
+        TextView userNameTextView, commentTextView, dateTextView,starNumber;
         ImageView userImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             userImage = itemView.findViewById(R.id.userImage);
+            starNumber = itemView.findViewById(R.id.starNumber);
             userNameTextView = itemView.findViewById(R.id.userTextView);
             commentTextView = itemView.findViewById(R.id.commentTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
