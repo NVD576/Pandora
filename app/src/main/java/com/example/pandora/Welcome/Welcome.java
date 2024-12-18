@@ -47,8 +47,8 @@ public class Welcome extends AppCompatActivity {
             return insets;
         });
         //nạp csdl
-        processCopy();
-        processCopyImages();
+//        processCopy();
+//        processCopyImages();
         TextView loadingText = findViewById(R.id.loading);
         loadingText.setAlpha(0f);
         new Handler().postDelayed(new Runnable() {
