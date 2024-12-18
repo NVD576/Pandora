@@ -460,28 +460,35 @@ public class RestaurantProperties extends AppCompatActivity {
 
         // Xử lý sự kiện nút "Lưu"
         btnSave.setOnClickListener(view -> {
-            restaurant.setName(addRestaurantName.getText().toString());
-            restaurant.setAddress(addAddress.getText().toString());
-            restaurant.setDescription(addDescription.getText().toString());
-            db.addRestaurant(restaurant);
+            if(!addRestaurantName.getText().toString().isEmpty()
+            && restaurant.getLocationid()!=0&& restaurant.getCateid()!=0){
+                restaurant.setName(addRestaurantName.getText().toString());
+                restaurant.setAddress(addAddress.getText().toString());
+                restaurant.setDescription(addDescription.getText().toString());
+                db.addRestaurant(restaurant);
 
 
-            if(!textImage.getText().toString().equals("")){
-                imageDatabase.addImage(new Image(restaurant.getId(), textImage.getText().toString()));
+                if(!textImage.getText().toString().equals("")){
+                    imageDatabase.addImage(new Image(restaurant.getId(), textImage.getText().toString()));
+                }
+                if(!textImage1.getText().toString().equals("")){
+                    imageDatabase.addImage(new Image(restaurant.getId(), textImage1.getText().toString()));
+                }
+                if(!textImage2.getText().toString().equals("")){
+                    imageDatabase.addImage(new Image(restaurant.getId(), textImage2.getText().toString()));
+                }
+                if(!textImage3.getText().toString().equals("")){
+                    imageDatabase.addImage(new Image(restaurant.getId(), textImage3.getText().toString()));
+                }
+
+                adapter.updateData(restaurantList);
+                recreate();
             }
-            if(!textImage1.getText().toString().equals("")){
-                imageDatabase.addImage(new Image(restaurant.getId(), textImage1.getText().toString()));
-            }
-            if(!textImage2.getText().toString().equals("")){
-                imageDatabase.addImage(new Image(restaurant.getId(), textImage2.getText().toString()));
-            }
-            if(!textImage3.getText().toString().equals("")){
-                imageDatabase.addImage(new Image(restaurant.getId(), textImage3.getText().toString()));
+            else{
+                Toast.makeText(getApplicationContext(), "Nhap thong tin!", Toast.LENGTH_SHORT).show();
             }
 
-            adapter.updateData(restaurantList);
-            recreate();
-            alertDialog.dismiss();
+
         });
 
         // Xử lý sự kiện nút "Đóng"
