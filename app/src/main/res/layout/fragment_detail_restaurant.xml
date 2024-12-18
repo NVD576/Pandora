@@ -98,6 +98,14 @@
                 android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/ratingOver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Thông tin chi tiết về nhà hàng..."
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+                <TextView
                     android:id="@+id/txtDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -127,7 +135,7 @@
 
                 <GridLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="16dp"
                     android:columnCount="4"
                     android:rowCount="1"

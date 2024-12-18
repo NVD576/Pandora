@@ -51,15 +51,14 @@ import java.util.Locale;
 public class DetailRestaurantFragment extends Fragment {
 
     ImageView btnSend,restaurantImage,favouriteCheck;
-    int userid;
+    int userid,restaurant_id;
     boolean isLogin = false;
     EditText txtComment;
-    int restaurant_id;
     User u;
     Review review;
     List<Review> commentsList;
     ReviewAdapter reviewAdapter;
-    TextView txtLocation,txtDescription;
+    TextView txtLocation,txtDescription, ratingOver,nameTextView;
     RestaurantDatabase restaurantDatabase;
     FavoriteDatabase favoriteDatabase;
     private RecyclerView commentsRecyclerView;
@@ -69,6 +68,7 @@ public class DetailRestaurantFragment extends Fragment {
     ImageDatabase imageDatabase;
     LocationDatabase lD ;
     Favorite favorite;
+    RatingBar ratingBar;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -88,11 +88,12 @@ public class DetailRestaurantFragment extends Fragment {
         userid = sharedPreferences.getInt("userid", -1); // -1 là giá trị mặc định nếu không tìm thấy
         isLogin = sharedPreferences.getBoolean("isLogin", false); // false là giá trị mặc định
 
-        TextView nameTextView = view.findViewById(R.id.detailName);
-        RatingBar ratingBar = view.findViewById(R.id.detailRating);
+        nameTextView = view.findViewById(R.id.detailName);
+        ratingBar = view.findViewById(R.id.detailRating);
         txtLocation = view.findViewById(R.id.txtLocation);
         favouriteCheck=view.findViewById(R.id.favouriteCheck);
         txtDescription= view.findViewById(R.id.txtDescription);
+        ratingOver= view.findViewById(R.id.ratingOver);
 
         // Nhận dữ liệu từ Bundle
         Bundle bundle = getArguments();
@@ -160,6 +161,7 @@ public class DetailRestaurantFragment extends Fragment {
 
                     // Cập nhật lại điểm trung bình của nhà hàng
                     restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
+                    ratingOver.setText("Đánh giá: "+restaurant.getStar()+" star");
 
                     restaurantDatabase.updateRestaurant(restaurant);
 
@@ -176,7 +178,7 @@ public class DetailRestaurantFragment extends Fragment {
 
         //hien rating
         nameTextView.setText(restaurant.getName());
-
+        ratingOver.setText("Đánh giá: "+restaurant.getStar()+" star");
         // Cập nhật điểm trung bình của nhà hàng
         restaurant.setStar(ratingDatabase.getAverageRating(restaurant_id));
         restaurantDatabase.updateRestaurant(restaurant);

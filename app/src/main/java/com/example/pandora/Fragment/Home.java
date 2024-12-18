@@ -119,9 +119,10 @@ public class Home extends Fragment {
         }
 
         List<Category> categoryList = C.getAllCategories();
-        if(txtLocation.getText().toString().equals("Các địa điểm"))
-            item1.add("Chọn loại quán");
-        else item1.add("Type of restaurant");
+
+        item1.add("Chọn loại quán");
+        if(!txtLocation.getText().toString().equals("Các địa điểm"))
+            item1.set(0,"Type of restaurant");
         for (Category a : categoryList) {
             item1.add(a.getName());
         }
@@ -356,7 +357,6 @@ public class Home extends Fragment {
     }
 
     // Khởi tạo các chấm chỉ báo
-    @SuppressLint("UseCompatLoadingForDrawables")
     public void setupDots(int count, LinearLayout dotsLayout) {
         dotsLayout.removeAllViews(); // Xóa tất cả các chấm cũ (nếu có)
         ImageView[] dots = new ImageView[count];
@@ -406,10 +406,10 @@ public class Home extends Fragment {
 
 
         List<String> location = new ArrayList<>();
+        location.add("Tất cả");
 
-        if(txtLocation.getText().toString().equals("CÁC ĐỊA ĐIỂM"))
-            location.add("Tất cả");
-        else location.add("All");
+        if(!txtLocation.getText().toString().equals("Các địa điểm"))
+            location.set(0,"All");
 
         for (Location a : lc) {
             location.add(a.getName());
