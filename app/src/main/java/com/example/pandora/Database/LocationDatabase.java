@@ -171,8 +171,8 @@ public class LocationDatabase {
             };
 
             // Sử dụng từ khóa LIKE để tìm kiếm tên gần đúng
-            String selection = DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME + " LIKE ?";
-            String[] selectionArgs = {"%" + name + "%"}; // Tìm kiếm các chuỗi có chứa `name`
+            String selection = DatabaseHelper.COLUMN_LOCATION_LOCATION_NAME + " ?";
+            String[] selectionArgs = { name }; // Tìm kiếm các chuỗi có chứa `name`
 
             // Thực hiện truy vấn
             cursor = database.query(DatabaseHelper.TABLE_LOCATIONS, columns, selection, selectionArgs, null, null, null);

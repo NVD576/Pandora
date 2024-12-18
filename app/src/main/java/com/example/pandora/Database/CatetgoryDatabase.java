@@ -160,34 +160,41 @@ public class CatetgoryDatabase {
         Cursor cursor = null;
 
         try {
+            // Các cột cần truy vấn
             String[] columns = {
                     DatabaseHelper.COLUMN_CATEGORY_ID,
                     DatabaseHelper.COLUMN_CATEGORY_NAME
             };
 
-            // Sử dụng từ khóa LIKE để tìm kiếm tên gần đúng
-            String selection = DatabaseHelper.COLUMN_CATEGORY_NAME + " LIKE ?";
-            String[] selectionArgs = {"%" + name + "%"}; // Tìm kiếm các chuỗi có chứa `name`
+            // Điều kiện truy vấn (tìm kiếm chính xác)
+            String selection = DatabaseHelper.COLUMN_CATEGORY_NAME + " = ?";
+            String[] selectionArgs = {name}; // Tìm kiếm chính xác với giá trị `name`
 
-            // Truy vấn cơ sở dữ liệu
+            // Thực hiện truy vấn
             cursor = database.query(DatabaseHelper.TABLE_CATEGORIES, columns, selection, selectionArgs, null, null, null);
 
-            // Kiểm tra nếu có kết quả
+            // Kiểm tra nếu Cursor có kết quả
             if (cursor != null && cursor.moveToFirst()) {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATEGORY_ID));
                 String categoryName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATEGORY_NAME));
-                category = new Category(id, categoryName); // Tạo đối tượng Category
+
+                // Tạo đối tượng Category từ kết quả
+                category = new Category(id, categoryName);
             }
         } catch (Exception e) {
+            // Quăng lỗi SQL nếu có vấn đề xảy ra
             throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu: " + e.getMessage(), e);
         } finally {
+            // Đảm bảo đóng Cursor để giải phóng tài nguyên
             if (cursor != null) {
-                cursor.close(); // Đóng Cursor
+                cursor.close();
             }
         }
 
-        return category; // Trả về Category (hoặc null nếu không tìm thấy)
+        // Trả về đối tượng Category (hoặc null nếu không tìm thấy)
+        return category;
     }
+
 
     // Cập nhật thông tin địa điểm
     public void updateCategory(Category category) {
