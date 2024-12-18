@@ -246,7 +246,6 @@ public class TypeRestaurantProperties extends AppCompatActivity {
                     Toast.makeText(this, "Nhap thong tin!", Toast.LENGTH_SHORT).show();
                 else {
                     locationDatabase.addLocation(l);
-                    locationList.add(new Location(addTypeName.getText().toString())); // Xóa item khỏi danh sách
                     locationList.clear();
                     locationList.addAll(locationDatabase.getAllLocations());
                     locationAdapter.notifyDataSetChanged();
