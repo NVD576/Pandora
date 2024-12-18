@@ -26,7 +26,6 @@ public class RestaurantDatabase {
             DatabaseHelper.COLUMN_CATE_ID,
             DatabaseHelper.COLUMN_STAR,
             DatabaseHelper.COLUMN_DESCRIPTION,
-            DatabaseHelper.COLUMN_HISTORY
     };
     ContentValues values(Restaurant restaurant){
         ContentValues values = new ContentValues();

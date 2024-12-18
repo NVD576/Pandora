@@ -8,7 +8,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Tên cơ sở dữ liệu
     private static final String DATABASE_NAME = "reviewFood.db";
-    private static final int DATABASE_VERSION = 2; // Cập nhật phiên bản để kích hoạt onUpgrade
+    private static final int DATABASE_VERSION = 1; // Cập nhật phiên bản để kích hoạt onUpgrade
 
     // Cấu trúc bảng restaurants
     public static final String TABLE_RESTAURANTS = "restaurants";
@@ -17,10 +17,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ADDRESS = "address";
     public static final String COLUMN_LOCATION_ID = "locationid";
     public static final String COLUMN_CATE_ID = "cateid";
-    public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_STAR = "star";
     public static final String COLUMN_DESCRIPTION = "description";
-    public static final String COLUMN_HISTORY = "history";
 
     // Cấu trúc bảng users
     public static final String TABLE_USERS = "users";
@@ -82,10 +80,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_ADDRESS + " TEXT, "
             + COLUMN_LOCATION_ID + " INTEGER, "
             + COLUMN_CATE_ID + " INTEGER, "
-            + COLUMN_IMAGE + " TEXT, "
             + COLUMN_DESCRIPTION + " TEXT, "
             + COLUMN_STAR + " INTEGER, "
-            + COLUMN_HISTORY + " INTEGER, "
             + "FOREIGN KEY(" + COLUMN_LOCATION_ID + ") REFERENCES " + TABLE_LOCATIONS + "(" + COLUMN_LOCATION_LOCATION_ID + ") ON DELETE CASCADE, "
             + "FOREIGN KEY(" + COLUMN_CATE_ID + ") REFERENCES " + TABLE_CATEGORIES + "(" + COLUMN_CATEGORY_ID + ") ON DELETE CASCADE)";
 
@@ -110,8 +106,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_REVIEW_RESTAURANT_ID + " INTEGER, "
             + COLUMN_REVIEW_REVIEW + " TEXT, "
             + COLUMN_REVIEW_DATE + " TEXT, "
-            + "FOREIGN KEY(" + COLUMN_REVIEW_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + "), "
-            + "FOREIGN KEY(" + COLUMN_REVIEW_RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + COLUMN_ID + "))";
+            + "FOREIGN KEY(" + COLUMN_REVIEW_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + ")  ON DELETE CASCADE, "
+            + "FOREIGN KEY(" + COLUMN_REVIEW_RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + COLUMN_ID + ") ON DELETE CASCADE)";
 
 
 
@@ -132,8 +128,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_RATING_USER_ID + " INTEGER, "
             + COLUMN_RATING_RESTAURANT_ID + " INTEGER, "
             + COLUMN_RATING_STAR + " INTEGER, "
-            + "FOREIGN KEY(" + COLUMN_RATING_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + "), "
-            + "FOREIGN KEY(" + COLUMN_RATING_RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + COLUMN_ID + "))";
+            + "FOREIGN KEY(" + COLUMN_RATING_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + ") ON DELETE CASCADE, "
+            + "FOREIGN KEY(" + COLUMN_RATING_RESTAURANT_ID + ") REFERENCES " + TABLE_RESTAURANTS + "(" + COLUMN_ID + ") ON DELETE CASCADE)";
 
 
 
@@ -163,6 +159,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        // Bật tính năng khóa ngoại (foreign key) mỗi khi cơ sở dữ liệu được mở
+        db.execSQL("PRAGMA foreign_keys = ON;");
+    }
+    @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_RESTAURANTS);
         db.execSQL(CREATE_TABLE_USERS);
@@ -176,8 +178,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {
-            db.execSQL(CREATE_TABLE_REVIEWS); // Thêm bảng reviews khi nâng cấp cơ sở dữ liệu
-        }
+
     }
 }
