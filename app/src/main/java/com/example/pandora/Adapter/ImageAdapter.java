@@ -62,7 +62,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 holder.imageView.setImageBitmap(bitmap);
             }
         } else {
-            holder.imageView.setImageResource(R.drawable.pandora_background); // Hiển thị ảnh mặc định
+            holder.imageView.setImageResource(R.drawable.res1); // Hiển thị ảnh mặc định
         }
         // Gán sự kiện click
         holder.imageView.setOnClickListener(v -> {
