@@ -219,9 +219,11 @@ public class AccountProperties extends AppCompatActivity {
                 toggle_container.setVisibility(View.GONE);
                 titleAlert.setText("Bạn không thể thay đổi quyền");
             } else {
-                //  co thể xóa hoặc sửa quyền của chính mình và người duoi
+                //  co thể xóa hoặc sửa quyền dưới mình và người duoi
                 deleteAccount.setVisibility(View.VISIBLE); // có thể xóa
-                listCheckBox.setVisibility(View.VISIBLE);
+                if(isAdmin!=0)
+                    listCheckBox.setVisibility(View.VISIBLE);
+                else listCheckBox.setVisibility(View.GONE);
                 toggle_container.setVisibility(View.VISIBLE);
                 titleAlert.setText("Chỉnh sửa tài khoản");
             }
