@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class RestaurantProperties extends AppCompatActivity {
 
@@ -211,27 +212,22 @@ public class RestaurantProperties extends AppCompatActivity {
 
         aa.setDropDownViewResource(R.layout.spinner_dropdown_item);
         addLocation.setAdapter(aa);
+        Location location =locationDatabase.getLocationById(restaurant.getLocationid());
 
-        addLocation.setSelection(restaurant.getLocationid());
+        for(int i=1;i<items.size(); i++){
+            if(Objects.equals(items.get(i), location.getName()))
+                addLocation.setSelection(i);
+        }
         addLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-//               addLocation.setText(items[position]);
-                if (items.equals("Chọn loại quán")) {
-                    // Không làm gì nếu người dùng chưa chọn
-                    Toast.makeText(getApplicationContext(), "Vui lòng chọn loại quán!", Toast.LENGTH_SHORT).show();
-                } else {
-                    List<Location> locationList= locationDatabase.getAllLocations();
                     if(position!=0){
-                        Location location = locationList.stream()
-                                .filter(p -> p.getName().equals(String.valueOf(items.get(position))))  // Sử dụng equals() thay vì ==
-                                .findFirst()  // Lấy phần tử đầu tiên thỏa mãn điều kiện
-                                .orElse(null);  // Tìm kiếm theo tên
+                        Location location=locationDatabase.getLocationByName(items.get(position));
+//                        Toast.makeText(getApplicationContext(), String.valueOf(location.getId()), Toast.LENGTH_SHORT).show();
                         restaurant.setLocationid(location.getId());
-
                     }
-                }
+//                }
             }
 
             @Override
@@ -249,25 +245,20 @@ public class RestaurantProperties extends AppCompatActivity {
 
         bb.setDropDownViewResource(R.layout.spinner_dropdown_item);
         addRoleRestaurant.setAdapter(bb);
-        addRoleRestaurant.setSelection(restaurant.getCateid());
+        Category category =catetgoryDatabase.getCategoryById(restaurant.getCateid());
+
+        for(int i=1;i<item1.size(); i++){
+            if(Objects.equals(item1.get(i), category.getName()))
+                addRoleRestaurant.setSelection(i);
+        }
         addRoleRestaurant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-//               spinner1.setText(items[position]);
-                if (item1.equals("Chọn loại quán")) {
-                    // Không làm gì nếu người dùng chưa chọn
-                    Toast.makeText(getApplicationContext(), "Vui lòng chọn loại quán!", Toast.LENGTH_SHORT).show();
-                } else {
-                    List<Category> locationList= catetgoryDatabase.getAllCategories();
-                    if(position!=0){
-                        Category category = locationList.stream()
-                                .filter(p -> p.getName().equals(String.valueOf(item1.get(position))))  // Sử dụng equals() thay vì ==
-                                .findFirst()  // Lấy phần tử đầu tiên thỏa mãn điều kiện
-                                .orElse(null);  // Tìm kiếm theo tên
-                        restaurant.setCateid(category.getId());
-                    }
-
+                if(position!=0){
+                    Category category =catetgoryDatabase.getCategoryByName(item1.get(position));
+                    restaurant.setCateid(category.getId());
+//                    Toast.makeText(getApplicationContext(), String.valueOf(category.getId()), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -435,15 +426,15 @@ public class RestaurantProperties extends AppCompatActivity {
         addRoleRestaurant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<Category> locationList= catetgoryDatabase.getAllCategories();
-                Toast.makeText(getApplicationContext(), String.valueOf(item1.get(position)),Toast.LENGTH_SHORT).show();
-
+                List<Category> categoryList= catetgoryDatabase.getAllCategories();
                 if(position!=0){
-                    Category category = locationList.stream()
+                    Category category = categoryList.stream()
                             .filter(p -> p.getName().equals(String.valueOf(item1.get(position))))  // Sử dụng equals() thay vì ==
                             .findFirst()  // Lấy phần tử đầu tiên thỏa mãn điều kiện
                             .orElse(null);  // Tìm kiếm theo tên
                     restaurant.setCateid(category.getId());
+//                    Toast.makeText(getApplicationContext(), String.valueOf(category.getId()),Toast.LENGTH_SHORT).show();
+
                 }
             }
             @Override

@@ -1,6 +1,5 @@
 package com.example.pandora.Fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -54,7 +53,7 @@ public class Home extends Fragment {
     private RestaurantDatabase restaurantDatabase;
     private List<Restaurant> restaurantList;
     EditText search_toolbar;
-    List<Location> lc;
+    List<Location> locationList;
     private List<Restaurant> images;
     private int currentPage = 0;
     private boolean hasShownToast = false;
@@ -66,8 +65,8 @@ public class Home extends Fragment {
     TextView txtLocation;
     List<String> item1;
     ArrayList<Integer> ds_history;
-    LocationDatabase database;
-    CatetgoryDatabase C;
+    LocationDatabase locationDatabase;
+    CatetgoryDatabase catetgoryDatabase;
     List<Category> categoryList;
     ArrayAdapter<String> bb;
 
@@ -102,26 +101,26 @@ public class Home extends Fragment {
         search_toolbar = view.findViewById(R.id.search_toolbar);
         item1 = new ArrayList<>();
         //them dữ liệu location
-        database = new LocationDatabase(getContext());
-        database.open();
-        if (database.isTableEmpty()) {
-            database.addLocation(new Location("Hồ Chí Minh"));
-            database.addLocation(new Location("Hà Nội"));
-            database.addLocation(new Location("Nha Trang"));
-            database.addLocation(new Location("Vũng Tàu"));
+        locationDatabase = new LocationDatabase(getContext());
+        locationDatabase.open();
+        if (locationDatabase.isTableEmpty()) {
+            locationDatabase.addLocation(new Location("Hồ Chí Minh"));
+            locationDatabase.addLocation(new Location("Hà Nội"));
+            locationDatabase.addLocation(new Location("Nha Trang"));
+            locationDatabase.addLocation(new Location("Vũng Tàu"));
         }
-        lc = database.getAllLocations();
+        locationList = locationDatabase.getAllLocations();
 
 
         //them dữ liệu categories
-        C = new CatetgoryDatabase(getContext());
-        C.open();
-        if (C.isTableEmpty()) {
-            C.addCategory(new Category("Quán ăn nhanh"));
-            C.addCategory(new Category("Quán ăn gia đình"));
-            C.addCategory(new Category("Quán lẩu/nướng"));
+        catetgoryDatabase = new CatetgoryDatabase(getContext());
+        catetgoryDatabase.open();
+        if (catetgoryDatabase.isTableEmpty()) {
+            catetgoryDatabase.addCategory(new Category("Quán ăn nhanh"));
+            catetgoryDatabase.addCategory(new Category("Quán ăn gia đình"));
+            catetgoryDatabase.addCategory(new Category("Quán lẩu/nướng"));
         }
-        categoryList= C.getAllCategories();
+        categoryList= catetgoryDatabase.getAllCategories();
 
         restaurantDatabase = new RestaurantDatabase(getContext());
         restaurantDatabase.open();
@@ -242,7 +241,7 @@ public class Home extends Fragment {
         item1.add("Chọn loại quán");
         if(!txtLocation.getText().toString().equals("Các địa điểm"))
             item1.set(0,"Type of restaurant");
-        categoryList = C.getAllCategories();
+        categoryList = catetgoryDatabase.getAllCategories();
         for (Category a : categoryList) {
             item1.add(a.getName());
         }
@@ -257,7 +256,13 @@ public class Home extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 spinnerTypeRestaurant.setSelection(position);
-                cateid = position;
+                for (Category i:categoryList){
+                    if(i.getName().equals(item1.get(position))){
+                        cateid=i.getId();
+                        break;
+                    }
+                }
+//                Toast.makeText(getContext(),String.valueOf(cateid), Toast.LENGTH_SHORT).show();
                 loading();
             }
 
@@ -359,8 +364,8 @@ public class Home extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         restaurantDatabase.close();
-        database.close();
-        C.close();
+        locationDatabase.close();
+        catetgoryDatabase.close();
         handler.removeCallbacks(runnable); // Ngừng lướt khi view của fragment bị hủy
     }
 
@@ -417,9 +422,9 @@ public class Home extends Fragment {
         location.add("Tất cả");
         if(!txtLocation.getText().toString().equals("Các địa điểm"))
             location.set(0,"All");
-        lc=database.getAllLocations();
+        locationList = locationDatabase.getAllLocations();
 
-        for (Location a : lc) {
+        for (Location a : locationList) {
             location.add(a.getName());
         }
         // Use the custom spinner item layout
@@ -440,7 +445,13 @@ public class Home extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedLocation[0] = adapterView.getItemAtPosition(i).toString();  // Get the selected location
-                locationid = i;
+                for (Location lc:locationList){
+                    if(lc.getName().equals(location.get(i))){
+                        locationid=lc.getId();
+                        break;
+                    }
+                }
+
             }
 
             @Override
@@ -461,9 +472,6 @@ public class Home extends Fragment {
 
                     }
                 }
-                if (selectedLocation[0].equals("Tất cả")) {
-
-                }
                 loading();
                 alertDialog.dismiss();
             }
@@ -483,12 +491,12 @@ public class Home extends Fragment {
         item1.add("Chọn loại quán");
         if(!txtLocation.getText().toString().equals("Các địa điểm"))
             item1.set(0,"Type of restaurant");
-        categoryList = C.getAllCategories();
+        categoryList = catetgoryDatabase.getAllCategories();
         for (Category a : categoryList) {
             item1.add(a.getName());
         }
         bb.notifyDataSetChanged();
-        categoryList = C.getAllCategories();
+        categoryList = catetgoryDatabase.getAllCategories();
         if (cateid != 0) {
             restaurantList = restaurantList.stream().filter(p -> p.getCateid() == cateid).collect(Collectors.toList());
         }

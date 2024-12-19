@@ -288,7 +288,7 @@ public class TypeRestaurantProperties extends AppCompatActivity {
                 .setView(dialogView)
                 .setCancelable(true)
                 .create();
-
+        Toast.makeText(getApplicationContext(),String.valueOf(category.getId()),Toast.LENGTH_SHORT).show();
         Button btnSave = dialogView.findViewById(R.id.btnSave);
         Button btnDismiss = dialogView.findViewById(R.id.btnDismiss);
 
